@@ -2,39 +2,40 @@
 
 <img width="512" height="512" alt="blackStone" src="https://github.com/user-attachments/assets/ff726bdb-2b95-41b2-b4ef-3aad05a05739" />
 
+## APK Custom Terbaru: v1.4.0-dblocal
 
-**1 APK ORIGINAL yang di-custom** (DragonBall_WEB_20211216.apk):
+**Download**: https://github.com/anztdree/dragonballidle/releases/download/v1.4.0-dblocal/DB-LOCAL-v1.4.0-dblocal.apk
 
-| Item | Asli | Custom |
-|---|---|---|
-| Nama paket | `com.guan.wangys` | `com.anztdree.dbidle` |
-| Nama aplikasi | Dragon Adventure idle | **DB - LOCAL** |
-| Logo | default | **blackStone** (logo di atas) |
-| Versi | 1.0.1 | 1.0.3-debug (versionCode 3) |
+| Item | Nilai |
+|---|---|
+| Nama aplikasi | **DB - LOCAL** |
+| Nama paket | `com.anztdree.dbidle` |
+| **Versi APK** | **1.4.0-dblocal** (versionCode 5) |
+| Logo | blackStone |
+| Basis | APK ORIGINAL 1:1, di-custom minimal |
 
-## Download
+> Catatan: angka "1.0.1" yang tampil DI DALAM game adalah versi dari config server (bukan versi APK). Versi APK sebenarnya bisa dilihat di: Settings -> Apps -> DB - LOCAL.
 
-**DB-LOCAL-v1.0.3-debug.apk**: https://github.com/anztdree/dragonballidle/releases/download/v1.0.3-debug/DB-LOCAL-v1.0.3-debug.apk
+## Floating Debug (WAJIB muncul)
 
-## Floating Debug (built-in, tahap pondasi)
+**TANDA SUKSES saat aplikasi dibuka:**
 
-Muncul **otomatis saat aplikasi dibuka pertama kali**:
+1. Toast **"DB - LOCAL DEBUG AKTIF v1.4"** -> bukti APK v1.4 jalan
+2. Banner **"DBID DEBUG AKTIF"** di atas layar beberapa detik
+3. Bubble **DBG** oranye (kiri atas, bisa digeser) -> tap untuk buka panel
+4. Panel: tab **LOG** (socket.io/HTTP/console realtime) & **ALUR** (6 langkah server)
+5. Tombol **COPY LOG** -> log lengkap ke clipboard -> paste ke chat
 
-- Bubble **DBG** oranye (kiri atas, bisa digeser, tap untuk buka/tutup panel)
-- Banner "DBID DEBUG AKTIF" beberapa detik sebagai konfirmasi
-- Panel debug: tab **LOG** & **ALUR** (6 langkah koneksi server)
-- Mencatat: socket.io (connect/emit/on + payload), HTTP (XHR/fetch + response), console, JS error
-- **COPY LOG** -> log lengkap ke clipboard -> paste ke chat
+**Fix v1.4 (akar masalah floating tidak muncul):**
+APK original menjalankan game lewat mesin **NATIVE Egret (libegret.so)**, bukan WebView - maka floating versi lama yang ditanam di WebView tidak pernah bisa tampil. v1.4 memaksa jalur WebView (game web yang sama dari server, data dari server langsung).
 
 ## Install
 
 1. Unduh APK -> buka -> izinkan "Install aplikasi tidak dikenal"
-2. Kalau upgrade dari versi lama: langsung install (keystore sama)
+2. Upgrade dari versi lama: langsung install (signature sama)
 3. Bisa terpasang berdampingan dengan APK asli
 
 ## Info teknis
 
-- Zipalign + signed v1/v2/v3 (keystore sama sejak v1.0.1)
-- SHA256: 3e139eed8c5eec00b34f8b3d562a7bc0a477a637fa60a78d05e56deb1f677ed5
-- Injeksi: agent JS (assets/dbid_agent.js) disuntik ke index.html sebelum kode game jalan + bridge Android (com.dbid.debug.DBID)
-- Versi 1.0.1 yang tampil di dalam game berasal dari config server (bukan APK) — akan dipatch di tahap standalone
+- Zipalign + signed v1/v2/v3 (keystore sama sejak awal)
+- SHA256: `2bf330601218e32c45ea25610315fd0f221097ba4a574e9912fa5a926aed9e3e`
