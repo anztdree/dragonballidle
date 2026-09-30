@@ -1,4 +1,7 @@
-# Dragon Ball Idle Custom
+# Dragon Ball Idle Custom 
+
+<img width="512" height="512" alt="blackStone" src="https://github.com/user-attachments/assets/ff726bdb-2b95-41b2-b4ef-3aad05a05739" />
+
 
 **1 APK ORIGINAL yang di-custom** (DragonBall_WEB_20211216.apk):
 
