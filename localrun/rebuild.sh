@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 # =============================================================
-# DB-LOCAL LOCALRUN — rebuild otomatis APK
+# DB-LOCAL LOCALRUN — rebuild otomatis APK (v2.1)
 # Prasyarat (folder /home/z/tools): apktool.jar, ecj.jar,
-#   bt/android-14/{d8,zipalign,apksigner}, plat/android-34/android.jar, dblocal.keystore
-# Alur: kit dari mirror -> compile ShadowServer -> patch EntryPoint+
-#       Application.smali -> apktool build -> inject classes2.dex ->
-#       zipalign -> sign v1+v2+v3
+#   bt/android-14/{d8,zipalign,apksigner,aapt}, plat/android-34/android.jar,
+#   dblocal.keystore
+# Basis: APK v2.0-localrun (objek LFS original hilang dari GitHub — 404;
+#        semua patch v2.0 idempoten sehingga rebuild dari v2.0 = rebuild
+#        dari original + patch lama, terbukti via diff entri vs v2.0).
+# Alur: decode -> targetSdk 28 -> EntryPoint loopback -> kit ->
+#       patch Application.smali -> compile (MiniJson+override) ->
+#       apktool build -> inject classes2.dex -> zipalign -> sign v1+v2+v3
 # =============================================================
 set -e
-APK_SRC="${1:-/home/z/dbi-repo/DB-LOCAL.apk}"   # basis (original 1:1)
+APK_SRC="${1:-/home/z/dbi-repo/DB-LOCAL-LOCALRUN-v2.0.apk}"   # basis
 W="$(cd "$(dirname "$0")" && pwd)"
 T=/home/z/tools
 
@@ -16,6 +20,9 @@ cd "$W"
 
 echo "[1/7] Decode basis"
 java -jar $T/apktool.jar d -f -q -o decode "$APK_SRC"
+
+echo "[1b/7] targetSdk 30 -> 28 (legacy storage agar /sdcard/DB-LOCAL bisa dipakai; versionName/versionCode TIDAK disentuh)"
+sed -i 's/targetSdkVersion: 30/targetSdkVersion: 28/' decode/apktool.yml
 
 echo "[2/7] EntryPoint -> Server Bayangan (loopback)"
 ENC=$(printf 'http://127.0.0.1:11390/cfg' | base64 -w0)
@@ -57,7 +64,13 @@ $T/bt/android-14/d8 --min-api 21 --lib $T/plat/android-34/android.jar --output .
 cp classes.dex classes2.dex
 
 echo "[6/7] Build + inject"
-java -jar $T/apktool.jar b -f -q -o build_unsigned.apk decode
+# apktool 2.10 kadang exit 1 dengan pesan palsu SETELAH build sukses —
+# jadi keputusan sukses/gagal dari hasil (APK valid), bukan exit code.
+rm -rf decode/smali_classes2        # kode v2.0 lama; classes2.dex final = kompilasi baru
+rm -f build_unsigned.apk
+java -jar $T/apktool.jar b -f -q -o build_unsigned.apk decode || true
+test -f build_unsigned.apk || { echo "FATAL: apktool build tidak menghasilkan APK"; exit 1; }
+unzip -l build_unsigned.apk | grep -q " classes.dex" || { echo "FATAL: APK hasil tidak berisi classes.dex"; exit 1; }
 zip -j -q build_unsigned.apk classes2.dex
 
 echo "[7/7] zipalign + sign"

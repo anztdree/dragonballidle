@@ -49,3 +49,26 @@ Stage Summary:
 - Catatan WAJIB untuk user: UNINSTALL DB - LOCAL lama sekali (keystore baru), lalu install APK dari Release v2.0-localrun.
 - Update endpoint/kit selanjutnya = harvest.sh → update kit → rebuild.sh (1 perintah), tanpa menyentuh kode.
 - Hasil uji HP menentukan tahap berikutnya (Tahap 4: local_server untuk login/gameplay).
+
+---
+Task ID: 7
+Agent: Z.ai (main)
+Task: Jawab koreksi user (bukan debug logging/capture; Android/data isi = original; "endpoint nanti edit gimana?"; versioning tetap 1.0) + implementasi OVERRIDE ENDPOINT (v2.1) yang bisa diedit dari HP.
+
+Work Log:
+- Koreksi diterima: instruksi "adb logcat" di BUILD-LOCALRUN.md dihapus; APK tidak butuh logging/capture sama sekali.
+- Status pasca-reset diperiksa: mirror utuh (checksum cocok), Task 6 (APK v2.0-localrun + release) ternyata sudah tereksekusi sebelum kompaksi; pesan user = hasil uji nyata di HP (Android/data terisi sama dgn original).
+- Objek LFS "DB-LOCAL.apk" (original 104.964.523 B) kini 404 dari GitHub LFS API → basis rebuild = release v2.0 (sha 44f8b615... cocok); semua patch v2.0 terbukti idempoten.
+- v2.1 diimplementasi: MiniJson.java (parser/penulis JSON: angka-raw, unicode, BOM, merge rekursif); ShadowServer.applyConfigOverride() (baca /sdcard/DB-LOCAL/local_config.json → Android/data/com.db.local/files/local_config.json; kunci menimpa config kit sebelum bin dikirim; gagal/rusak = kit utuh); OfflinePack.exportUserFiles() (BACA-SAYA.txt refresh + local_config.example.json if-missing; local_config.json sengaja TIDAK dibuat); OfflinePack.requestStorageIfNeeded() (sekali, WRITE+READ, code 11390, via ActivityLifecycleCallbacks).
+- targetSdk 30→28 (legacy storage utk /sdcard/DB-LOCAL); versionCode=1/versionName=1.0.0 TIDAK disentuh (aturan user dikunci).
+- Bug uji diperbaiki: XOR harus di level BYTE sebelum decode UTF-8 (String round-trip merusak 한국인); ECJ FQN-quirk diatasi via import.
+- Uji E2E: 34/34 PASS (mode penuh) + 9/9 PASS (mode izin, JVM terpisah).
+- apktool 2.10 ternyata exit 1 + pesan palsu SETELAH build sukses → rebuild.sh kini memutus dari hasil (APK valid) + buang smali_classes2 lama sebelum build.
+- Keystore pulih dari research/apk_work/dblocal.keystore (sha cert 3898c8f0... = cert v2.0) → upgrade tanpa uninstall.
+- Verifikasi statis: apksigner OK; aapt badging: versionCode 1 / versionName 1.0.0 / targetSdk 28 (diff vs v2.0 = hanya baris itu); diff entri 3.690 = identik CRC (beda: manifest, classes2.dex 21.668 B, META-INF).
+- Produk: DB-LOCAL-LOCALRUN.apk 155.983.067 B, SHA256 7e511d58...48e7.
+
+Stage Summary:
+- Jawaban "endpoint edit gimana?": Android/data = mirror mentah (sengaja identik original, bukan tempat edit); titik edit = local_config.json di /sdcard/DB-LOCAL (atau Android/data/com.db.local/files) — edit teks di HP → restart APK. Tanpa PC, tanpa repack, tanpa root.
+- Aturan terkunci: versioning APK tetap 1.0 (versionCode 1 / versionName 1.0.0) di semua revisi.
+- Berikutnya: uji v2.1 di HP (izin penyimpanan → folder DB-LOCAL → uji edit endpoint); lalu Tahap 4 (login/gameplay lokal) menunggu arah user.

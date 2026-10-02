@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,6 +34,8 @@ public final class ShadowServer implements Runnable {
 
     private static final String TAG = OfflinePack.TAG;
     private static final String KIT = "dblocal_kit";
+    /** Kunci XOR config — sama dengan punya game (simetris, encode = decode). */
+    static final byte[] XOR_KEY = "DragonBall".getBytes();
 
     private final Context ctx;
     private final File allZip;
@@ -140,17 +143,78 @@ public final class ShadowServer implements Runnable {
         return null;
     }
 
-    /** /cfg/setting_*.bin -> config bin kita; /cfg/com_*.bin -> "{}" terenkripsi. */
+    /** /cfg/setting_*.bin -> config bin kita (bisa dioverride user); /cfg/com_*.bin -> "{}" terenkripsi. */
     private byte[] resolveCfg(String path) throws IOException {
         String name = path.substring(5); // setelah "/cfg/"
         if (name.startsWith("com_")) {
-            return xor("{}" .getBytes("UTF-8"), "DragonBall".getBytes("UTF-8"));
+            return xor("{}".getBytes("UTF-8"), XOR_KEY);
         }
         // setting_*.bin (semua varian nama paket -> satu config kita)
         if (name.endsWith(".bin")) {
-            return asset("cfg/setting_BS_Android.bin");
+            return applyConfigOverride(asset("cfg/setting_BS_Android.bin"));
         }
         return null;
+    }
+
+    /**
+     * v2.1 — lapisan override endpoint TANPA repack:
+     * bila /sdcard/DB-LOCAL/local_config.json ada (atau <dir-eksternal>/local_config.json),
+     * kunci-kuncinya menimpa config kit sebelum bin dikirim ke launcher.
+     * Kunci yang tidak ditulis tetap ikut kit; file rusak = diabaikan;
+     * gagal apa pun = config kit utuh (perilaku v2.0).
+     */
+    private byte[] applyConfigOverride(byte[] base) {
+        if (base == null) return null;
+        try {
+            Map<String, Object> m = asMap(MiniJson.parse(new String(xor(base, XOR_KEY), "UTF-8")));
+            if (m == null || !m.containsKey("url")) return base; // bukan config utama
+            String over = readOverrideText();
+            if (over == null) return base;
+            Map<String, Object> o = asMap(MiniJson.parse(over));
+            if (o == null || o.isEmpty()) return base;
+            byte[] out = xor(MiniJson.write(MiniJson.merge(m, o)).getBytes("UTF-8"), XOR_KEY);
+            Log.i(TAG, "[CFG-OVERRIDE] aktif: " + o.size() + " kunci diubah");
+            return out;
+        } catch (Throwable t) {
+            Log.w(TAG, "[CFG-OVERRIDE] diabaikan: " + t);
+            return base;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> asMap(Object o) {
+        return (o instanceof Map) ? (Map<String, Object>) o : null;
+    }
+
+    /** Baca teks override: /sdcard/DB-LOCAL dulu, lalu dir eksternal milik APK. */
+    private String readOverrideText() {
+        String s = readTextIfReadable(new File(
+                new File(android.os.Environment.getExternalStorageDirectory(), "DB-LOCAL"),
+                "local_config.json"));
+        if (s != null) return s;
+        try {
+            File ext = ctx.getExternalFilesDir(null);
+            if (ext != null) return readTextIfReadable(new File(ext, "local_config.json"));
+        } catch (Throwable ignore) {}
+        return null;
+    }
+
+    private static String readTextIfReadable(File f) {
+        try {
+            if (!f.isFile() || !f.canRead() || f.length() <= 0 || f.length() > (256 << 10)) return null;
+            FileInputStream in = new FileInputStream(f);
+            try {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                byte[] buf = new byte[1 << 12];
+                int n;
+                while ((n = in.read(buf)) > 0) bos.write(buf, 0, n);
+                return new String(bos.toByteArray(), "UTF-8");
+            } finally {
+                try { in.close(); } catch (IOException ignore) {}
+            }
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     /** /up/<file> -> version files, upgrade.json, size.json, all.zip, base.zip. */
@@ -226,7 +290,7 @@ public final class ShadowServer implements Runnable {
 
     // ---------------------------------------------------------------- util
 
-    private static byte[] xor(byte[] data, byte[] key) {
+    static byte[] xor(byte[] data, byte[] key) {
         byte[] out = new byte[data.length];
         for (int i = 0; i < data.length; i++) out[i] = (byte) (data[i] ^ key[i % key.length]);
         return out;
