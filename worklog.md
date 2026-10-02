@@ -94,3 +94,19 @@ Stage Summary:
 - Edit endpoint kini 100% dari HP lewat tombol CFG (jawaban efisiensi atas "android/data isi sama, edit gimana?").
 - versioning tetap 1.0 (aturan terkunci); perubahan kode v2.2 = classes2.dex + META-INF saja.
 - Menunggu: user install v2.2 → COPY log bootstrap + NET → paste ke chat → lanjut Tahap 4 (login/gameplay lokal) berdasarkan bukti.
+
+---
+Task ID: 9
+Agent: Z.ai (main)
+Task: Diskusi log HP v2.2 (pertanyaan user: "cfg apakah dari official langsung?" + 2 anomali NET) → v2.3.
+
+Work Log:
+- Jawaban cfg: yang dipakai game = config KIT (snapshot official 711 B yang di-repoint url+update → 127.0.0.1:11390 = 687 B); loginServer/ports/clientParams = persis official. Config official di-probe ulang dari sandbox: field-identik (711 B) — snapshot masih valid.
+- Temuan 1: NET ":610 → 404" = BUG PROBE (path kurang /socket.io/). Sandbox: /socket.io/?EIO=3&transport=polling → 96:0{"sid":...} = handshake EIO=3 SUKSES. Server game HIDUP.
+- Temuan 2: HP user melihat resource.version = 11390; sandbox 5/5 probe = 11389; upgrade.json masih memuat patch "11389_11390.zip". Indikasi versi CDN per-wilayah (rollout/rollback). Kit tetap 11389 self-contained (aman; re-harvest siap bila perlu).
+- Log HP juga membuktikan: FASE 1-3 100% lokal (config → versi → upgrade.json/size.json → all.zip 19.385.101 B) sampai HWLoginActivity; "×2" = koalescing baris + chip per-activity (MainActivity, HWLoginActivity) — normal.
+- v2.3: fix probe path + preview config bin ter-dekripsi (XOR DragonBall) di log NET + label versi; rebuild (27 class), sign OK, badging 1.0.0/targetSdk 28, CRC diff vs basis hanya classes2.dex+META-INF+manifest warisan; push + release v2.3-localrun.
+
+Stage Summary:
+- Floating console terbukti bekerja di perangkat & langsung membuahkan 2 fakta server: :610 HIDUP, CDN versi beda per wilayah.
+- Kit 11389 konsisten & self-contained; arah berikutnya = user login di HP (guest) → log login/610 → Tahap 4 (login/gameplay lokal) bila server official bermasalah.

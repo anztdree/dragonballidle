@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================
-# DB-LOCAL LOCALRUN — rebuild otomatis APK (v2.2 — Floating Debug Console)
+# DB-LOCAL LOCALRUN — rebuild otomatis APK (v2.3 — Floating Debug Console (NET probe diperbaiki))
 # Prasyarat (folder /home/z/tools): apktool.jar, ecj.jar,
 #   bt/android-14/{d8,zipalign,apksigner,aapt}, plat/android-34/android.jar,
 #   dblocal.keystore

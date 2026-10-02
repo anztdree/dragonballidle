@@ -584,8 +584,8 @@ public final class DebugConsole {
                 probe("Server Bayangan (lokal)", "http://127.0.0.1:11390/cfg/setting_BS_Android.bin");
                 probe("Config real (configus) ", "https://configus.sjmobilegame.com/bs/db/android/setting_BS_Android.bin");
                 probe("CDN entry (popoh5)     ", "https://dragonh5cdn.popoh5.com/bs/index-native.html");
-                probe("CDN versi (harus 11389)", "https://dragonh5cdn.popoh5.com/bs/upgrade/resource.version");
-                probe("Login SDK :610 (EIO=3) ", "https://login.popoh5.com:610/?EIO=3&transport=polling");
+                probe("CDN versi (kit = 11389) ", "https://dragonh5cdn.popoh5.com/bs/upgrade/resource.version");
+                probe("Login SDK :610 (EIO=3) ", "https://login.popoh5.com:610/socket.io/?EIO=3&transport=polling");
                 log('I', "NET", "── TES JARINGAN selesai ──");
             }
         }, "DBLOCAL-net").start();
@@ -600,12 +600,21 @@ public final class DebugConsole {
             c.setConnectTimeout(5000);
             c.setReadTimeout(5000);
             c.setInstanceFollowRedirects(true);
-            c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 10) DB-LOCAL/2.2");
+            c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 10) DB-LOCAL/2.3");
             int code = c.getResponseCode();
             InputStream in = code >= 400 ? c.getErrorStream() : c.getInputStream();
             byte[] head = readUpTo(in, 200);
             long ms = System.currentTimeMillis() - t0;
             String prev = previewOf(head);
+            // config .bin = XOR "DragonBall" — dekripsi preview agar JSON terbaca di log
+            if (url.endsWith(".bin") && prev.length() > 0 && prev.charAt(0) != '<') {
+                try {
+                    byte[] key = "DragonBall".getBytes("UTF-8");
+                    byte[] dec = new byte[head.length];
+                    for (int i = 0; i < head.length; i++) dec[i] = (byte) (head[i] ^ key[i % key.length]);
+                    prev = previewOf(dec);
+                } catch (Throwable ignore) {}
+            }
             if (code < 400) {
                 log('I', "NET", name + " → HTTP " + code + " • " + ms + " ms"
                         + (prev.length() > 0 ? " • awal: " + prev : ""));

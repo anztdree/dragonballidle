@@ -1,3 +1,27 @@
+# BUILD — LOCALRUN v2.3 (NET probe diperbaiki: /socket.io/ + preview config terdekripsi)
+
+**Tanggal**: 2026-10-02 (malam)
+**Produk**: `DB-LOCAL-LOCALRUN.apk` — 155.995.355 B
+**SHA256**: `aed79eaf6e920662feee2580cca58310c0052b0681558c7e09b5be38eb6d4fe6`
+**Sertifikat**: sama (3898c8f0...) → upgrade tanpa uninstall. versioning tetap 1.0.
+
+## Perubahan v2.2 → v2.3
+1. **FIX probe NET "Login SDK :610"**: path `/?EIO=3...` → **`/socket.io/?EIO=3&transport=polling`**
+   (uji HP v2.2 menunjukkan 404 — ternyata salah path probe, BUKAN server mati;
+   probe sandbox `/socket.io/` = handshake sukses `96:0{"sid":...}`).
+2. **Preview config .bin terdekripsi di log NET**: hasil probe configus/lokal kini
+   tampil sebagai JSON (XOR "DragonBall" di-decrypt dulu), bukan sampah biner.
+3. Label probe versi: "CDN versi (kit = 11389)" — karena CDN official dapat
+   berbeda per wilayah (HP user melihat 11390, sandbox melihat 11389 — 5/5 probe).
+4. Lainnya identik v2.2 (CRC diff vs basis: hanya classes2.dex + META-INF + manifest warisan v2.1).
+
+## Temuan log HP user (v2.2) — diskusi lengkap di worklog Task 9
+- FASE 1-3 100% lokal sukses sampai HWLoginActivity (layar login SDK).
+- Config official (configus) masih hidup & field-identik dengan snapshot kit.
+- :610 hidup (bug probe); CDN versi per-wilayah berbeda (11390 vs 11389).
+
+---
+
 # BUILD — LOCALRUN v2.2 (Floating Debug Console: tampil di layar, bisa di-copy)
 
 **Tanggal**: 2026-10-02
