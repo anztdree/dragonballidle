@@ -29,34 +29,45 @@ public final class OfflinePack {
     private OfflinePack() {}
 
     public static void start(Context ctx) {
+        DLog.i("BOOT", "DB-LOCAL v2.2 mulai — kit v" + KIT_VERSION + " • versioning tetap 1.0");
         synchronized (LOCK) {
             if (started) return;
             try {
-                Log.i(TAG, "OfflinePack: menyiapkan kit (v" + KIT_VERSION + ")...");
+                DLog.i("BOOT", "menyiapkan kit (v" + KIT_VERSION + ")...");
                 File dir = ctx.getFilesDir();
                 File marker = new File(dir, "dblocal_kit_v" + KIT_VERSION);
                 if (!marker.exists()) {
                     copyAsset(ctx, "dblocal_kit/up/all.zip",  new File(dir, "all.zip"));
                     copyAsset(ctx, "dblocal_kit/up/base.zip", new File(dir, "base.zip"));
                     marker.createNewFile();
-                    Log.i(TAG, "OfflinePack: zip kit disalin ke filesDir");
+                    DLog.i("KIT", "zip kit disalin ke filesDir (pertama kali)");
                 }
                 File all  = new File(dir, "all.zip");
                 File base = new File(dir, "base.zip");
+                DLog.i("BOOT", "kit siap: all.zip=" + all.length() + " B • base.zip=" + base.length() + " B");
                 ShadowServer serv = new ShadowServer(ctx, all, base);
                 Thread t = new Thread(serv, "DBLOCAL-ShadowServer");
                 t.setDaemon(true);
                 t.start();
                 started = true;
-                Log.i(TAG, "OfflinePack: Server Bayangan START di 127.0.0.1:" + PORT);
+                DLog.i("SRV", "Server Bayangan START di 127.0.0.1:" + PORT
+                        + " — config/versi/entry/resource dilayani dari LOKAL");
             } catch (Throwable e) {
                 // Kit gagal = biarkan alur online asli berjalan (fallback natural).
-                Log.e(TAG, "OfflinePack START gagal, fallback online: " + e, e);
+                DLog.e(TAG, "START gagal, fallback ONLINE: " + e);
             }
         }
+        // v2.2 — floating debug console (tanpa PC, tampil di layar, bisa di-copy).
+        try {
+            if (ctx instanceof android.app.Application) {
+                DLog.registerApp((android.app.Application) ctx);
+            } else {
+                Log.w(TAG, "console debug dilewati: ctx bukan Application (mode uji desktop)");
+            }
+        } catch (Throwable t) { Log.w(TAG, "register console: " + t); }
         // v2.1 — di luar lock & dengan try/catch sendiri: tidak boleh mengganggu boot.
-        try { exportUserFiles(ctx); } catch (Throwable t) { Log.w(TAG, "export panduan gagal: " + t); }
-        try { requestStorageIfNeeded(ctx); } catch (Throwable t) { Log.w(TAG, "izin penyimpanan: " + t); }
+        try { exportUserFiles(ctx); } catch (Throwable t) { DLog.w(TAG, "export panduan gagal: " + t); }
+        try { requestStorageIfNeeded(ctx); } catch (Throwable t) { DLog.w(TAG, "izin penyimpanan: " + t); }
     }
 
     // ---------------------------------------------------- v2.1: override user
@@ -81,8 +92,9 @@ public final class OfflinePack {
             if (ext != null) {
                 writeText(new File(ext, "BACA-SAYA.txt"), readme, false);
                 writeText(new File(ext, "local_config.example.json"), json, true);
+                DLog.i("CFG", "panduan + contoh config diekspor ke " + ext.getAbsolutePath());
             }
-        } catch (Throwable t) { Log.w(TAG, "export (dir APK) gagal: " + t); }
+        } catch (Throwable t) { DLog.w(TAG, "export (dir APK) gagal: " + t); }
 
         try {
             File sd = new File(android.os.Environment.getExternalStorageDirectory(), "DB-LOCAL");
@@ -163,7 +175,10 @@ public final class OfflinePack {
      */
     private static void requestStorageIfNeeded(Context ctx) {
         try {
-            if (android.os.Build.VERSION.SDK_INT < 23) return; // API <= 22: izin saat pasang
+            if (android.os.Build.VERSION.SDK_INT < 23) { // API <= 22: izin saat pasang
+                DLog.i("SYS", "izin penyimpanan: otomatis (Android <= 5.x)");
+                return;
+            }
             if (!(ctx instanceof android.app.Application)) return;
             final android.app.Application app = (android.app.Application) ctx;
             final String READ  = "android.permission.READ_EXTERNAL_STORAGE";
@@ -173,8 +188,13 @@ public final class OfflinePack {
                 granted = ctx.checkSelfPermission(WRITE) == android.content.pm.PackageManager.PERMISSION_GRANTED
                        && ctx.checkSelfPermission(READ)  == android.content.pm.PackageManager.PERMISSION_GRANTED;
             } catch (Throwable ignore) { return; }
-            if (granted || permAsked) return;
+            if (granted) {
+                DLog.i("SYS", "izin penyimpanan: sudah diberikan — /sdcard/DB-LOCAL siap");
+                return;
+            }
+            if (permAsked) return;
             permAsked = true;
+            DLog.i("SYS", "izin penyimpanan: dialog akan muncul di Activity pertama (tolak pun game normal)");
             app.registerActivityLifecycleCallbacks(new android.app.Application.ActivityLifecycleCallbacks() {
                 private boolean fired = false;
                 @Override public void onActivityResumed(android.app.Activity a) {
@@ -203,7 +223,7 @@ public final class OfflinePack {
             long total = 0;
             while ((n = in.read(buf)) > 0) { os.write(buf, 0, n); total += n; }
             os.flush();
-            Log.i(TAG, "OfflinePack: " + out.getName() + " (" + total + " B) siap");
+            DLog.i("KIT", "salin " + out.getName() + " (" + total + " B) selesai");
         } finally {
             if (in != null) try { in.close(); } catch (Exception ignore) {}
             if (os != null) try { os.close(); } catch (Exception ignore) {}

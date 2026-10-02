@@ -54,7 +54,7 @@ public final class ShadowServer implements Runnable {
     public void run() {
         try {
             ServerSocket ss = new ServerSocket(OfflinePack.PORT, 64, java.net.InetAddress.getByName("127.0.0.1"));
-            Log.i(TAG, "ShadowServer: LISTEN 127.0.0.1:" + OfflinePack.PORT);
+            DLog.i("SRV", "LISTEN 127.0.0.1:" + OfflinePack.PORT + " — Server Bayangan hidup");
             while (true) {
                 final Socket s = ss.accept();
                 Thread t = new Thread(new Runnable() { public void run() { handle(s); } }, "DBLOCAL-conn");
@@ -62,7 +62,7 @@ public final class ShadowServer implements Runnable {
                 t.start();
             }
         } catch (Throwable e) {
-            Log.e(TAG, "ShadowServer mati: " + e, e);
+            DLog.e("SRV", "ShadowServer mati: " + e);
         }
     }
 
@@ -90,7 +90,7 @@ public final class ShadowServer implements Runnable {
             boolean head = "HEAD".equalsIgnoreCase(method);
 
             if (body == null) {
-                Log.w(TAG, "[KIT-MISS] " + path);
+                DLog.w("KIT", "[MISS] " + path + " → 404 (serversetting.json memang 404 di CDN asli — normal)");
                 String nf = "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";
                 OutputStream os = s.getOutputStream();
                 os.write(nf.getBytes("UTF-8"));
@@ -99,7 +99,7 @@ public final class ShadowServer implements Runnable {
                 return;
             }
 
-            Log.i(TAG, "[KIT] " + path + " -> " + body.length + " B");
+            DLog.i("KIT", path + " → " + body.length + " B");
             OutputStream os = new BufferedOutputStream(s.getOutputStream());
             StringBuilder sb = new StringBuilder();
             sb.append("HTTP/1.1 200 OK\r\n");
@@ -113,7 +113,7 @@ public final class ShadowServer implements Runnable {
             os.flush();
             s.close();
         } catch (Throwable e) {
-            Log.w(TAG, "ShadowServer conn error: " + e);
+            DLog.w("SRV", "conn error: " + e);
             try { s.close(); } catch (IOException ignore) {}
         }
     }
@@ -138,7 +138,7 @@ public final class ShadowServer implements Runnable {
             if (path.startsWith("/up/"))  return resolveUp(path);
             if (path.startsWith("/bs/"))  return resolveBs(path.substring(4));
         } catch (Throwable e) {
-            Log.w(TAG, "resolve error " + path + ": " + e);
+            DLog.w("KIT", "resolve error " + path + ": " + e);
         }
         return null;
     }
@@ -173,10 +173,10 @@ public final class ShadowServer implements Runnable {
             Map<String, Object> o = asMap(MiniJson.parse(over));
             if (o == null || o.isEmpty()) return base;
             byte[] out = xor(MiniJson.write(MiniJson.merge(m, o)).getBytes("UTF-8"), XOR_KEY);
-            Log.i(TAG, "[CFG-OVERRIDE] aktif: " + o.size() + " kunci diubah");
+            DLog.i("CFG", "override AKTIF: " + o.size() + " kunci " + o.keySet());
             return out;
         } catch (Throwable t) {
-            Log.w(TAG, "[CFG-OVERRIDE] diabaikan: " + t);
+            DLog.w("CFG", "override diabaikan: " + t);
             return base;
         }
     }

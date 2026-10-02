@@ -72,3 +72,25 @@ Stage Summary:
 - Jawaban "endpoint edit gimana?": Android/data = mirror mentah (sengaja identik original, bukan tempat edit); titik edit = local_config.json di /sdcard/DB-LOCAL (atau Android/data/com.db.local/files) — edit teks di HP → restart APK. Tanpa PC, tanpa repack, tanpa root.
 - Aturan terkunci: versioning APK tetap 1.0 (versionCode 1 / versionName 1.0.0) di semua revisi.
 - Berikutnya: uji v2.1 di HP (izin penyimpanan → folder DB-LOCAL → uji edit endpoint); lalu Tahap 4 (login/gameplay lokal) menunggu arah user.
+
+---
+Task ID: 8
+Agent: Z.ai (main)
+Task: v2.2 — Floating Debug Console in-APK (permintaan user: "lebih baik pakai floating debugging yg bisa tampil jelas bisa di copy untuk anda. kalau gini gak efisien").
+
+Work Log:
+- State diperiksa: Task 6/7 ternyata tereksekusi penuh (v2.0+v2.1 di GitHub Release); toolchain /home/z/tools utuh; basis v2.0 di /home/z/dbi-repo; keystore sama.
+- Desain: DebugConsole (floating chip 🐞 + panel log di atas game, tanpa permission tambahan, semua jalur try/catch anti-crash) + DLog (fasad refleksi stub-safe) + hook BOOT/SRV/KIT/CFG di OfflinePack & ShadowServer.
+- Fitur panel: COPY (clipboard → paste ke chat, termasuk info perangkat), SHARE, SAVE (debug_log.txt), NET (tes 5 jalur jaringan IN-APK = pengganti capture paket: loopback, configus, CDN entry, CDN versi, login :610), CFG (editor local_config.json in-APK dengan validasi JSON — edit endpoint tanpa file manager), CLR.
+- java_src_ui/ dipisah dari java_src agar uji desktop stub tidak perlu API Android UI; DLog pakai Class.forName → uji 34/34 + 9/9 tetap hijau.
+- Bug ECJ: SpannableStringBuilder.append(int) tidak ada → String.valueOf. Stub Log diperluas (d/e) untuk uji desktop.
+- Build ulang dari basis v2.0 (semua patch idempoten): apktool → compile 27 class → classes2.dex 49.616 B → zipalign → sign. False-error apktool 2.10 dikenali, keputusan dari hasil.
+- Verifikasi statis: badging versionCode 1 / versionName 1.0.0 / targetSdk 28; nama entri 100% identik vs v2.0; CRC berubah hanya AndroidManifest (warisan v2.1), classes2.dex, META-INF; sertifikat 3898c8f0... = v2.0/v2.1 (upgrade tanpa uninstall); EntryPoint loopback OK; DebugConsole+DLog ada di dex.
+- Produk: DB-LOCAL-LOCALRUN.apk 155.995.355 B, SHA256 448ee48649efb72805889b5cc8987d31d2847376ad607bcb960bb0cc78a59cbf.
+- Sinkron ke repo (localrun/: java_src, java_src_ui, rebuild.sh, stub, BUILD-LOCALRUN.md v2.2) + push + release.
+
+Stage Summary:
+- Verifikasi perangkat kini = floating console in-APK: TAMPIL DI LAYAR, BISA DI-COPY — tanpa PC, tanpa adb, tanpa HttpCanary (capture paket tetap dilarang).
+- Edit endpoint kini 100% dari HP lewat tombol CFG (jawaban efisiensi atas "android/data isi sama, edit gimana?").
+- versioning tetap 1.0 (aturan terkunci); perubahan kode v2.2 = classes2.dex + META-INF saja.
+- Menunggu: user install v2.2 → COPY log bootstrap + NET → paste ke chat → lanjut Tahap 4 (login/gameplay lokal) berdasarkan bukti.

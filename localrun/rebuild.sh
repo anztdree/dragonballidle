@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # =============================================================
-# DB-LOCAL LOCALRUN — rebuild otomatis APK (v2.1)
+# DB-LOCAL LOCALRUN — rebuild otomatis APK (v2.2 — Floating Debug Console)
 # Prasyarat (folder /home/z/tools): apktool.jar, ecj.jar,
 #   bt/android-14/{d8,zipalign,apksigner,aapt}, plat/android-34/android.jar,
 #   dblocal.keystore
 # Basis: APK v2.0-localrun (objek LFS original hilang dari GitHub — 404;
-#        semua patch v2.0 idempoten sehingga rebuild dari v2.0 = rebuild
-#        dari original + patch lama, terbukti via diff entri vs v2.0).
+#        semua patch v2.0/v2.1 idempoten sehingga rebuild dari v2.0 = rebuild
+#        dari original + patch lama; fitur v2.1 ada di java_src — override config).
 # Alur: decode -> targetSdk 28 -> EntryPoint loopback -> kit ->
-#       patch Application.smali -> compile (MiniJson+override) ->
+#       patch Application.smali -> compile (MiniJson+DLog+override + DebugConsole) ->
 #       apktool build -> inject classes2.dex -> zipalign -> sign v1+v2+v3
 # =============================================================
 set -e
@@ -56,11 +56,17 @@ open(p, "w").write(s)
 PY
 fi
 
-echo "[5/7] Compile ShadowServer -> classes2.dex"
+echo "[5/7] Compile kode kita (offline + DebugConsole v2.2) -> classes2.dex"
 rm -rf classes classes.dex
 mkdir classes
-java -jar $T/ecj.jar -source 8 -target 8 -nowarn -cp $T/plat/android-34/android.jar -d classes java_src/com/dblocal/offline/*.java
-$T/bt/android-14/d8 --min-api 21 --lib $T/plat/android-34/android.jar --output . classes/com/dblocal/offline/*.class
+java -jar $T/ecj.jar -source 8 -target 8 -nowarn \
+  -cp $T/plat/android-34/android.jar \
+  -d classes \
+  java_src/com/dblocal/offline/*.java \
+  java_src_ui/com/dblocal/offline/*.java
+find classes -name "*.class" > classes.list
+echo "     $(wc -l < classes.list) file class"
+$T/bt/android-14/d8 --min-api 21 --lib $T/plat/android-34/android.jar --output . $(cat classes.list)
 cp classes.dex classes2.dex
 
 echo "[6/7] Build + inject"
