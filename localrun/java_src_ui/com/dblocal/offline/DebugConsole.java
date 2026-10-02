@@ -49,7 +49,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * DebugConsole — floating debug v2.2 (TAMPIL DI LAYAR, BISA DI-COPY, TANPA PC).
+ * DebugConsole — floating debug v2.4 (TAMPIL DI LAYAR, BISA DI-COPY, TANPA PC).
  *
  * - Lambaian 🐞 melayang di atas game: bisa digeser; ketuk = buka/tutup panel;
  *   tahan 0,7 dtk = sembunyikan sementara (muncul lagi setelah game dibuka ulang).
@@ -129,7 +129,7 @@ public final class DebugConsole {
 
     private static String deviceSummary() {
         StringBuilder sb = new StringBuilder(256);
-        sb.append("=== DB-LOCAL v2.2 • floating debug ===\n");
+        sb.append("=== DB-LOCAL v2.4 • floating debug ===\n");
         try {
             sb.append("perangkat : ").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append('\n');
             sb.append("android   : ").append(Build.VERSION.RELEASE).append(" (SDK ").append(Build.VERSION.SDK_INT).append(")\n");
@@ -181,7 +181,7 @@ public final class DebugConsole {
                 @Override public void onActivitySaveInstanceState(Activity a, android.os.Bundle b) {}
                 @Override public void onActivityDestroyed(Activity a) {}
             });
-            log('I', "BOOT", "Floating Debug v2.2 aktif — ketuk 🐞 di layar untuk buka panel log");
+            log('I', "BOOT", "Floating Debug v2.4 aktif — ketuk 🐞 di layar untuk buka panel log");
         } catch (Throwable t) {
             Log.w("DBLOCAL", "register console: " + t);
         }
@@ -337,7 +337,7 @@ public final class DebugConsole {
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
         TextView title = new TextView(act);
-        title.setText("DB-LOCAL DEBUG v2.2");
+        title.setText("DB-LOCAL DEBUG v2.4");
         title.setTextSize(12f);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setTextColor(Color.parseColor("#FFFFC107"));
@@ -584,7 +584,7 @@ public final class DebugConsole {
                 probe("Server Bayangan (lokal)", "http://127.0.0.1:11390/cfg/setting_BS_Android.bin");
                 probe("Config real (configus) ", "https://configus.sjmobilegame.com/bs/db/android/setting_BS_Android.bin");
                 probe("CDN entry (popoh5)     ", "https://dragonh5cdn.popoh5.com/bs/index-native.html");
-                probe("CDN versi (kit = 11389) ", "https://dragonh5cdn.popoh5.com/bs/upgrade/resource.version");
+                probe("CDN versi (kit = 11390)", "https://dragonh5cdn.popoh5.com/bs/upgrade/resource.version");
                 probe("Login SDK :610 (EIO=3) ", "https://login.popoh5.com:610/socket.io/?EIO=3&transport=polling");
                 log('I', "NET", "── TES JARINGAN selesai ──");
             }
@@ -600,7 +600,7 @@ public final class DebugConsole {
             c.setConnectTimeout(5000);
             c.setReadTimeout(5000);
             c.setInstanceFollowRedirects(true);
-            c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 10) DB-LOCAL/2.3");
+            c.setRequestProperty("User-Agent", "Mozilla/5.0 (Linux; Android 10) DB-LOCAL/2.4");
             int code = c.getResponseCode();
             InputStream in = code >= 400 ? c.getErrorStream() : c.getInputStream();
             byte[] head = readUpTo(in, 200);

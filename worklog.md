@@ -96,17 +96,24 @@ Stage Summary:
 - Menunggu: user install v2.2 → COPY log bootstrap + NET → paste ke chat → lanjut Tahap 4 (login/gameplay lokal) berdasarkan bukti.
 
 ---
-Task ID: 9
+Task ID: 10
 Agent: Z.ai (main)
-Task: Diskusi log HP v2.2 (pertanyaan user: "cfg apakah dari official langsung?" + 2 anomali NET) → v2.3.
+Task: Diskusi log HP v2.2 (cfg dari official?) + eskalasi temuan → kit v2 (11390) + release v2.4.
 
 Work Log:
-- Jawaban cfg: yang dipakai game = config KIT (snapshot official 711 B yang di-repoint url+update → 127.0.0.1:11390 = 687 B); loginServer/ports/clientParams = persis official. Config official di-probe ulang dari sandbox: field-identik (711 B) — snapshot masih valid.
-- Temuan 1: NET ":610 → 404" = BUG PROBE (path kurang /socket.io/). Sandbox: /socket.io/?EIO=3&transport=polling → 96:0{"sid":...} = handshake EIO=3 SUKSES. Server game HIDUP.
-- Temuan 2: HP user melihat resource.version = 11390; sandbox 5/5 probe = 11389; upgrade.json masih memuat patch "11389_11390.zip". Indikasi versi CDN per-wilayah (rollout/rollback). Kit tetap 11389 self-contained (aman; re-harvest siap bila perlu).
-- Log HP juga membuktikan: FASE 1-3 100% lokal (config → versi → upgrade.json/size.json → all.zip 19.385.101 B) sampai HWLoginActivity; "×2" = koalescing baris + chip per-activity (MainActivity, HWLoginActivity) — normal.
-- v2.3: fix probe path + preview config bin ter-dekripsi (XOR DragonBall) di log NET + label versi; rebuild (27 class), sign OK, badging 1.0.0/targetSdk 28, CRC diff vs basis hanya classes2.dex+META-INF+manifest warisan; push + release v2.3-localrun.
+- Rekonsiliasi state: Task 9 (v2.3) ternyata tereksekusi di sesi konteks hilang — release v2.3-localrun ada (SHA aed79eaf = lokal = GitHub); salinan DebugConsole.java di repo korup (`new byteead.length]`) tapi source build di research/apk_work sehat → salinan repo ditimpa dengan file sehat.
+- Bukti baru untuk diskusi cfg: config kit & config official di-dekripsi (XOR DragonBall) — identik sampai byte 31, beda PERSIS di nilai kunci "url" (http://127.0.0.1:11390/... vs https://dragonh5cdn...); kunci "update" juga; sisanya (loginServer, loginPort 610, clientParams) field-identik. Kesimpulan: cfg = official hasil panen, disajikan lokal, hanya 2 endpoint yang di-repoint.
+- all.zip kit (11389) = byte-identik dgn all.zip CDN sekarang (SHA a0a24c6b...); upgrade.json & size.json juga identik → snapshot masih valid, tidak perlu re-harvest.
+- Login :610 dari sandbox = HTTP 200 + handshake engine.io sukses (sid diterbitkan) → server HIDUP; 404 di HP user = perilaku per-wilayah/jaringan (v2.3 sudah perbaiki path probe).
+- Misteri 11390 terpecahkan: patch official 11389_11390.zip (252.562 B) diunduh & diekstrak → isi = resource.version "11390" + teamDungeon.json (6040→6041 B) + default.res-en.json → rollout 11390 sedang/terjadi per-wilayah.
+- Kit v2 dibangun TANPA re-harvest: all.zip(11389) + patch → all_11390.zip; verifikasi: unzip -t OK, 652 entri urutan identik, tepat 3 entri berubah & byte-per-byte = patch. kit/up/{all.zip,resource.version=11390,size.json all=19385778} dipasang; upgrade.json & base.version tetap.
+- KIT_VERSION 1→2 (marker dblocal_kit_v2 → salin-ulang kit di HP); label v2.2→v2.4 (BOOT, panel, title, UA); probe "(kit = 11390)"; ShadowServer comment v11390.
+- Rebuild penuh (apktool→ECJ 27 class→d8→zipalign→sign): false-error apktool dikenali; SIGN OK.
+- Verifikasi statis v2.4: badging versionCode 1 / versionName 1.0.0 / targetSdk 28; cert 3898c8f0... (sama dgn semua versi); daftar 3.694 entri 100% identik vs v2.3; CRC berubah hanya 7 entri (3 kit + classes2.dex 49.764 B + 3 META-INF); kit embedded = 11390 (resource.version + SHA all.zip = merge zip).
+- Sinkron repo (java_src, java_src_ui, rebuild.sh, BUILD-LOCALRUN.md v2.4, kit/up) + push + Release v2.4-localrun (DB-LOCAL-LOCALRUN.apk, SHA 198e445f..., 156.032.219 B).
 
 Stage Summary:
-- Floating console terbukti bekerja di perangkat & langsung membuahkan 2 fakta server: :610 HIDUP, CDN versi beda per wilayah.
-- Kit 11389 konsisten & self-contained; arah berikutnya = user login di HP (guest) → log login/610 → Tahap 4 (login/gameplay lokal) bila server official bermasalah.
+- Jawaban user "cfg dari official langsung?": ISI = official (hasil panen), PENYAJIAN = lokal via Server Bayangan; bukti dekripsi byte-31. Tes "Config real (configus)" di NET = cek kesehatan saja, tidak dipakai game.
+- FASE 1-3 TUNTAS di perangkat (log HP: bootstrap → HWLoginActivity). :610 hidup (sandbox 200 + sid).
+- Kit v2 = 11390 selaras CDN wilayah user; APK v2.4 released (upgrade-in-place, versioning tetap 1.0).
+- Langkah user: install v2.4 → pastikan log "DB-LOCAL v2.4 mulai — kit v2" → coba LOGIN → COPY log → diskusi Tahap 4.

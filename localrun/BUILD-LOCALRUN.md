@@ -1,3 +1,34 @@
+# BUILD — LOCALRUN v2.4 (kit v2 = konten resource 11390)
+
+**Tanggal**: 2026-10-02 (malam)
+**Produk**: `DB-LOCAL-LOCALRUN.apk` — 156.032.219 B
+**SHA256**: `198e445fa258181de5b60ad8e2288d91f101b70d10b30f5f8a3906a96c73e886`
+**Sertifikat**: sama (3898c8f0...) → upgrade tanpa uninstall. versioning tetap 1.0.
+
+## Perubahan v2.3 → v2.4
+1. **Kit v2 — konten resource 11390 TANPA re-harvest**: all.zip baru = all.zip(11389)
+   + patch official `11389_11390.zip` (252.562 B, diunduh dari CDN).
+   Merge terverifikasi: 652 entri, urutan identik, **tepat 3 entri berubah dan
+   byte-per-byte = isi patch**: `resource.version` (→ `11390`),
+   `resource/json/teamDungeon.json` (6040→6041 B), `resource/default.res-en.json`.
+2. `/up/resource.version` kini dilayani = **11390**; `/up/size.json` "all" =
+   19.385.778 B (ukuran zip baru); `upgrade.json` & `base.version` (110) tetap.
+3. `KIT_VERSION 1 → 2` → di HP, marker `dblocal_kit_v2` memicu penyalinan ulang
+   zip kit ke filesDir secara otomatis; game lalu mengecek versi → 11390 ≠ 11389
+   tersimpan → mengunduh all.zip baru dari Server Bayangan (alur update asli).
+4. Label verifikasi: BOOT = "DB-LOCAL v2.4 mulai — kit v2", probe NET =
+   "CDN versi (kit = 11390)", UA = DB-LOCAL/2.4.
+5. Diff CRC vs v2.3: hanya **7 entri** — 3 file kit + classes2.dex (49.764 B) +
+   3 META-INF. Daftar 3.694 entri 100% identik; badging 1.0.0/targetSdk 28 tak berubah.
+
+## Rasional kit 11390
+- HP user membaca CDN wilayahnya = **11390**; sandbox = 11389 (5/5) → CDN per-wilayah.
+- Konten 11390 hanya tweak kecil (teamDungeon + manifest resource EN) — aman.
+- Setelah login online, game melaporkan versi client = versi yang dilayani kit;
+  menyamakan dengan versi wilayah user menghapus satu variabel saat debug login.
+
+---
+
 # BUILD — LOCALRUN v2.3 (NET probe diperbaiki: /socket.io/ + preview config terdekripsi)
 
 **Tanggal**: 2026-10-02 (malam)

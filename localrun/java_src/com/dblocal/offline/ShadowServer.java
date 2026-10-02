@@ -26,7 +26,7 @@ import java.util.zip.ZipFile;
  *
  * Urutan sumber per request:
  *   1. file kit di assets/dblocal_kit/...
- *   2. entri di all.zip  (overlay terbaru, v11389)
+ *   2. entri di all.zip  (overlay terbaru, v11390)
  *   3. entri di base.zip (pohon dasar, v110)
  *   4. 404 (dicatat merah — sinyal jalur yang belum tercakup kit)
  */

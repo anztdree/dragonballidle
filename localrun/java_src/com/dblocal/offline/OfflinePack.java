@@ -21,7 +21,7 @@ public final class OfflinePack {
     public static final String TAG = "DBLOCAL";
     public static final int PORT = 11390;
     /** Naikkan bila isi kit berubah agar salinan zip di filesDir dibuat ulang. */
-    private static final int KIT_VERSION = 1;
+    private static final int KIT_VERSION = 2;
 
     private static boolean started = false;
     private static final Object LOCK = new Object();
@@ -29,7 +29,7 @@ public final class OfflinePack {
     private OfflinePack() {}
 
     public static void start(Context ctx) {
-        DLog.i("BOOT", "DB-LOCAL v2.2 mulai — kit v" + KIT_VERSION + " • versioning tetap 1.0");
+        DLog.i("BOOT", "DB-LOCAL v2.4 mulai — kit v" + KIT_VERSION + " • versioning tetap 1.0");
         synchronized (LOCK) {
             if (started) return;
             try {
