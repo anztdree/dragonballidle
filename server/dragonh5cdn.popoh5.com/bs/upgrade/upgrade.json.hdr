@@ -1,0 +1,17 @@
+HTTP/1.1 200 OK
+Server: nginx/1.16.0
+Date: Sat, 03 Oct 2026 22:24:11 GMT
+Content-Type: application/json
+ETag: "6abc6615-82"
+Expires: Mon, 02 Nov 2026 22:24:11 GMT
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With
+Access-Control-Allow-Methods: GET,POST,OPTIONS
+Last-Modified: Wed, 30 Sep 2026 01:29:57 GMT
+Cache-Control: max-age=2592000
+Content-Length: 130
+Accept-Ranges: bytes
+X-NWS-LOG-UUID: 18140181050151692567
+Connection: keep-alive
+X-Cache-Lookup: Cache Miss
+

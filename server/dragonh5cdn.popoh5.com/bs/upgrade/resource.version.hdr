@@ -1,0 +1,17 @@
+HTTP/1.1 200 OK
+Server: nginx/1.16.0
+Date: Sat, 03 Oct 2026 22:24:10 GMT
+Content-Type: application/octet-stream
+ETag: "6abc6615-5"
+Expires: Thu, 31 Dec 2037 23:55:55 GMT
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With
+Access-Control-Allow-Methods: GET,POST,OPTIONS
+Last-Modified: Wed, 30 Sep 2026 01:29:57 GMT
+Cache-Control: max-age=315360000
+Content-Length: 5
+Accept-Ranges: bytes
+X-NWS-LOG-UUID: 10671572271967122740
+Connection: keep-alive
+X-Cache-Lookup: Cache Miss
+
