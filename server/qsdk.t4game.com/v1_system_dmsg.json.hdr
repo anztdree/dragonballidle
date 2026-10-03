@@ -1,0 +1,6 @@
+HTTP 200
+connection: keep-alive
+content-type: text/json
+date: Sat, 03 Oct 2026 23:05:05 GMT
+transfer-encoding: chunked
+x-powered-by: PHP/5.4.37

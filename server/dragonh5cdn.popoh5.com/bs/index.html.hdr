@@ -1,0 +1,18 @@
+HTTP/1.1 200 OK
+Last-Modified: Fri, 27 Dec 2019 07:52:49 GMT
+Etag: "5e05b851-13ad"
+Server: nginx/1.16.0
+Date: Sat, 26 Sep 2026 17:57:06 GMT
+Content-Type: text/html
+Expires: Thu, 31 Dec 2037 23:55:55 GMT
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Headers: X-Requested-With
+Access-Control-Allow-Methods: GET,POST,OPTIONS
+Cache-Control: max-age=315360000
+Accept-Ranges: bytes
+Transfer-Encoding: chunked
+Content-Encoding: gzip
+X-NWS-LOG-UUID: 15401761170839737589
+Connection: keep-alive
+X-Cache-Lookup: Cache Hit
+
