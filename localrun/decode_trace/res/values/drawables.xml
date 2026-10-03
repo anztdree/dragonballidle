@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="drawable" name="ic_menu_camera">@android:drawable/ic_menu_camera</item>
+    <item type="drawable" name="ic_menu_gallery">@android:drawable/ic_menu_gallery</item>
+    <item type="drawable" name="ic_menu_manage">@android:drawable/ic_menu_manage</item>
+    <item type="drawable" name="ic_menu_send">@android:drawable/ic_menu_send</item>
+    <item type="drawable" name="ic_menu_share">@android:drawable/ic_menu_share</item>
+    <item type="drawable" name="ic_menu_slideshow">@android:drawable/ic_menu_slideshow</item>
+    <item type="drawable" name="kr_login_back">#b3000000</item>
+    <item type="drawable" name="notification_template_icon_bg">#3333b5e5</item>
+    <item type="drawable" name="notification_template_icon_low_bg">#0cffffff</item>
+    <item type="drawable" name="old_qg_account_choise_bg_sel">#ff58a7f6</item>
+    <item type="drawable" name="qg_account_choise_bg_sel">#40000000</item>
+    <item type="drawable" name="qg_float_green">#ff76ce9e</item>
+    <item type="drawable" name="qg_float_white">#ffffffff</item>
+    <item type="drawable" name="transparent_background">#00000000</item>
+</resources>

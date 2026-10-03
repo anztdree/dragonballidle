@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/cdkey_edit_layout" android:background="@color/hw_inputBox_bg_normal" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/hw_inputbox_bg_normal" android:padding="@dimen/hw_inputBox_padding" android:layout_width="fill_parent" android:layout_height="@dimen/hw_inputBox_height">
+        <EditText android:textSize="@dimen/hw_inputBox_textSize" android:textColor="@color/hw_dialog_content_textColor" android:textColorHint="@color/hw_inputBox_hint_textColor" android:id="@id/et_cdkey" android:background="@color/hw_inputBox_bg_normal" android:paddingLeft="@dimen/hw_inputBox_editView_padding" android:paddingRight="@dimen/hw_inputBox_editView_padding" android:layout_width="0.0dip" android:layout_height="fill_parent" android:hint="@string/hw_login_CdKeyHint" android:ems="20" android:layout_weight="1.0" android:inputType="textCapCharacters" android:imeOptions="actionGo" android:backgroundTint="@color/hw_inputBox_bg_normal" />
+    </LinearLayout>
+</LinearLayout>

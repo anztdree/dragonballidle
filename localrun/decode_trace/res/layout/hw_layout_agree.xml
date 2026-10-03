@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:background="@drawable/hw_dialog_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_margin="@dimen/hw_dialog_marginParent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ScrollView android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+        <FrameLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="@dimen/hw_dialog_margin_leftRight" android:layout_marginRight="@dimen/hw_dialog_margin_leftRight">
+            <TextView android:textSize="@dimen/hw_dialog_des_textSize" android:textColor="@color/hw_dialog_content_textColor_b" android:id="@id/simple_agree" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="2.0dip" android:layout_marginBottom="10.0dip" android:text="@string/agree" />
+        </FrameLayout>
+    </ScrollView>
+    <FrameLayout android:layout_gravity="end" android:id="@id/fl_exit" android:clickable="true" android:layout_width="@dimen/hw_exitButton_size" android:layout_height="@dimen/hw_exitButton_size">
+        <ImageView android:layout_gravity="center" android:id="@id/close_btn" android:background="@drawable/hw_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_exit" />
+    </FrameLayout>
+</FrameLayout>

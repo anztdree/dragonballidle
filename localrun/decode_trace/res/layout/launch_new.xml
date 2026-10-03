@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@id/launchUI" android:background="@drawable/bg" android:layout_width="wrap_content" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:id="@id/loadingRel" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:layout_alignParentBottom="true">
+        <ProgressBar android:id="@id/progressBar" android:layout_width="fill_parent" android:layout_height="20.0dip" android:max="100" style="@android:style/Widget.ProgressBar.Horizontal" />
+        <TextView android:textSize="20.0dip" android:textColor="#ffffffff" android:layout_gravity="center" android:id="@id/loadingMsgTv" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/read_cfg" />
+    </LinearLayout>
+    <RelativeLayout android:id="@id/health_notice_rel" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ImageView android:background="@drawable/black_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+        <ImageView android:background="@drawable/health_notice" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    </RelativeLayout>
+</RelativeLayout>

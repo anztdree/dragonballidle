@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="agree_permission">Please agree to the permission application first.</string>
+    <string name="alert">Alert</string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="check_network">Network Error.Please check your Network connectivity.</string>
+    <string name="check_update">Check Update…</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_quit_game">Confirm Exit Game?</string>
+    <string name="decompressing">Decompressing…</string>
+    <string name="grant_permission">We need the permissions to upgrade game,grant again?</string>
+    <string name="json_exception">json parsing exception.</string>
+    <string name="login">Login</string>
+    <string name="ok">OK</string>
+    <string name="quit_game">Quit Game</string>
+    <string name="read_cfg">Read Config File…</string>
+    <string name="read_version_config_error">Read version config file error.</string>
+    <string name="tip">Tip</string>
+    <string name="try_again">Try Again</string>
+    <string name="unknown_error">Unknown Error!</string>
+    <string name="update_fail">Update failed. Please check the network?</string>
+    <string name="updating">Updating…</string>
+    <string name="upgrade_force">For better game experience, Please update the game first.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="horizontal" android:id="@id/ll_email" android:background="@drawable/hw_inputbox_bg_normal" android:padding="@dimen/hw_inputBox_padding" android:layout_width="fill_parent" android:layout_height="@dimen/hw_inputBox_height">
+        <EditText android:textSize="@dimen/hw_inputBox_textSize" android:textColor="@color/hw_dialog_content_textColor" android:textColorHint="@color/hw_inputBox_hint_textColor" android:id="@id/et_email" android:background="@drawable/et_underline_selector" android:paddingLeft="@dimen/hw_inputBox_editView_padding" android:paddingRight="@dimen/hw_inputBox_editView_padding" android:layout_width="0.0dip" android:layout_height="fill_parent" android:hint="@string/hw_inputBox_email_hint" android:ems="20" android:layout_weight="1.0" android:inputType="textEmailAddress" />
+        <ImageView android:layout_gravity="center" android:id="@id/iv_email_clear" android:background="@drawable/hw_delete" android:visibility="gone" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="4.0dip" />
+        <TextView android:textColor="@android:color/white" android:gravity="center" android:layout_gravity="center" android:id="@id/tv_code_resend" android:background="@drawable/hw_button_send_bg_selector" android:visibility="gone" android:clickable="true" android:layout_width="@dimen/hw_resendButton_width" android:layout_height="fill_parent" android:layout_margin="4.0dip" android:text="@string/hw_inputBox_resendCode" />
+    </LinearLayout>
+    <TextView android:id="@id/tv_focus" android:layout_width="0.0dip" android:layout_height="0.0dip" android:layout_marginTop="2.0dip" />
+</LinearLayout>

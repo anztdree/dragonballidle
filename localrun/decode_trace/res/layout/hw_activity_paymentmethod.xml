@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:scrollbars="none" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <LinearLayout android:orientation="vertical" android:background="@drawable/hw_dialog_bg" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:textSize="@dimen/hw_item_textSize" android:textStyle="bold" android:textColor="@color/hw_dialog_title_textColor" android:gravity="center" android:layout_gravity="center_horizontal" android:id="@id/textView" android:padding="@dimen/hw_paymentMethod_title_padding" android:layout_width="wrap_content" android:layout_height="@dimen/hw_paymentMethod_title_height" android:text="@string/hw_paymentMethod_title" />
+            <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="@dimen/hw_paymentMethod_width" android:layout_height="fill_parent">
+                <TextView android:textSize="@dimen/hw_item_textSize" android:textStyle="bold" android:textColor="@color/hw_item_content_textColor" android:gravity="center" android:id="@id/tv_googlePlay" android:padding="@dimen/hw_item_padding" android:clickable="true" android:layout_width="fill_parent" android:layout_height="@dimen/hw_item_height" android:text="@string/hw_paymentMethod_googlePlay" />
+                <TextView android:textSize="@dimen/hw_item_textSize" android:textStyle="bold" android:textColor="@color/hw_item_content_textColor" android:gravity="center" android:id="@id/tv_oneStore" android:padding="@dimen/hw_item_padding" android:clickable="true" android:layout_width="fill_parent" android:layout_height="@dimen/hw_item_height" android:text="@string/hw_paymentMethod_oneStore" />
+                <TextView android:background="@color/hw_divider_bg" android:layout_width="fill_parent" android:layout_height="@dimen/hw_divider_size" android:layout_marginLeft="@dimen/hw_divider_marginSide" android:layout_marginRight="@dimen/hw_divider_marginSide" />
+                <LinearLayout android:orientation="vertical" android:id="@id/tv_discountPayment" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+                <TextView android:textSize="@dimen/hw_item_textSize" android:textStyle="bold" android:textColor="@color/hw_item_content_textColor" android:gravity="center" android:id="@id/tv_otherPayment" android:padding="@dimen/hw_item_padding" android:clickable="true" android:layout_width="fill_parent" android:layout_height="@dimen/hw_item_height" android:text="@string/hw_paymentMethod_otherPayment" />
+                <TextView android:layout_width="fill_parent" android:layout_height="10.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+        <FrameLayout android:layout_gravity="end" android:id="@id/fl_exit" android:clickable="true" android:layout_width="@dimen/hw_exitButton_size" android:layout_height="@dimen/hw_exitButton_size" android:layout_alignParentRight="true">
+            <ImageView android:layout_gravity="center" android:background="@drawable/hw_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_exit" />
+        </FrameLayout>
+    </FrameLayout>
+</ScrollView>

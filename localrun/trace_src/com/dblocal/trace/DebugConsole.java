@@ -152,6 +152,25 @@ public final class DebugConsole {
         }
     }
 
+    /** FIX v1.3: baris yang HANYA masuk log disk (tanpa panel). Dipakai untuk
+     *  kejadian cache antara (#temp/#header/BUAT) agar panel tetap jelas —
+     *  catatan disk tetap lengkap tanpa terkecuali. */
+    public static void logDiskOnly(char lvl, String tag, String msg) {
+        try {
+            if (msg == null) msg = "(null)";
+            if (msg.length() > 8000) msg = msg.substring(0, 8000) + "…";
+            TracePack.diskLine(ts(System.currentTimeMillis()) + " " + tag + ": " + msg);
+        } catch (Throwable ignore) {
+        }
+    }
+
+    /** Sedang banjir kejadian file? (utk throttle adaptif render) */
+    static boolean floodBusy() {
+        synchronized (BUF_LOCK) {
+            return floodCount > 40 || floodHidden > 0;
+        }
+    }
+
     private static String plainOf(Ent e) {
         StringBuilder sb = new StringBuilder(128);
         sb.append(ts(e.at)).append(' ').append(e.tag).append(": ").append(e.msg);
@@ -378,7 +397,7 @@ public final class DebugConsole {
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
         TextView title = new TextView(act);
-        title.setText("TRACE-1 • MODE AMATI");
+        title.setText("TRACE-1.3 • MODE AMATI");
         title.setTextSize(12f);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setTextColor(Color.parseColor("#FFFFC107"));
@@ -497,13 +516,17 @@ public final class DebugConsole {
     };
 
     /** FIX v1.1: throttle render — maks 1× per 250 ms agar panel lancar di HP
-     *  low-end meski banjir log (ekstraksi zip besar). */
+     *  low-end meski banjir log (ekstraksi zip besar).
+     *  FIX v1.3: saat banjir (ekstraksi besar), jeda diperpanjang ke 1 dtk —
+     *  inilah penyebab panel terasa "macet saat SDK loading" di v1: TextView
+     *  dirender ulang tiap 250 ms dengan ribuan baris di HP lemah. */
     private static void postRefresh() {
         try {
             synchronized (DebugConsole.class) {
                 if (refreshPending) return;
                 refreshPending = true;
-                long delay = Math.max(0, 250 - (System.currentTimeMillis() - lastRenderAt));
+                int throttle = floodBusy() ? 1000 : 250;
+                long delay = Math.max(0, throttle - (System.currentTimeMillis() - lastRenderAt));
                 MAIN.postDelayed(RENDER, delay);
             }
         } catch (Throwable ignore) {}
@@ -584,6 +607,7 @@ public final class DebugConsole {
     }
 
     private static int colorOf(char lvl, String tag) {
+        if ("UNDUH".equals(tag)) return Color.parseColor("#FFDCE775"); // lime — unduhan cache native
         if ("NET".equals(tag))  return Color.parseColor("#FFFFB74D"); // oranye
         if ("ISI".equals(tag)) return Color.parseColor("#FFFFAB91"); // salmon — isi jawaban server
         if ("CACHE".equals(tag)) return Color.parseColor("#FFF48FB1"); // pink

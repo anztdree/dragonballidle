@@ -27,6 +27,17 @@ import java.util.Map;
  *   MASUK - file dipindah masuk (rename ke sini) + ukurannya
  *   HAPUS - file/folder dihapus atau dipindah keluar
  *
+ * FIX v1.3 (penyebab "log macet saat SDK selesai loading"):
+ *   Setelah SDK Egret aktif, unduhan dilakukan engine NATIVE (C++) dan
+ *   ditulis ke cache files/games/https/<host>/<path>#<kunci>. Di v1.1
+ *   panel dipenuhi spam BUAT/TULIS/HAPUS #temp/#header (terasa macet),
+ *   dan tidak ada baris unduhan yang jelas. Sekarang:
+ *   - kejadian antara cache (#temp/#header/BUAT/HAPUS) diredam dari panel,
+ *     tetapi TETAP lengkap di log disk;
+ *   - setiap cache selesai ditulis → baris UNDUH yang jelas:
+ *       https://host/path → SIMPAN KE <path penuh> • ukuran
+ *     (dekoder di TracePack.unduhFromCache — read-only).
+ *
  * Kejadian yang ditekan panel (banjir ekstraksi) TETAP ditulis ke log disk
  * oleh DebugConsole — tidak ada yang lolos dari catatan.
  */
@@ -181,23 +192,44 @@ public final class RecursiveFileObserver {
                         dropDir(abs);   // buang sisa lama bila ada (folder bisa hapus+bikin ulang cepat)
                         watchDir(f);
                         TracePack.fileLine("BUAT ", label, relOf(abs) + "/ (folder)");
+                    } else if (TracePack.cacheNoise(abs)) {
+                        // v1.3: kejadian antara cache native — senyap di panel, utuh di disk
+                        TracePack.fileLineQuiet("BUAT ", label, relOf(abs));
                     } else {
                         TracePack.fileLine("BUAT ", label, relOf(abs));
                     }
                 } else if (e == FileObserver.CLOSE_WRITE) {
-                    TracePack.fileLine("TULIS", label, relOf(abs) + " (" + DebugConsole.human(f.length()) + ")");
+                    String sz = relOf(abs) + " (" + DebugConsole.human(f.length()) + ")";
+                    if (TracePack.cacheNoise(abs)) {
+                        // v1.3: cache native selesai ditulis → baris UNDUH yang jelas
+                        TracePack.fileLineQuiet("TULIS", label, sz);
+                        TracePack.unduhFromCache(f, "(tulis)");
+                    } else {
+                        TracePack.fileLine("TULIS", label, sz);
+                    }
                     TracePack.cachePeek(f, "TULIS");
                 } else if (e == FileObserver.MOVED_TO) {
                     if (isDir) {
                         dropDir(abs);
                         watchDir(f);
                     }
-                    TracePack.fileLine("MASUK", label, relOf(abs) + " (" + DebugConsole.human(f.length()) + ")");
+                    String sz = relOf(abs) + " (" + DebugConsole.human(f.length()) + ")";
+                    if (TracePack.cacheNoise(abs)) {
+                        // v1.3: cache native selesai dipindah → baris UNDUH yang jelas
+                        TracePack.fileLineQuiet("MASUK", label, sz);
+                        TracePack.unduhFromCache(f, "(masuk)");
+                    } else {
+                        TracePack.fileLine("MASUK", label, sz);
+                    }
                     TracePack.cachePeek(f, "MASUK");
                 } else if (e == FileObserver.MOVED_FROM || e == FileObserver.DELETE) {
                     // FIX v1.1: SELALU lepas watch — folder sudah tidak ada, entri lama pasti mati.
                     dropDir(abs);
-                    TracePack.fileLine("HAPUS", label, relOf(abs));
+                    if (TracePack.cacheNoise(abs)) {
+                        TracePack.fileLineQuiet("HAPUS", label, relOf(abs));
+                    } else {
+                        TracePack.fileLine("HAPUS", label, relOf(abs));
+                    }
                 }
             } catch (Throwable ignore) {}
         }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_gravity="center" android:orientation="vertical" android:background="@color/hw_white" android:layout_width="@dimen/hw_dialog_width" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_gravity="center" android:id="@id/iv_login_logo" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="17.0dip" android:src="@drawable/hi94" />
+    <LinearLayout android:gravity="center" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/hw_dialog_margin_leftRight" android:layout_marginTop="@dimen/hw_dialog_button_margin_topBottom" android:layout_marginRight="@dimen/hw_dialog_margin_leftRight" android:layout_marginBottom="@dimen/hw_dialog_button_margin_topBottom">
+        <LinearLayout android:id="@id/ll_tomato_login" android:background="@color/hw_button_login_color" android:layout_width="fill_parent" android:layout_height="@dimen/hw_dialog_button_height">
+            <TextView android:textStyle="bold" android:textColor="@color/hw_white" android:gravity="center" android:clickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/hw_login_by_94hi" />
+        </LinearLayout>
+        <LinearLayout android:id="@id/ll_guest" android:background="@color/hw_button_login_color" android:layout_width="fill_parent" android:layout_height="@dimen/hw_dialog_button_height" android:layout_marginTop="@dimen/hw_dialog_button_margin_topBottom">
+            <TextView android:textStyle="bold" android:textColor="@color/hw_white" android:gravity="center" android:layout_gravity="center_vertical" android:id="@id/tv_guest" android:clickable="false" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/hw_login_by_94hi_guest" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <CheckBox android:id="@id/cb_tomato_agree" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="1.0dip" android:layout_marginRight="3.0dip" android:checked="true" android:button="@drawable/hw_checkbox_selector" />
+        <TextView android:textSize="12.0sp" android:id="@id/tv_clause_content" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hw_94hi_clause_content" />
+    </LinearLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/hw_dialog_margin_leftRight" android:layout_marginTop="@dimen/hw_dialog_button_margin_topBottom" android:layout_marginRight="@dimen/hw_dialog_margin_leftRight" android:layout_marginBottom="@dimen/hw_dialog_button_margin_topBottom">
+        <TextView android:textSize="18.0sp" android:gravity="center" android:id="@id/tv_tomato_register" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/hw_94hi_register" android:layout_weight="1.0" />
+        <TextView android:textSize="18.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="|" />
+        <TextView android:textSize="18.0sp" android:gravity="center" android:id="@id/tv_tomato_reset_password" android:layout_width="0.0dip" android:layout_height="wrap_content" android:text="@string/hw_94hi_forget_password" android:layout_weight="1.0" />
+    </LinearLayout>
+    <FrameLayout android:layout_gravity="end" android:id="@id/fl_exit" android:visibility="gone" android:clickable="true" android:layout_width="@dimen/hw_exitButton_size" android:layout_height="@dimen/hw_exitButton_size">
+        <ImageView android:layout_gravity="center" android:background="@drawable/hw_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_exit" />
+    </FrameLayout>
+</LinearLayout>

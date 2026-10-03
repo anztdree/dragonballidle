@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/transparent_background" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/layout_title" android:background="@drawable/hw_dialog_bg" android:layout_width="fill_parent" android:layout_height="52.0dip" android:layout_marginLeft="50.0dip" android:layout_marginTop="90.0dip" android:layout_marginRight="50.0dip">
+        <TextView android:textSize="@dimen/hw_dialog_title_textSize" android:textColor="@color/hw_dialog_title_textColor" android:gravity="center_vertical" android:id="@id/agreement_title" android:layout_width="wrap_content" android:layout_height="fill_parent" />
+    </LinearLayout>
+    <WebView android:textSize="15.0sp" android:textColor="#ff8f8f8f" android:gravity="center_vertical" android:id="@id/qg_service_detail_webview" android:background="@drawable/hw_dialog_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="50.0dip" android:layout_marginRight="50.0dip" />
+    <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:id="@id/layout_button" android:background="@drawable/hw_dialog_bg" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_marginLeft="50.0dip" android:layout_marginRight="50.0dip" android:layout_marginBottom="60.0dip">
+        <Button android:textSize="18.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/yes_detail" android:background="#ff1877f2" android:layout_width="100.0dip" android:layout_height="38.0dip" android:layout_marginBottom="15.0dip" android:text="@string/hw_account_announce_button_ok" />
+    </LinearLayout>
+    <LinearLayout android:background="@drawable/hw_dialog_bg" android:layout_width="fill_parent" android:layout_height="30.0dip" />
+</LinearLayout>

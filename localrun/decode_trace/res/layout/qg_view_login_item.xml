@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:background="@drawable/transparent_background" android:duplicateParentState="true" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="@dimen/qg_normal_txt_size" android:textColor="@color/qg_text_white" android:gravity="center_vertical" android:id="@id/qg_txt_login_item" android:background="@drawable/qg_account_item_selector" android:paddingLeft="@dimen/qg_history_margin_l" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_centerVertical="true" />
+    <ImageView android:id="@id/qg_img_login_info_delete" android:layout_width="@dimen/qg_wait_progress_w" android:layout_height="fill_parent" android:layout_marginRight="@dimen/qg_clear_margin_plus" android:src="@drawable/hw_delete" android:scaleType="centerInside" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+</RelativeLayout>

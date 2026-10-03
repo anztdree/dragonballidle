@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:orientation="vertical" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="50.0dip">
+            <ImageView android:id="@id/backImageView" android:background="@mipmap/back" android:layout_width="30.0dip" android:layout_height="30.0dip" android:layout_centerVertical="true" android:layout_marginStart="10.0dip" />
+        </RelativeLayout>
+        <WebView android:id="@id/mWebView" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </LinearLayout>
+    <RelativeLayout android:id="@id/loadingRel" android:background="@drawable/mask" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <ProgressBar android:layout_gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true" />
+    </RelativeLayout>
+</RelativeLayout>

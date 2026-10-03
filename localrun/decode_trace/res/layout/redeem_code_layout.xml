@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:background="@drawable/bg_account_side_hw_p" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+        <TextView android:textSize="@dimen/hw_dialog_title_textSize" android:textColor="@color/hw_dialog_title_textColor" android:layout_gravity="center" android:id="@id/redeem_title_bar" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/hw_dialog_title_margin_topBottom" android:layout_marginBottom="@dimen/hw_dialog_title_margin_topBottom" android:text="@string/redeem_code">
+            <requestFocus />
+        </TextView>
+        <WebView android:id="@id/qg_redeem_webview" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+    </LinearLayout>
+    <FrameLayout android:layout_gravity="end" android:id="@id/redeem_back" android:clickable="true" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <ImageView android:layout_gravity="center" android:background="@drawable/hw_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="@dimen/hw_dialog_title_margin_topBottom" android:contentDescription="@string/hw_des_exit" />
+    </FrameLayout>
+</FrameLayout>

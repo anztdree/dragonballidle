@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:layout_width="@dimen/qg_dialog_fg_w" android:layout_height="@dimen/qg_dialog_fg_h"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/qg_sdk_icon_correct" />
+    <TextView android:textSize="@dimen/qg_normal_txt_size" android:textColor="@color/hw_dialog_content_textColor" android:id="@id/qg_txt_dialog_commit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/qg_commit_logo_margin_l" android:text="@string/hw_submit_success" />
+</LinearLayout>

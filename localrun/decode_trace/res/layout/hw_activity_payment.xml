@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@color/hw_activity_bg" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout android:layout_gravity="center" android:background="@color/hw_header_bg" android:layout_width="fill_parent" android:layout_height="@dimen/hw_header_height">
+        <TextView android:textSize="@dimen/hw_header_textSize" android:textColor="@color/hw_header_textColor" android:gravity="center" android:id="@id/tv_title_web" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/hw_payment_title" />
+        <FrameLayout android:id="@id/fl_back" android:clickable="true" android:layout_width="@dimen/hw_header_back_width" android:layout_height="fill_parent">
+            <ImageView android:layout_gravity="center" android:background="@drawable/hw_back" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_back" />
+        </FrameLayout>
+    </FrameLayout>
+    <TextView android:background="@color/hw_divider_bg" android:layout_width="fill_parent" android:layout_height="@dimen/hw_divider_size" />
+    <WebView android:id="@id/wv_pay" android:layout_width="fill_parent" android:layout_height="fill_parent" />
+</LinearLayout>

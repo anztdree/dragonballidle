@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/bg_account_hw" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView android:textSize="@dimen/hw_dialog_title_textSize" android:textColor="@color/hw_dialog_title_textColor" android:gravity="center" android:layout_gravity="center" android:id="@id/qg_title_bar" android:layout_width="@dimen/qg_fg_titlebar_w" android:layout_height="@dimen/qg_fg_titlebar_h" android:text="@string/hw_notice" />
+    <WebView android:id="@id/qg_webview" android:layout_width="wrap_content" android:layout_height="280.0dip" />
+</LinearLayout>

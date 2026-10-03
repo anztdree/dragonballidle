@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="abc_config_prefDialogWidth">440.0dip</dimen>
+    <item type="dimen" name="abc_dialog_fixed_height_major">60.000004%</item>
+    <item type="dimen" name="abc_dialog_fixed_height_minor">90.0%</item>
+    <item type="dimen" name="abc_dialog_fixed_width_major">60.000004%</item>
+    <item type="dimen" name="abc_dialog_fixed_width_minor">90.0%</item>
+    <item type="dimen" name="abc_dialog_min_width_major">55.000008%</item>
+    <item type="dimen" name="abc_dialog_min_width_minor">79.99999%</item>
+    <dimen name="hw_account_center_head_info_height">85.0dip</dimen>
+    <dimen name="hw_account_center_logout_height">48.0dip</dimen>
+    <dimen name="hw_account_center_logout_margin_to_side">22.0dip</dimen>
+    <dimen name="hw_account_center_portrait_side_height">68.0dip</dimen>
+    <dimen name="hw_account_center_side_height">82.0dip</dimen>
+    <dimen name="hw_account_center_side_image_top_width">6.0dip</dimen>
+    <dimen name="hw_account_center_side_image_width">30.0dip</dimen>
+    <dimen name="hw_account_center_side_width">65.0dip</dimen>
+    <dimen name="hw_activity_dialog_height">273.0dip</dimen>
+    <dimen name="hw_activity_dialog_width">335.0dip</dimen>
+    <dimen name="hw_dialog_button_margin_topBottom">14.0dip</dimen>
+    <dimen name="hw_dialog_des_margin_topBottom">8.0dip</dimen>
+    <dimen name="hw_dialog_item_margin_topBottom">10.0dip</dimen>
+    <dimen name="hw_dialog_prompt_height_big">100.0dip</dimen>
+    <dimen name="hw_dialog_prompt_width">240.0dip</dimen>
+    <dimen name="hw_item_height">54.0dip</dimen>
+    <dimen name="hw_login__two_item_button_height">40.0dip</dimen>
+    <dimen name="hw_login__two_item_button_width">40.0dip</dimen>
+    <dimen name="hw_login_register_agree_margin">8.0dip</dimen>
+    <dimen name="kr_login_title_text">26.0sp</dimen>
+    <dimen name="kr_login_width">400.0dip</dimen>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:id="@id/frame_login" android:background="@drawable/bg_login_hw" android:layout_width="@dimen/hw_dialog_width" android:layout_height="wrap_content" android:layout_margin="@dimen/hw_dialog_marginParent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/hw_dialog_margin_leftRight" android:layout_marginRight="@dimen/hw_dialog_margin_leftRight">
+        <ImageView android:layout_gravity="center" android:id="@id/iv_login_logo" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="17.0dip" android:layout_marginBottom="5.0dip">
+            <requestFocus />
+        </ImageView>
+        <TextView android:textSize="@dimen/hw_dialog_title_textSize" android:textColor="@color/hw_dialog_title_textColor" android:layout_gravity="center" android:id="@id/tv_title" android:focusable="true" android:focusableInTouchMode="true" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/hw_dialog_title_margin_topBottom" android:layout_marginBottom="@dimen/hw_dialog_title_margin_topBottom" android:text="@string/hw_login_title">
+            <requestFocus />
+        </TextView>
+        <include android:layout_width="fill_parent" android:layout_height="fill_parent" layout="@layout/hw_view_login_email_with_password_a" />
+        <include android:layout_width="fill_parent" android:layout_height="fill_parent" layout="@layout/hw_view_login_cdkey" />
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_forgot_regist" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/hw_dialog_item_margin_topBottom" android:layout_marginBottom="@dimen/hw_dialog_item_margin_topBottom">
+            <TextView android:textColor="@color/hw_login_button_forgot_textColor_normal" android:gravity="start|center" android:id="@id/tv_forgot" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hw_login_forgot" />
+            <TextView android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0" />
+            <TextView android:textColor="@color/hw_login_button_forgot_textColor_normal" android:gravity="end|center" android:id="@id/tv_register" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hw_login_register" />
+        </LinearLayout>
+        <TextView android:textStyle="bold" android:textColor="@color/hw_dialog_content_textColor_a" android:gravity="center" android:id="@id/tv_login" android:background="@drawable/hw_button_coloured_bg_selector" android:clickable="true" android:layout_width="fill_parent" android:layout_height="@dimen/hw_dialog_button_height" android:text="@string/hw_login_login" />
+        <TextView android:textStyle="bold" android:textColor="@color/hw_dialog_content_textColor_b" android:gravity="center" android:id="@id/tv_freePlay" android:background="@drawable/hw_button_colourless_bg_selector" android:visibility="gone" android:clickable="true" android:layout_width="fill_parent" android:layout_height="@dimen/hw_dialog_button_height" android:layout_marginTop="@dimen/hw_dialog_item_margin_topBottom" android:text="@string/hw_login_freePlay" />
+        <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/ll_google_login" android:background="@drawable/hw_button_google_bg_selector" android:paddingLeft="8.0dip" android:paddingRight="8.0dip" android:layout_width="fill_parent" android:layout_height="@dimen/hw_dialog_button_height" android:layout_marginTop="@dimen/hw_dialog_item_margin_topBottom" android:layout_weight="1.0">
+            <ImageView android:id="@id/iv_google_login" android:background="@drawable/google_login" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="google login new" />
+            <TextView android:textStyle="bold" android:textColor="#80000000" android:gravity="center" android:id="@id/tv_google_login" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:text="@string/hw_gg_login" />
+        </LinearLayout>
+        <TextView android:textStyle="bold" android:textColor="@color/hw_dialog_content_textColor_b" android:gravity="center" android:id="@id/tv_useCdKey" android:background="@drawable/hw_button_colourless_bg_selector" android:clickable="true" android:layout_width="fill_parent" android:layout_height="@dimen/hw_dialog_button_height" android:layout_marginTop="@dimen/hw_dialog_item_margin_topBottom" android:text="@string/hw_login_CdKeyLogin" />
+        <LinearLayout android:gravity="center" android:orientation="horizontal" android:id="@id/ll_gg" android:visibility="visible" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dip" android:layout_marginBottom="@dimen/hw_dialog_item_margin_topBottom">
+            <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/ll_guest_login_new" android:background="@drawable/hw_button_colourless_bg_selector" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:layout_width="0.0dip" android:layout_height="@dimen/hw_login__two_item_button_height" android:layout_weight="1.0">
+                <ImageView android:id="@id/iv_guest_login_new" android:background="@drawable/guest_login" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="google login new" />
+                <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/hw_dialog_content_textColor_b" android:gravity="center" android:id="@id/tv_guest_login_new" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="@string/hw_login_freePlay" />
+            </LinearLayout>
+            <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/ll_google_login_new" android:background="@drawable/hw_button_colourless_bg_selector" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:visibility="gone" android:layout_width="0.0dip" android:layout_height="@dimen/hw_login__two_item_button_height" android:layout_weight="1.0">
+                <ImageView android:id="@id/iv_google_login_new" android:background="@drawable/google_login" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="google login new" />
+                <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/hw_dialog_content_textColor_b" android:gravity="center" android:id="@id/tv_google_login_new" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="Google" />
+            </LinearLayout>
+            <TextView android:layout_gravity="center" android:id="@id/interval_tv" android:layout_width="8.0dip" android:layout_height="fill_parent" />
+            <LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="horizontal" android:id="@id/ll_fb_login_new" android:background="@drawable/hw_button_colourless_bg_selector" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:layout_width="0.0dip" android:layout_height="@dimen/hw_login__two_item_button_height" android:layout_weight="1.0">
+                <ImageView android:id="@id/iv_fb_login_new" android:background="@drawable/facebook_login" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="fb login new" />
+                <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/hw_dialog_content_textColor_b" android:gravity="center" android:id="@id/tv_fb_login_new" android:paddingLeft="5.0dip" android:paddingRight="5.0dip" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:text="Facebook" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:id="@id/layout_login_ib" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/hw_login_item_to_side" android:layout_marginBottom="@dimen/hw_login_item_to_side">
+            <FrameLayout android:id="@id/fl_guest" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_guest" android:background="@drawable/hw_thirdlogin_guest_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_guest_login" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_twitter" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_twitter" android:background="@drawable/hw_thirdlogin_twitter_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_twitter" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_google" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_google" android:background="@drawable/hw_thirdlogin_google_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_google" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_facebook" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_facebook" android:background="@drawable/hw_thirdlogin_facebook_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_facebook" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_naver" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_naver" android:background="@drawable/hw_thirdlogin_naver_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_naver" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_line" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_line" android:background="@drawable/hw_thirdlogin_line_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_line" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_vk" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_vk" android:background="@drawable/hw_thirdlogin_vk_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_vk" />
+            </FrameLayout>
+            <FrameLayout android:id="@id/fl_playgame" android:layout_width="0.0dip" android:layout_height="fill_parent" android:layout_weight="1.0">
+                <ImageButton android:layout_gravity="center" android:id="@id/ib_playgame" android:background="@drawable/hw_thirdlogin_palygame_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_playgame" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout android:layout_gravity="end" android:id="@id/fl_exit" android:visibility="gone" android:clickable="true" android:layout_width="@dimen/hw_exitButton_size" android:layout_height="@dimen/hw_exitButton_size">
+        <ImageView android:layout_gravity="center" android:background="@drawable/hw_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/hw_des_exit" />
+    </FrameLayout>
+</FrameLayout>

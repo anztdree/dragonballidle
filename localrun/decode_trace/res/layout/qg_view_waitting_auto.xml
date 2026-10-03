@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:layout_gravity="center" android:orientation="vertical" android:background="@drawable/bg_automatic_hw" android:layout_width="@dimen/hw_dialog_prompt_width" android:layout_height="@dimen/hw_dialog_prompt_height_big"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/qg_wigit_margin_t_big">
+        <ImageView android:id="@id/qg_login_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/hw_line_login" />
+        <TextView android:textSize="@dimen/qg_normal_txt_size" android:textColor="@color/hw_dialog_content_textColor" android:id="@id/qg_txt_auto_account" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/qg_wigit_margin" android:text="tianxiang123" />
+    </LinearLayout>
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/qg_auto_login_margin_tb" android:layout_marginBottom="@dimen/qg_wigit_margin_t_big">
+        <ProgressBar android:id="@id/qg_prog_login" android:layout_width="40.0dip" android:layout_height="wrap_content" android:layout_marginRight="@dimen/qg_login_success_title_widget_margin" style="@android:style/Widget.Holo.Light.ProgressBar.Inverse" />
+        <ImageView android:id="@id/qg_img_login_success_state" android:visibility="gone" android:layout_width="@dimen/qg_wait_progress_w" android:layout_height="@dimen/qg_wait_progress_h" android:layout_marginRight="@dimen/qg_login_success_title_widget_margin" android:src="@drawable/qg_sdk_icon_correct" />
+        <TextView android:textSize="@dimen/qg_normal_txt_size" android:textColor="@color/hw_dialog_content_textColor" android:id="@id/qg_txt_auto_login_state" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/hw_autoLogin_loading" />
+    </LinearLayout>
+    <TextView android:textSize="@dimen/qg_normal_txt_size_mid" android:textColor="@drawable/qg_auto_login_txt_selector" android:gravity="center" android:id="@id/qg_btn_login_calcel_auto" android:background="@drawable/hw_button_coloured_bg_selector" android:paddingLeft="@dimen/qg_normal_fg_content_margin_l" android:paddingRight="@dimen/qg_normal_fg_content_margin_r" android:layout_width="fill_parent" android:layout_height="36.0dip" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:layout_marginBottom="@dimen/qg_normal_fg_bottom_margin_b" android:text="@string/hw_autoLogin_switchAccount" />
+</LinearLayout>

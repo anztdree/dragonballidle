@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:layout_gravity="center" android:id="@id/qg_annouce_main_content" android:background="@drawable/transparent_background" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_margin="80.0dip"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_gravity="center" android:orientation="vertical" android:background="@drawable/hw_dialog_bg" android:layout_width="@dimen/qg_normal_fg_w" android:layout_height="wrap_content" android:layout_margin="20.0dip">
+        <TextView android:textSize="24.0sp" android:textColor="#ff000000" android:layout_gravity="center" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="@dimen/hw_dialog_title_margin_topBottom" android:layout_marginBottom="@dimen/hw_dialog_title_margin_topBottom" android:text="@string/hw_account_announce_tile" />
+        <ListView android:id="@id/lv" android:layout_width="fill_parent" android:layout_height="150.0dip" android:layout_marginTop="5.0dip" android:layout_weight="1.0" />
+        <LinearLayout android:layout_gravity="bottom|center" android:orientation="horizontal" android:background="@drawable/hw_dialog_bg" android:layout_width="@dimen/qg_normal_fg_w" android:layout_height="38.0dip">
+            <Button android:textSize="18.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/bt_yes" android:background="#ff1877f2" android:layout_width="100.0dip" android:layout_height="38.0dip" android:layout_marginLeft="20.0dip" android:layout_marginBottom="15.0dip" android:text="@string/hw_account_announce_button_ok" />
+            <Button android:textSize="18.0sp" android:textColor="#ffffffff" android:gravity="center" android:id="@id/bt_no" android:background="#ff1877f2" android:layout_width="100.0dip" android:layout_height="38.0dip" android:layout_marginLeft="50.0dip" android:layout_marginBottom="15.0dip" android:text="@string/hw_account_announce_button_cancel" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

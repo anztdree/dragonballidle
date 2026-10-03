@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="@dimen/hw_activity_dialog_width" android:layout_height="@dimen/hw_activity_dialog_height" android:layout_centerInParent="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:background="@drawable/bg_register_hw" android:padding="15.0dip" android:layout_width="@dimen/hw_activity_dialog_width" android:layout_height="@dimen/hw_activity_dialog_height" android:layout_margin="9.0dip">
+        <com.quickgame.android.sdk.facebook.ui.view.ChoiceBar android:id="@id/hw_top_bar" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true" />
+        <RelativeLayout android:orientation="horizontal" android:id="@id/bottom_layout" android:layout_width="fill_parent" android:layout_height="40.0dip" android:layout_alignParentBottom="true">
+            <ImageView android:id="@id/hw_iv_facebook_like" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:src="@drawable/hw_facebook_like" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+            <ImageView android:id="@id/hw_iv_facebook_share" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:src="@drawable/hw_btn_facebook_share_selector" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+            <TextView android:id="@id/hw_tv_facebook_invite" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:src="@drawable/hw_btn_facebook_share_selector" android:layout_alignParentLeft="true" android:layout_centerVertical="true" />
+            <TextView android:textAppearance="?android:textAppearanceMedium" android:textColor="@color/hw_dialog_content_textColor_b" android:id="@id/hw_tv_activity_info" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="@dimen/activity_horizontal_margin" android:text="@string/activity_info" android:layout_alignParentRight="true" android:layout_centerVertical="true" />
+        </RelativeLayout>
+        <FrameLayout android:id="@id/hw_fl_container" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_above="@id/bottom_layout" android:layout_below="@id/hw_top_bar" />
+    </RelativeLayout>
+    <ImageView android:id="@id/hw_facebook_share_close" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/bg_f_close_hw" android:layout_alignParentTop="true" android:layout_alignParentRight="true" />
+</RelativeLayout>

@@ -92,3 +92,27 @@ Yang SENGAJA belum masuk versi ini (tunggu giliran tahapnya):
   format log tidak berubah.
 - Isi trafik login/engine.io (:610) bukan file, tidak bisa dilog isinya; ALAMAT-nya sudah
   tertangkap lewat CFG (config berisi loginServer/loginPort) + NET.
+
+---
+
+## TRACE-1.3 — baris UNDUH (jawaban atas "log macet saat SDK selesai loading")
+
+Fakta dari log device asli (trace_log_07-30.txt): setelah SDK Egret selesai dimuat,
+unduhan dilakukan engine NATIVE (C++) — bukan lagi lewat pintu Java — dan disimpan ke
+cache `files/games/https/<host>/<path>#<kunci>`. TRACE-1.3 menerjemahkannya menjadi
+baris UNDUH yang jelas (URL → SIMPAN KE), sedangkan kejadian antara (#temp/#header)
+hanya dicatat di log disk. Panel tetap lancar (render adaptif saat banjir).
+
+Contoh nyata (path dari log device Anda, hasil dekoder):
+
+```
+07:30 UNDUH: OK (tulis) • 38 B • https://dragonh5cdn.popoh5.com/bs/resource/properties/clientversion.json  (kunci #/v=0.3801884376567626) → SIMPAN KE /data/user/0/com.db.local/files/games/https/dragonh5cdn.popoh5.com/bs/resource/properties/clientversion.json#/v=0.3801884376567626
+07:30 UNDUH: OK (masuk) • 103 B • https://login.popoh5.com:610/socket.io/  (kunci #index#/0130dcabf7b9e94f7fba64bc1e7222ce) → SIMPAN KE /data/user/0/com.db.local/files/games/https/login.popoh5.com#0A610/socket.io/#index#/0130dcabf7b9e94f7fba64bc1e7222ce
+07:30 UNDUH: OK (tulis) • 1.2 KB • https://dragonh5cdn.popoh5.com/bs/resource/scene/shadow.png → SIMPAN KE /data/user/0/com.db.local/files/games/https/dragonh5cdn.popoh5.com/bs/resource/scene/shadow.png
+07:30 ISI: MASUK …#header • HTTP/1.1 200 OK … (isi header jawaban server, ≤800 B)
+```
+
+Catatan:
+- `#temp` / `#header` / `BUAT` / `HAPUS` cache = senyap di panel, TETAP UTUH di log disk (SAVE memuat semua).
+- Hasil ekstraksi zip (ext `game/https/...`) tetap tampil sebagai FILE biasa — itu bukan unduhan.
+- Port login `:610` dibaca otomatis dari kunci cache (`login.popoh5.com#0A610`).

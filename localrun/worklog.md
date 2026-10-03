@@ -232,3 +232,23 @@ Work Log:
 Stage Summary:
 - TRACE-1 v1 RELEASED: base original + log saja; 4 pintu jaringan dibungkus; Android/data bersih (sisa v2.x dibersihkan otomatis saat boot).
 - Menunggu: user install → jalankan game dari awal → COPY log → kirim ke chat → analisis perilaku (tahap panen menunggu giliran & izin; titik hook sama).
+
+---
+Task ID: 19
+Agent: Z.ai (main)
+Task: Bug report #2 user — "log stuck saat SDK selesai loading" (log device di repo: trace_log_07-30.txt). Bedah log, temukan akar masalah, perbaiki, rilis TRACE-1.3.
+
+Work Log:
+- Tarik log user dari repo (commit d1bc20a, trace_log_07-30.txt, 4.260 baris, hasil SAVE device TRACE-1.1 07:30).
+- Analisis log MENGUBAH diagnosis: log TIDAK mati — 1 BOOT saja (tanpa restart), FILE 3.013 + POLL 857 mengalir sampai 07:30, heartbeat "hidup" 07:29 (SAVE 07:30 sebelum heartbeat berikut). Yang berhenti tepat saat SDK selesai = baris DL/GET (DL terakhir 07:28 all.zip 18.5 MB → tmp.zip; GET terakhir 07:28 clientversion 105 B).
+- Akar masalah #1 (informasi): setelah SDK Egret aktif, unduhan dilakukan engine NATIVE (C++) — tidak lewat pintu Java yang dibungkus — lalu disimpan ke cache files/games/https/<host>/<path>#<kunci> (+ #temp/#header). Panel dipenuhi spam BUAT/TULIS/HAPUS #temp/#header tanpa satu pun baris unduhan yang jelas → user melihat "log macet".
+- Akar masalah #2 (UI): v1.1 me-render seluruh buffer (ribuan baris) tiap 250 ms di itel S665L saat banjir ekstraksi + loop native → panel membeku persis di fase itu. Disk tetap jalan (SAVE berhasil menarik 4.260 baris).
+- Perbaikan TRACE-1.3: (1) TracePack.unduhFromCache() — dekoder cache native → baris UNDUH "OK • ukuran • https://host[:port]/path (kunci) → SIMPAN KE <path penuh>"; port :610 dibaca dari kunci "login.popou.com#0A610" (digits terakhir); #temp/#header di-skip; (2) RecursiveFileObserver — kejadian antara cache native diredam dari panel via fileLineQuiet()/logDiskOnly() (tetap utuh di log disk); TULIS/MASUK cache → panggil unduhFromCache(); (3) DebugConsole — throttle adaptif: saat banjir (floodCount>40 / floodHidden>0) render 1.000 ms, normal 250 ms; tag UNDUH warna lime; judul panel TRACE-1.3.
+- Uji dekoder dengan path ASLI dari log user: clientversion.json#/v=… → URL benar; login.popoh5.com#0A610/socket.io/#index#/0130… → https://login.popoh5.com:610/socket.io/ (kunci) benar; #temp/#header SKIP; ext game/https (hasil ekstraksi) tidak terbawa → tetap FILE biasa.
+- Build ALLOW_BUILD=1: 33 class OK, trace_classes.dex 67.932 B, SIGN OK. Verifikasi: badging com.db.local/1/1.0.0/targetSdk 30; cert SHA-256 3898c8f0… (= semua versi, upgrade di tempat); APK 105.018.398 B, SHA-256 f48bd5e7fda1b8ed7917c060ef6359cb834bb61823baa28ddc8a2f7c06c36061; strings dex: unduhFromCache/logDiskOnly/fileLineQuiet/cacheNoise/floodBusy/TRACE-1.3/ironoriginhoblike_dbtrace semuanya ada.
+- CONTOH-LOG-TRACE1.md: tambah seksi "TRACE-1.3 — baris UNDUH" dengan contoh nyata.
+
+Stage Summary:
+- Diagnosis final: BUKAN watcher mati; DL/GET berhenti karena unduhan pasca-SDK dilakukan engine C++ dan jejaknya (cache files/games/https/…) belum diterjemahkan jadi baris unduhan. Panel membeku karena render berat saat banjir di HP lemah.
+- TRACE-1.3: UNDUH decoder + peredam noise cache + throttle adaptif = panel tetap jelas & hidup dari boot sampai lobby; log disk tetap tanpa terkecuali.
+- Rilis: v1.3-traceunduh (APK DB-LOCAL-TRACE1.apk). Mode AMATI tetap: hanya membaca nama/ukuran file — tidak mengubah isi apa pun.

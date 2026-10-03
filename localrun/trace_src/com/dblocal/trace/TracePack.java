@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class TracePack {
 
-    public static final String VER = "TRACE-1.2";
+    public static final String VER = "TRACE-1.3";
 
     private static boolean started = false;
     private static Context appCtx = null;
@@ -467,6 +467,93 @@ public final class TracePack {
     static void fileLine(String kind, String label, String msg) {
         evtFile++;
         DebugConsole.log('I', "FILE", kind + " " + label + " • " + msg);
+    }
+
+    /** FIX v1.3: varian senyap — tetap dihitung & masuk log disk, tapi tidak
+     *  memenuhi panel (kejadian antara cache HTTP native: #temp, #header, BUAT). */
+    static void fileLineQuiet(String kind, String label, String msg) {
+        evtFile++;
+        DebugConsole.logDiskOnly('I', "FILE", kind + " " + label + " • " + msg);
+    }
+
+    /** FIX v1.3: apakah path ini kejadian antara cache HTTP native yang
+     *  layak diredam dari panel? Panel tetap menerima baris UNDUH yang jelas
+     *  dari unduhFromCache(); log disk tetap mencatat SEMUA kejadian mentah. */
+    static boolean cacheNoise(String abs) {
+        return abs != null && abs.contains("/games/https/");
+    }
+
+    // ------------------------------------- dekoder unduhan native (v1.3)
+
+    /**
+     * unduhFromCache — MENJAWAB "log macet saat SDK selesai loading".
+     *
+     * Fakta dari log device (trace_log_07-30.txt): setelah SDK Egret selesai
+     * dimuat, semua unduhan dilakukan oleh engine NATIVE (C++), bukan lewat
+     * pintu Java yang dibungkus — makanya baris DL/GET berhenti. Jejaknya
+     * tetap ada: engine menyimpan SETIAP jawaban HTTP ke cache di
+     * files/games/https/<host>/<path>#<kunci>  (+ "#temp" saat belum selesai,
+     * "+ #header" berisi header jawaban).
+     *
+     * Metode ini menerjemahkan penulisan cache itu menjadi baris UNDUH yang
+     * jelas, format sama dengan pintu Java:
+     *   UNDUH: OK • 38 B • https://host/path (+kunci) → SIMPAN KE <path penuh>
+     *
+     * Read-only: hanya MEMBACA nama file & ukuran — tidak mengubah apa pun.
+     */
+    static void unduhFromCache(File f, String via) {
+        try {
+            if (f == null || !f.isFile()) return;
+            String p = f.getAbsolutePath();
+            int i = p.indexOf("/games/https/");
+            if (i < 0) return; // bukan cache HTTP native
+            String name = f.getName();
+            // berhenti di jeda (#temp) dan simpulan JUGA saat file header
+            // selesai — header tampil sendiri lewat cachePeek (tag ISI).
+            if (name.endsWith("#temp") || name.endsWith("#header")) return;
+            String tail = p.substring(i + "/games/https/".length());
+            String host = tail, rest = "";
+            int h = tail.indexOf('#');
+            int s = tail.indexOf('/');
+            int cut;
+            if (h >= 0 && s >= 0) cut = Math.min(h, s);
+            else if (h >= 0) cut = h;
+            else if (s >= 0) cut = s;
+            else cut = -1;
+            if (cut >= 0) { host = tail.substring(0, cut); rest = tail.substring(cut); }
+            String port = "";
+            String path = rest;
+            String kunci = "";
+            if (cut == h && h >= 0) {
+                // bentuk "host#<kunci-port>/<path>#<kunci>…" (contoh: login :610)
+                String seg = rest.startsWith("#") ? rest.substring(1) : rest;
+                int slash = seg.indexOf('/');
+                String key1 = slash >= 0 ? seg.substring(0, slash) : seg;
+                String after = slash >= 0 ? seg.substring(slash) : "";
+                String digits = key1.replaceAll("\\D", "");
+                if (digits.length() >= 2 && digits.length() <= 5) {
+                    try {
+                        int pt = Integer.parseInt(
+                                digits.length() > 3 ? digits.substring(digits.length() - 3) : digits);
+                        if (pt > 0 && pt < 65536) port = ":" + pt;
+                    } catch (Throwable ignore) {}
+                }
+                int hash2 = after.indexOf('#');
+                path = hash2 >= 0 ? after.substring(0, hash2) : after;
+                kunci = hash2 >= 0 ? after.substring(hash2) : "";
+            } else {
+                int hash2 = rest.indexOf('#');
+                path = hash2 >= 0 ? rest.substring(0, hash2) : rest;
+                kunci = hash2 >= 0 ? rest.substring(hash2) : "";
+            }
+            StringBuilder url = new StringBuilder("https://").append(host).append(port).append(path);
+            StringBuilder line = new StringBuilder(192);
+            line.append("OK ").append(via).append(" • ").append(DebugConsole.human(f.length()))
+                .append(" • ").append(url);
+            if (kunci.length() > 0 && kunci.length() <= 90) line.append("  (kunci ").append(kunci).append(')');
+            line.append(" → SIMPAN KE ").append(p);
+            DebugConsole.log('I', "UNDUH", line.toString());
+        } catch (Throwable ignore) {}
     }
 
     // ---------------------------------------------- isi cache kecil (v1.2)

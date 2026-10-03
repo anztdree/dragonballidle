@@ -1,0 +1,35 @@
+version: 2.10.0
+apkFileName: DB-LOCAL-LOCALRUN-v2.0.apk
+isFrameworkApk: false
+usesFramework:
+  ids:
+  - 1
+  tag: null
+sdkInfo:
+  minSdkVersion: 21
+  targetSdkVersion: 30
+packageInfo:
+  forcedPackageId: 127
+  renameManifestPackage: null
+versionInfo:
+  versionCode: 1
+  versionName: 1.0.0
+resourcesAreCompressed: false
+sharedLibrary: false
+sparseResources: false
+unknownFiles:
+  billing.properties: 8
+  play-services-ads-identifier.properties: 8
+  play-services-auth-api-phone.properties: 8
+  play-services-auth-base.properties: 8
+  play-services-auth.properties: 8
+  play-services-base.properties: 8
+  play-services-basement.properties: 8
+  play-services-tasks.properties: 8
+  publicsuffixes.gz: 8
+  com/appsflyer/internal/a-: 8
+  com/appsflyer/internal/b-: 8
+doNotCompress:
+- resources.arsc
+- png
+- jpg
