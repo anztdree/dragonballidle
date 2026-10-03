@@ -99,7 +99,14 @@ public final class DebugConsole {
         synchronized (TS) { return TS.format(new Date(at)); }
     }
 
-    /** Titik masuk log tunggal. Tidak boleh melempar. */
+    /** Format waktu utk TracePack (log disk). */
+    static String tsOf(long at) {
+        return ts(at);
+    }
+
+    /** Titik masuk log tunggal. Tidak boleh melempar.
+     *  FIX v1.1: SEMUA baris (termasuk duplikat & yang ditekan panel) juga
+     *  ditulis ke log disk — tidak ada kejadian yang hilang. */
     public static void log(char lvl, String tag, String msg) {
         try {
             if (msg == null) msg = "(null)";
@@ -111,13 +118,15 @@ public final class DebugConsole {
                         floodStart = now;
                         floodCount = 0;
                         if (floodHidden > 0) {
-                            BUF.add(new Ent(now, 'I', "FILE",
-                                    "… +" + floodHidden + " kejadian lain ditekan (ekstraksi besar) — SCAN utk potret akhir"));
+                            String suppressed = "… +" + floodHidden + " kejadian lain ditekan (ekstraksi besar) — SCAN utk potret akhir";
+                            BUF.add(new Ent(now, 'I', "FILE", suppressed));
+                            TracePack.diskLine(ts(now) + " FILE: " + suppressed);
                             floodHidden = 0;
                         }
                     }
                     if (floodCount >= 120) {
                         floodHidden++;
+                        TracePack.diskLine(ts(now) + " FILE: (ditekan panel) " + msg);
                         return;
                     }
                     floodCount++;
@@ -129,13 +138,15 @@ public final class DebugConsole {
                     Ent last = BUF.get(n - 1);
                     if (last.lvl == lvl && last.tag.equals(tag) && last.msg.equals(msg)) {
                         last.dup++;
-                        postRefresh();
-                        return;
+                    } else {
+                        BUF.add(new Ent(now, lvl, tag, msg));
                     }
+                } else {
+                    BUF.add(new Ent(now, lvl, tag, msg));
                 }
-                BUF.add(new Ent(now, lvl, tag, msg));
                 while (BUF.size() > CAP) BUF.remove(0);
             }
+            TracePack.diskLine(ts(now) + " " + tag + ": " + msg);
             postRefresh();
         } catch (Throwable ignore) {
         }
@@ -159,7 +170,7 @@ public final class DebugConsole {
 
     private static String deviceSummary() {
         StringBuilder sb = new StringBuilder(256);
-        sb.append("=== TRACE-1 • MODE AMATI — game 100% server resmi, APK hanya mencatat ===\n");
+        sb.append("=== ").append(TracePack.VER).append(" • MODE AMATI — game 100% server resmi, APK hanya mencatat ===\n");
         try {
             sb.append("perangkat : ").append(Build.MANUFACTURER).append(' ').append(Build.MODEL).append('\n');
             sb.append("android   : ").append(Build.VERSION.RELEASE).append(" (SDK ").append(Build.VERSION.SDK_INT).append(")\n");
@@ -170,6 +181,8 @@ public final class DebugConsole {
                 sb.append("paket     : ").append(pi.packageName)
                   .append(" v").append(pi.versionName)
                   .append(" (versionCode ").append(pi.versionCode).append(")\n");
+                File df = TracePack.diskLogFile();
+                sb.append("log disk  : ").append(df != null ? df.getAbsolutePath() : "(tidak tersedia)").append('\n');
             }
         } catch (Throwable t) {
             sb.append("(info perangkat gagal: ").append(t).append(")\n");
@@ -393,7 +406,7 @@ public final class DebugConsole {
             public void onClick(View v) {
                 synchronized (BUF_LOCK) { BUF.clear(); floodHidden = 0; floodCount = 0; }
                 refreshNow();
-                toast(act, "log dibersihkan");
+                toast(act, "panel dibersihkan — log disk tetap utuh (SAVE memuat semuanya)");
             }
         }));
         panel.addView(btns1);
@@ -429,7 +442,9 @@ public final class DebugConsole {
         logView.setTypeface(Typeface.MONOSPACE);
         logView.setTextSize(10f);
         logView.setTextColor(Color.parseColor("#FFE0E0E0"));
-        logView.setTextIsSelectable(true);
+        // FIX v1.1: selectable OFF — sangat berat di HP low-end; COPY tombol
+        // sudah menyalin SEMUA baris.
+        logView.setTextIsSelectable(false);
         logView.setPadding(dp(4, act), dp(4, act), dp(4, act), dp(4, act));
         scroller.addView(logView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -448,6 +463,15 @@ public final class DebugConsole {
         refreshNow();
     }
 
+    /** dp tanpa konteks Activity (utk utilitas scroll). */
+    private static int dpAny(float v) {
+        try {
+            Activity a = actRef.get();
+            if (a != null) return dp(v, a);
+        } catch (Throwable ignore) {}
+        return Math.round(v * 1.5f);
+    }
+
     private static void togglePanel() {
         try {
             open = !open;
@@ -458,18 +482,27 @@ public final class DebugConsole {
 
     // ------------------------------------------------------------- refresh
 
+    private static long lastRenderAt = 0;
+    private static long lastFooterAt = 0;
+
+    private static final Runnable RENDER = new Runnable() {
+        public void run() {
+            synchronized (DebugConsole.class) { refreshPending = false; }
+            lastRenderAt = System.currentTimeMillis();
+            refreshNow();
+        }
+    };
+
+    /** FIX v1.1: throttle render — maks 1× per 250 ms agar panel lancar di HP
+     *  low-end meski banjir log (ekstraksi zip besar). */
     private static void postRefresh() {
         try {
             synchronized (DebugConsole.class) {
                 if (refreshPending) return;
                 refreshPending = true;
+                long delay = Math.max(0, 250 - (System.currentTimeMillis() - lastRenderAt));
+                MAIN.postDelayed(RENDER, delay);
             }
-            MAIN.post(new Runnable() {
-                public void run() {
-                    synchronized (DebugConsole.class) { refreshPending = false; }
-                    refreshNow();
-                }
-            });
         } catch (Throwable ignore) {}
     }
 
@@ -477,7 +510,11 @@ public final class DebugConsole {
         try {
             if (panel == null || logView == null || footer == null) return;
             if (panel.getVisibility() != View.VISIBLE) {
-                footer.setText(footerText());
+                long now = System.currentTimeMillis();
+                if (now - lastFooterAt >= 1000) {
+                    lastFooterAt = now;
+                    footer.setText(footerText());
+                }
                 return;
             }
             int size;
@@ -509,11 +546,28 @@ public final class DebugConsole {
                 sb.setSpan(new ForegroundColorSpan(colorOf(e.lvl, e.tag)), bodyFrom, start + len,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
+            // FIX v1.1: auto-scroll hanya bila pembaca sudah di dekat dasar —
+            // kalau sedang membaca ke atas, posisi baca TIDAK dijarah.
+            boolean nearBottom = true;
+            int keepY = 0;
+            try {
+                View cv = scroller.getChildAt(0);
+                keepY = scroller.getScrollY();
+                nearBottom = cv == null
+                        || (cv.getBottom() - (scroller.getHeight() + keepY)) < dpAny(48);
+            } catch (Throwable ignore) {}
             logView.setText(sb);
             if (size != lastBufSize && scroller != null) {
-                scroller.post(new Runnable() {
-                    public void run() { try { scroller.fullScroll(View.FOCUS_DOWN); } catch (Throwable ignore) {} }
-                });
+                if (nearBottom) {
+                    scroller.post(new Runnable() {
+                        public void run() { try { scroller.fullScroll(View.FOCUS_DOWN); } catch (Throwable ignore) {} }
+                    });
+                } else {
+                    final int y = keepY;
+                    scroller.post(new Runnable() {
+                        public void run() { try { scroller.scrollTo(0, y); } catch (Throwable ignore) {} }
+                    });
+                }
             }
             lastBufSize = size;
             footer.setText(footerText());
@@ -577,6 +631,8 @@ public final class DebugConsole {
         }
     }
 
+    /** FIX v1.1: SAVE sekarang menyimpan log PENUH dari disk (semua sesi,
+     *  tidak terpotong 4000 baris) dengan nama bertimestamp. */
     private static void doSave(final Activity act) {
         new Thread(new Runnable() {
             public void run() {
@@ -584,9 +640,14 @@ public final class DebugConsole {
                     Context c = appRef.get();
                     File ext = c != null ? c.getExternalFilesDir(null) : null;
                     if (ext == null) { toast(act, "save gagal — pakai COPY"); return; }
-                    File f = new File(ext, "debug_log.txt");
-                    writeFile(f, dumpAll());
-                    log('I', "SYS", "log disimpan: " + f.getAbsolutePath());
+                    String stamp;
+                    try { stamp = new SimpleDateFormat("HH-mm", Locale.US).format(new Date()); }
+                    catch (Throwable t) { stamp = String.valueOf(System.currentTimeMillis() / 1000); }
+                    File f = new File(ext, "trace_log_" + stamp + ".txt");
+                    String full = fullDiskDump();
+                    if (full == null) full = dumpAll(); // disk gagal → buffer saja
+                    writeFile(f, full);
+                    log('I', "SYS", "log disimpan: " + f.getAbsolutePath() + " (" + human(f.length()) + ")");
                     toast(act, "✔ tersimpan: " + f.getAbsolutePath());
                 } catch (Throwable t) {
                     log('E', "SYS", "save log gagal: " + t);
@@ -594,6 +655,43 @@ public final class DebugConsole {
                 }
             }
         }, "DBTRACE-save").start();
+    }
+
+    /** Gabungan trace_log.old.txt + trace_log.txt + ringkasan perangkat. */
+    private static String fullDiskDump() {
+        try {
+            File df = TracePack.diskLogFile();
+            if (df == null || !df.exists()) return null;
+            StringBuilder sb = new StringBuilder(8192);
+            File old = new File(df.getParentFile(), "trace_log.old.txt");
+            if (old.exists()) {
+                String o = readFileHead(old, 4 << 20);
+                if (o != null && o.length() > 0) sb.append("== sesi sebelumnya ==\n").append(o).append('\n');
+            }
+            String cur = readFileHead(df, 4 << 20);
+            if (cur == null || cur.length() == 0) return null;
+            sb.append("== sesi berjalan ==\n").append(cur).append('\n');
+            sb.append(deviceSummary());
+            return sb.toString();
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private static String readFileHead(File f, int max) {
+        FileInputStream in = null;
+        try {
+            int want = (int) Math.min(f.length(), max);
+            byte[] buf = new byte[want];
+            in = new FileInputStream(f);
+            int off = 0, n;
+            while (off < want && (n = in.read(buf, off, want - off)) > 0) off += n;
+            return new String(buf, 0, off, "UTF-8");
+        } catch (Throwable t) {
+            return null;
+        } finally {
+            if (in != null) try { in.close(); } catch (Throwable ignore) {}
+        }
     }
 
     // ------------------------------------------------------- SCAN (daftar file)

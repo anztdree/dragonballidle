@@ -9,9 +9,11 @@ import android.util.Log;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
- * TracePack — pintu masuk tunggal build TRACE-1.
+ * TracePack — pintu masuk tunggal build TRACE-1.1 (perbaikan log).
  *
  * ATURAN (dari user, dikunci):
  *  - MULAI DARI 0: APK = base + SATU tambahan saja = LOG DEBUGGING.
@@ -21,11 +23,21 @@ import java.util.List;
  *    ke mana, plus daftar URL server yang diketahui/ditemukan (SCAN/CFG/NET).
  *  - Capture/kit di PC = penunjuk jalan saja; TIDAK dipakai membuat server.
  *
+ * PERBAIKAN v1.1 (dari laporan "log tidak tertangkap lagi"):
+ *  - LOG DISK: setiap baris juga ditulis ke files/trace_log.txt (flush ≤0,8 dtk,
+ *    rotasi 3 MB) → proses game mati/HP restart, catatan TETAP ADA.
+ *  - HEARTBEAT 60 dtk: "hidup • N kejadian" + kesehatan semua pemantau →
+ *    kelihatan JELAS bila pemantau mati vs game memang diam.
+ *  - PEMANTAU DIRAWAT: watch lepas saat folder dihapus+bikin ulang kini selalu
+ *    dipasang ulang (fix utama) + rescan berkala + folder yang belum ada saat
+ *    start dipasang begitu folder muncul.
+ *  - POLL memakai ukuran+mtime → tulis-ulang ukuran sama tetap terlihat.
+ *
  * Semua metode anti-crash: kegagalan logging tidak boleh mengganggu game.
  */
 public final class TracePack {
 
-    public static final String VER = "TRACE-1";
+    public static final String VER = "TRACE-1.1";
 
     private static boolean started = false;
     private static Context appCtx = null;
@@ -35,9 +47,91 @@ public final class TracePack {
     static long tx0 = -1;
 
     private static final List<RecursiveFileObserver> OBS = new ArrayList<RecursiveFileObserver>();
+    private static final List<File> PEND_F = new ArrayList<File>();
+    private static final List<String> PEND_L = new ArrayList<String>();
     private static Poller poller = null;
 
+    // penghitung kejadian (untuk heartbeat)
+    private static volatile long evtFile = 0;
+    private static volatile long evtPoll = 0;
+
+    // ---------------------------------------------------------------- log disk
+
+    private static final LinkedBlockingQueue<String> DISK_Q = new LinkedBlockingQueue<String>();
+    private static volatile File diskFile = null;
+
     private TracePack() {}
+
+    /** Satu baris ke log disk SAJA (tanpa panel). Tidak boleh melempar. */
+    static void diskLine(String line) {
+        try {
+            if (diskFile != null) DISK_Q.offer(line);
+        } catch (Throwable ignore) {}
+    }
+
+    /** File log disk (untuk tombol SAVE). Bisa null bila disk gagal. */
+    static File diskLogFile() {
+        return diskFile;
+    }
+
+    private static void startDisk(Context c) {
+        try {
+            File f = new File(c.getFilesDir(), "trace_log.txt");
+            if (f.exists() && f.length() > 0) {
+                DebugConsole.log('I', "SYS", "log sesi sebelumnya masih ada: " + f.getAbsolutePath()
+                        + " (" + DebugConsole.human(f.length()) + ") — tombol SAVE menyalin log PENUH");
+            }
+            diskFile = f;
+            Thread t = new Thread(new Runnable() {
+                public void run() { diskLoop(); }
+            }, "DBTRACE-disk");
+            t.setDaemon(true);
+            t.start();
+        } catch (Throwable t) {
+            diskFile = null;
+        }
+    }
+
+    /** Penulis disk: kumpulkan antrean, tulis+flush tiap ≤0,8 dtk. Rotasi 3 MB. */
+    private static void diskLoop() {
+        StringBuilder sb = new StringBuilder(4096);
+        while (true) {
+            try {
+                String line = DISK_Q.poll(800, TimeUnit.MILLISECONDS);
+                if (line != null) sb.append(line).append('\n');
+                if (sb.length() > 0 && (line == null || sb.length() > 16384)) {
+                    rotateIfNeeded();
+                    File f = diskFile;
+                    if (f != null) {
+                        java.io.FileOutputStream fo = new java.io.FileOutputStream(f, true);
+                        try {
+                            fo.write(sb.toString().getBytes("UTF-8"));
+                            fo.flush();
+                            fo.getFD().sync();
+                        } finally {
+                            try { fo.close(); } catch (Throwable ignore) {}
+                        }
+                    }
+                    sb.setLength(0);
+                }
+            } catch (Throwable t) {
+                try { Thread.sleep(1000); } catch (Throwable ignore) {}
+                if (sb.length() > 65536) sb.setLength(0); // buang bila menumpuk
+            }
+        }
+    }
+
+    private static void rotateIfNeeded() {
+        try {
+            File f = diskFile;
+            if (f == null || !f.exists() || f.length() <= 3L * 1024 * 1024) return;
+            File old = new File(f.getParentFile(), "trace_log.old.txt");
+            if (old.exists()) old.delete();
+            f.renameTo(old);
+        } catch (Throwable ignore) {}
+    }
+
+    // ------------------------------------------------------------------ start
 
     /** Dipanggil dari Application.onCreate (smali hook). Tidak boleh melempar. */
     public static void start(Context ctx) {
@@ -54,29 +148,35 @@ public final class TracePack {
                 }
             } catch (Throwable t) { Log.w("DBTRACE", "register console: " + t); }
 
-            DebugConsole.log('I', "BOOT", "TRACE-1 mulai — MODE AMATI: game jalan 100% server RESMI");
+            // 2) log disk SEBELUM baris BOOT pertama — tidak ada yang lolos
+            startDisk(c);
+
+            DebugConsole.log('I', "BOOT", "TRACE-1.1 mulai — MODE AMATI: game jalan 100% server RESMI");
             DebugConsole.log('I', "BOOT", "APK ini TIDAK melayani apa pun: tanpa kit, tanpa server lokal, tanpa panduan");
             DebugConsole.log('I', "BOOT", "tugasnya hanya MENCATAT: file apa yang diambil & disimpan ke mana");
 
-            // 2) peta server pertama: EntryPoint hasil decode dari assets/config.properties
+            // 3) peta server pertama: EntryPoint hasil decode dari assets/config.properties
             logEntryPoints(c);
 
-            // 3) info perangkat + lokasi pantau
+            // 4) info perangkat + lokasi pantau
             logDevice(c);
 
-            // 4) baseline trafik utk tombol NET
+            // 5) baseline trafik utk tombol NET
             try {
                 rx0 = TrafficStats.getTotalRxBytes();
                 tx0 = TrafficStats.getTotalTxBytes();
             } catch (Throwable ignore) {}
 
-            // 5) bersihkan SISA file milik build lama (v2.x) — bukan milik game
+            // 6) bersihkan SISA file milik build lama (v2.x) — bukan milik game
             cleanupLegacy(c);
 
-            // 6) pasang pemantau file (inotify pada semua root + poll utk files utama)
+            // 7) pasang pemantau file (inotify pada semua root + poll utk semua root)
             startWatchers(c);
 
-            // 7) potret awal isi tiap root (kondisi "sebelum")
+            // 8) detak jantung: bukti pemantau hidup + perawatan watch berkala
+            startHeartbeat();
+
+            // 9) potret awal isi tiap root (kondisi "sebelum")
             snapshotTop(c);
         } catch (Throwable t) {
             try { Log.w("DBTRACE", "start: " + t); } catch (Throwable ignore) {}
@@ -237,14 +337,29 @@ public final class TracePack {
             if (sd.exists()) addRoot(sd, "sd:DB-LOCAL");
 
             DebugConsole.log('I', "SYS", "pemantau file AKTIF — [FILE] = kejadian langsung, [POLL] = hasil selisih tiap 4 dtk, [SCAN] = daftar penuh");
-            // poller utk dua root utama (jaga-jaga inotify tidak melaporkan semuanya)
+
+            // Poller di atas SEMUA root penting (termasuk seluruh dataDir agar
+            // penulisan oleh kode native tetap terlihat walau inotify rewel)
             List<File> pollRoots = new ArrayList<File>();
             List<String> pollLabels = new ArrayList<String>();
+            List<Integer> pollBudgets = new ArrayList<Integer>();
             try {
-                if (c.getFilesDir() != null) { pollRoots.add(c.getFilesDir()); pollLabels.add("int:files"); }
-                if (ext != null) { pollRoots.add(ext); pollLabels.add("ext:files"); }
+                String ddPath = c.getApplicationInfo().dataDir;
+                if (ddPath != null) {
+                    pollRoots.add(new File(ddPath));
+                    pollLabels.add("int");
+                    pollBudgets.add(Integer.valueOf(25000));
+                }
             } catch (Throwable ignore) {}
-            poller = new Poller(pollRoots, pollLabels);
+            try {
+                if (ext != null) { pollRoots.add(ext); pollLabels.add("ext:files"); pollBudgets.add(Integer.valueOf(8000)); }
+            } catch (Throwable ignore) {}
+            try {
+                if (extc != null) { pollRoots.add(extc); pollLabels.add("ext:cache"); pollBudgets.add(Integer.valueOf(4000)); }
+            } catch (Throwable ignore) {}
+            int[] budgets = new int[pollBudgets.size()];
+            for (int i = 0; i < pollBudgets.size(); i++) budgets[i] = pollBudgets.get(i).intValue();
+            poller = new Poller(pollRoots, pollLabels, budgets);
             poller.start();
         } catch (Throwable t) {
             DebugConsole.log('E', "SYS", "pemantau gagal: " + t);
@@ -254,6 +369,13 @@ public final class TracePack {
     private static void addRoot(File root, String label) {
         try {
             if (root == null) return;
+            if (!root.exists()) {
+                // FIX v1.1: folder belum ada (mis. storage eksternal belum siap)
+                // → jangan diam-diam gagal selamanya; coba lagi tiap heartbeat.
+                synchronized (OBS) { PEND_F.add(root); PEND_L.add(label); }
+                DebugConsole.log('W', "SYS", "pantau " + label + " menunggu folder dibuat: " + root.getAbsolutePath());
+                return;
+            }
             RecursiveFileObserver o = new RecursiveFileObserver(root, label);
             o.start();
             synchronized (OBS) { OBS.add(o); }
@@ -263,14 +385,105 @@ public final class TracePack {
         }
     }
 
+    /** Pasang pemantau untuk folder tertunda yang kini sudah ada. */
+    private static void retryPending() {
+        List<File> rf;
+        List<String> rl;
+        synchronized (OBS) {
+            if (PEND_F.isEmpty()) return;
+            rf = new ArrayList<File>(PEND_F);
+            rl = new ArrayList<String>(PEND_L);
+            PEND_F.clear();
+            PEND_L.clear();
+        }
+        for (int i = 0; i < rf.size(); i++) {
+            File f = rf.get(i);
+            String label = rl.get(i);
+            if (f != null && f.exists()) {
+                addRoot(f, label);
+                DebugConsole.log('I', "SYS", "pantau tertunda kini AKTIF: " + label);
+            } else {
+                synchronized (OBS) { PEND_F.add(f); PEND_L.add(label); }
+            }
+        }
+    }
+
+    // ------------------------------------------------------------- heartbeat
+
+    /** Tiap 60 dtk: bukti hidup + perawatan watch (rescan) + folder tertunda. */
+    private static void startHeartbeat() {
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                long lastFile = 0, lastPoll = 0;
+                while (true) {
+                    try {
+                        Thread.sleep(60000);
+                    } catch (Throwable t2) {
+                        return;
+                    }
+                    try {
+                        // 1) rawat watch: buang mati, pasang ulang kurang
+                        int n = 0;
+                        synchronized (OBS) {
+                            for (int i = 0; i < OBS.size(); i++) {
+                                try { OBS.get(i).rescan(); n++; } catch (Throwable ignore) {}
+                            }
+                        }
+                        retryPending();
+
+                        // 2) laporan hidup
+                        long f = evtFile, p = evtPoll;
+                        DebugConsole.log('I', "SYS", "hidup • " + (f - lastFile)
+                                + " kejadian file • " + (p - lastPoll)
+                                + " selisih poll (60 dtk) • " + n + " pemantau dirawat • "
+                                + watcherHealth());
+                        lastFile = f;
+                        lastPoll = p;
+                    } catch (Throwable ignore) {}
+                }
+            }
+        }, "DBTRACE-beat");
+        t.setDaemon(true);
+        t.start();
+    }
+
+    private static String watcherHealth() {
+        StringBuilder sb = new StringBuilder(160);
+        synchronized (OBS) {
+            for (int i = 0; i < OBS.size(); i++) {
+                try {
+                    RecursiveFileObserver o = OBS.get(i);
+                    sb.append(o.name()).append(' ').append(o.health());
+                    if (i < OBS.size() - 1) sb.append(" • ");
+                } catch (Throwable ignore) {}
+            }
+        }
+        return sb.length() == 0 ? "(tidak ada pemantau)" : sb.toString();
+    }
+
+    // -------------------------------------------------- jalur log pemantau
+
     /** Dipanggil RecursiveFileObserver — dengan kontrol banjir di DebugConsole. */
     static void fileLine(String kind, String label, String msg) {
+        evtFile++;
         DebugConsole.log('I', "FILE", kind + " " + label + " • " + msg);
     }
 
     /** Dipanggil Poller. */
     static void pollLine(String label, String msg) {
+        evtPoll++;
         DebugConsole.log('I', "POLL", label + " • " + msg);
+    }
+
+    /** Detail POLL yang ditekan panel — tetap masuk log disk. */
+    static void pollDiskOnly(String body) {
+        try {
+            long now = System.currentTimeMillis();
+            String[] arr = body.split("\n");
+            for (int i = 0; i < arr.length; i++) {
+                diskLine(DebugConsole.tsOf(now) + " POLL: " + arr[i]);
+            }
+        } catch (Throwable ignore) {}
     }
 
     // ------------------------------------------------------- potret awal
