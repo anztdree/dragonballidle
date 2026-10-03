@@ -85,6 +85,18 @@ import java.util.regex.Pattern;
  *   Solusi: teks POLOS (0 span), 150 baris (~2.000 px, <0,3 dtk),
  *   first-paint instan saat buka, lewati render bila isi tak berubah,
  *   dan throttle banjir 2 dtk.
+ *
+ * FIX v2.2 — LOG TRAFIK & LOG FILE DIPISAH (permintaan user):
+ *   Panel diberi TAB: [TRAFFIK] [FILE] [SEMUA].
+ *   - TRAFFIK = DL/GET/UNDUH/ISI/NET/CACHE → "apa yang diambil game dari
+ *     server, URL-nya apa, disimpan ke mana" (asal SERVER).
+ *   - FILE    = FILE/POLL/SCAN/CFG → kejadian penyimpanan di HP.
+ *   - SEMUA   = kronologis campur + BOOT/SYS (heartbeat, tap panel).
+ *   COPY mengikuti tab aktif; SAVE menyusun file 3 SEKSI rapi
+ *   (TRAFFIK / FILE / SISTEM) — satu file, isi tidak bercampur.
+ *   Asal file diberi tanda: baris UNDUH = file SERVER (diunduh dari
+ *   server resmi — kandidat dikemas lokal nanti), via (zip) = isi paket
+ *   update all.zip. File LOKAL (prefs/log/db) muncul di tab FILE/SEMUA.
  */
 public final class DebugConsole {
 
@@ -113,6 +125,10 @@ public final class DebugConsole {
     private static int floodCount = 0;
     private static int floodHidden = 0;
     private static long floodStart = 0;
+    // FIX v2.2: banjir [UNDUH] (ekstraksi mirror bisa ribuan file server)
+    private static int unduhCount = 0;
+    private static int unduhHidden = 0;
+    private static long unduhStart = 0;
 
     private static final SimpleDateFormat TS = new SimpleDateFormat("HH:mm", Locale.US);
 
@@ -151,6 +167,28 @@ public final class DebugConsole {
                         return;
                     }
                     floodCount++;
+                }
+            }
+            // FIX v2.2: UNDUH ikut diredam saat ekstraksi all.zip (ribuan file
+            // server per detik) — panel tetap lega; log disk TETAP UTUH.
+            if ("UNDUH".equals(tag)) {
+                synchronized (BUF_LOCK) {
+                    if (now - unduhStart > 2000) {
+                        unduhStart = now;
+                        unduhCount = 0;
+                        if (unduhHidden > 0) {
+                            String supp = "… +" + unduhHidden + " unduhan lain ditekan (SAVE memuat SEMUA)";
+                            BUF.add(new Ent(now, 'I', "UNDUH", supp));
+                            TracePack.diskLine(ts(now) + " UNDUH: " + supp);
+                            unduhHidden = 0;
+                        }
+                    }
+                    if (unduhCount >= 150) {
+                        unduhHidden++;
+                        TracePack.diskLine(ts(now) + " UNDUH: (ditekan panel) " + msg);
+                        return;
+                    }
+                    unduhCount++;
                 }
             }
             synchronized (BUF_LOCK) {
@@ -192,6 +230,26 @@ public final class DebugConsole {
         }
     }
 
+    // ------------------------------------------------------- channel (v2.2)
+
+    /** Tab aktif: 'T' = TRAFFIK (default), 'F' = FILE, 'A' = SEMUA. */
+    private static char viewChan = 'T';
+    private static TextView tabT, tabF, tabA;
+
+    /** FIX v2.2: kanal sebuah tag — TRAFIK (server→HP), FILE (penyimpanan),
+     *  SISTEM (BOOT/SYS). Trafik & file TIDAK lagi bercampur di satu tampilan. */
+    static char channelOf(String tag) {
+        if ("UNDUH".equals(tag) || "DL".equals(tag) || "GET".equals(tag)
+                || "ISI".equals(tag) || "NET".equals(tag) || "CACHE".equals(tag)) return 'T';
+        if ("FILE".equals(tag) || "POLL".equals(tag) || "SCAN".equals(tag)
+                || "CFG".equals(tag)) return 'F';
+        return 'S';
+    }
+
+    static String channelName(char ch) {
+        return ch == 'T' ? "TRAFFIK" : ch == 'F' ? "FILE" : "SEMUA";
+    }
+
     private static String plainOf(Ent e) {
         StringBuilder sb = new StringBuilder(128);
         sb.append(ts(e.at)).append(' ').append(e.tag).append(": ").append(e.msg);
@@ -204,6 +262,24 @@ public final class DebugConsole {
         synchronized (BUF_LOCK) {
             for (int i = 0; i < BUF.size(); i++) sb.append(plainOf(BUF.get(i))).append('\n');
         }
+        sb.append(deviceSummary());
+        return sb.toString();
+    }
+
+    /** FIX v2.2: dump SATU kanal (utk COPY mengikuti tab aktif). */
+    private static String dumpChan(char ch) {
+        StringBuilder sb = new StringBuilder(BUF.size() * 96 + 256);
+        int n = 0;
+        synchronized (BUF_LOCK) {
+            for (int i = 0; i < BUF.size(); i++) {
+                Ent e = BUF.get(i);
+                if (ch == 'A' || channelOf(e.tag) == ch) {
+                    sb.append(plainOf(e)).append('\n');
+                    n++;
+                }
+            }
+        }
+        sb.append("(kanal ").append(channelName(ch)).append(" • ").append(n).append(" baris)\n");
         sb.append(deviceSummary());
         return sb.toString();
     }
@@ -639,7 +715,7 @@ public final class DebugConsole {
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
         TextView title = new TextView(c);
-        title.setText("TRACE-2.1 • MODE AMATI");
+        title.setText("TRACE-2.2 • MODE AMATI");
         title.setTextSize(12f);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setTextColor(Color.parseColor("#FFFFC107"));
@@ -649,6 +725,27 @@ public final class DebugConsole {
             public void onClick(View v) { togglePanel(); }
         }));
         panel.addView(head);
+
+        // FIX v2.2: baris TAB — trafik & file dipisah, tidak bercampur
+        LinearLayout tabs = new LinearLayout(c);
+        tabs.setOrientation(LinearLayout.HORIZONTAL);
+        tabs.setPadding(0, dp(5, c), 0, 0);
+        tabT = mkTab(c, "TRAFFIK", 'T');
+        tabF = mkTab(c, "FILE", 'F');
+        tabA = mkTab(c, "SEMUA", 'A');
+        tabs.addView(tabT);
+        tabs.addView(tabF);
+        tabs.addView(tabA);
+        TextView tabHint = new TextView(c);
+        tabHint.setText("TRAFFIK=server→HP • FILE=penyimpanan • UNDUH=file server");
+        tabHint.setTextSize(8f);
+        tabHint.setTextColor(Color.parseColor("#FF777777"));
+        tabHint.setGravity(Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams thlp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        thlp.setMargins(dp(6, c), 0, 0, 0);
+        tabHint.setLayoutParams(thlp);
+        tabs.addView(tabHint);
+        panel.addView(tabs);
 
         // baris tombol aksi 1
         LinearLayout btns1 = new LinearLayout(c);
@@ -723,7 +820,43 @@ public final class DebugConsole {
 
         lastBufSize = -1;
         lastRenderedSize = -1; lastRenderedKey = null;
+        styleTabs();
         return panel;
+    }
+
+    /** FIX v2.2: tombol TAB + pewarnaan tab aktif. */
+    private static TextView mkTab(final Context c, String label, final char chan) {
+        TextView t = mkBtn(c, label, new View.OnClickListener() {
+            public void onClick(View v) {
+                viewChan = chan;
+                styleTabs();
+                lastRenderedSize = -1;
+                lastRenderedKey = null;
+                refreshNow();
+            }
+        });
+        t.setPadding(dp(9, c), dp(5, c), dp(9, c), dp(5, c));
+        return t;
+    }
+
+    private static void styleTabs() {
+        try {
+            Context c = appRef.get();
+            if (c == null) return;
+            int accent = Color.parseColor("#FFFFC107");
+            int dim = Color.parseColor("#2EFFFFFF");
+            int selTxt = Color.parseColor("#FF101010");
+            int txt = Color.parseColor("#FFE0E0E0");
+            TextView[] ts = {tabT, tabF, tabA};
+            char[] cs = {'T', 'F', 'A'};
+            for (int i = 0; i < ts.length; i++) {
+                if (ts[i] == null) continue;
+                boolean sel = viewChan == cs[i];
+                ts[i].setBackground(roundBg(c, sel ? accent : dim, 12,
+                        sel ? accent : Color.parseColor("#33FFFFFF"), 1));
+                ts[i].setTextColor(sel ? selTxt : txt);
+            }
+        } catch (Throwable ignore) {}
     }
 
     /** FALLBACK lama: UI menempel di decor activity (bila overlay belum
@@ -812,8 +945,9 @@ public final class DebugConsole {
             int n;
             synchronized (BUF_LOCK) { n = BUF.size(); }
             int show = Math.min(n, RENDER_MAX);
-            logView.setText("memuat " + show + " dari " + n + " baris buffer • "
-                    + TracePack.diskCount() + " baris disk — sedang menggambar…");
+            logView.setText("tab " + channelName(viewChan) + " • memuat " + show + " dari "
+                    + n + " baris buffer • " + TracePack.diskCount()
+                    + " baris disk — sedang menggambar…");
             try { if (scroller != null) scroller.scrollTo(0, 0); } catch (Throwable ignore) {}
             lastRenderedSize = -1;   // paksa render penuh pada refresh berikutnya
             lastRenderedKey = null;
@@ -871,8 +1005,12 @@ public final class DebugConsole {
             synchronized (BUF_LOCK) {
                 size = BUF.size();
                 if (size > 0) tail = BUF.get(size - 1);
-                int from = Math.max(0, size - RENDER_MAX);
-                for (int i = from; i < size; i++) copy.add(BUF.get(i));
+                // FIX v2.2: hanya kanal tab aktif (dari belakang, ambil 150)
+                for (int i = size - 1; i >= 0 && copy.size() < RENDER_MAX; i--) {
+                    Ent e = BUF.get(i);
+                    if (viewChan == 'A' || channelOf(e.tag) == viewChan) copy.add(e);
+                }
+                java.util.Collections.reverse(copy);
             }
             // FIX v2.1: lewati render bila isi buffer persis sama — layout yang
             // sedang berjalan TIDAK dibatalkan. Inilah penangkal starvation:
@@ -919,11 +1057,16 @@ public final class DebugConsole {
     }
 
     private static String footerText() {
-        int size;
-        synchronized (BUF_LOCK) { size = BUF.size(); }
-        // FIX v2.1: footer = bukti hidup di panel — hitungan disk naik terus.
-        return "buffer " + size + " • disk " + TracePack.diskCount()
-                + " baris • COPY/SAVE = SEMUA";
+        // FIX v2.2: hitungan per kanal — pemisahan kelihatan sekaligus
+        int nT = 0, nF = 0, nS = 0;
+        synchronized (BUF_LOCK) {
+            for (int i = 0; i < BUF.size(); i++) {
+                char ch = channelOf(BUF.get(i).tag);
+                if (ch == 'T') nT++; else if (ch == 'F') nF++; else nS++;
+            }
+        }
+        return "trafik " + nT + " • file " + nF + " • sys " + nS
+                + " • disk " + TracePack.diskCount() + " baris";
     }
 
     // ------------------------------------------------------------- aksi tombol
@@ -939,14 +1082,20 @@ public final class DebugConsole {
 
     private static void doCopy(final Context c) {
         try {
-            final String dump = dumpAll();
-            int n;
-            synchronized (BUF_LOCK) { n = BUF.size(); }
+            final char ch = viewChan; // FIX v2.2: COPY mengikuti tab aktif
+            final String dump = dumpChan(ch);
+            int n = 0;
+            synchronized (BUF_LOCK) {
+                for (int i = 0; i < BUF.size(); i++) {
+                    if (ch == 'A' || channelOf(BUF.get(i).tag) == ch) n++;
+                }
+            }
             ClipboardManager cm = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);
             if (cm == null) { toast(c, "clipboard tidak tersedia"); return; }
-            cm.setPrimaryClip(ClipData.newPlainText("TRACE-1 debug", dump));
-            toast(c, "✔ " + n + " baris tersalin — paste ke chat");
-            log('I', "SYS", "log di-copy ke clipboard (" + n + " baris, " + dump.length() + " karakter)");
+            cm.setPrimaryClip(ClipData.newPlainText("TRACE debug", dump));
+            toast(c, "✔ " + n + " baris " + channelName(ch) + " tersalin — paste ke chat");
+            log('I', "SYS", "log di-copy ke clipboard (" + channelName(ch) + " " + n
+                    + " baris, " + dump.length() + " karakter)");
         } catch (Throwable t) {
             toast(c, "copy gagal: " + t);
         }
@@ -992,25 +1141,80 @@ public final class DebugConsole {
         }, "DBTRACE-save").start();
     }
 
-    /** Gabungan trace_log.old.txt + trace_log.txt + ringkasan perangkat. */
+    /** Gabungan trace_log.old.txt + trace_log.txt + ringkasan perangkat.
+     *  FIX v2.2: isi disusun 3 SEKSI — TRAFFIK (server→HP), FILE
+     *  (penyimpanan), SISTEM — sesuai permintaan user: trafik & file
+     *  tidak bercampur. Satu file tetap; kronologis mentah tetap ada
+     *  utuh di device (trace_log.txt). */
+    private static final Pattern DISK_LINE = Pattern.compile("^(\\d\\d:\\d\\d) ([A-Z0-9_]+): ");
+
     private static String fullDiskDump() {
         try {
             File df = TracePack.diskLogFile();
             if (df == null || !df.exists()) return null;
-            StringBuilder sb = new StringBuilder(8192);
+            StringBuilder traf = new StringBuilder(8192);
+            StringBuilder file = new StringBuilder(8192);
+            StringBuilder syst = new StringBuilder(8192);
+            int nOld = 0;
             File old = new File(df.getParentFile(), "trace_log.old.txt");
             if (old.exists()) {
                 String o = readFileHead(old, 4 << 20);
-                if (o != null && o.length() > 0) sb.append("== sesi sebelumnya ==\n").append(o).append('\n');
+                if (o != null && o.length() > 0) {
+                    nOld = splitDiskInto(o, traf, file, syst, true);
+                }
             }
             String cur = readFileHead(df, 4 << 20);
-            if (cur == null || cur.length() == 0) return null;
-            sb.append("== sesi berjalan ==\n").append(cur).append('\n');
-            sb.append(deviceSummary());
-            return sb.toString();
+            if ((cur == null || cur.length() == 0) && nOld == 0) return null;
+            if (cur != null && cur.length() > 0) splitDiskInto(cur, traf, file, syst, false);
+            StringBuilder out = new StringBuilder(traf.length() + file.length() + syst.length() + 1024);
+            out.append("== TRAFFIK (server → HP) — DL/GET/UNDUH/ISI/NET/CACHE ==\n");
+            out.append("(setiap baris UNDUH = file SERVER resmi: URL → SIMPAN KE lokasi di HP; via (zip) = isi paket update)\n");
+            out.append(traf.length() == 0 ? "(kosong)\n" : traf);
+            out.append('\n');
+            out.append("== FILE (penyimpanan HP) — FILE/POLL/SCAN/CFG ==\n");
+            out.append(file.length() == 0 ? "(kosong)\n" : file);
+            out.append('\n');
+            out.append("== SISTEM — BOOT/SYS (lainnya) ==\n");
+            out.append(syst.length() == 0 ? "(kosong)\n" : syst);
+            out.append('\n');
+            out.append("(baris trafik ").append(countLines(traf)).append(" • file ")
+               .append(countLines(file)).append(" • sistem ").append(countLines(syst))
+               .append(" — kronologis mentah tetap utuh di files/trace_log.txt)\n");
+            out.append(deviceSummary());
+            return out.toString();
         } catch (Throwable t) {
             return null;
         }
+    }
+
+    private static int countLines(StringBuilder sb) {
+        int n = 0;
+        for (int i = 0; i < sb.length(); i++) if (sb.charAt(i) == '\n') n++;
+        return n;
+    }
+
+    /** Pisahkan teks log disk ke 3 penyusun sesuai tag tiap baris.
+     *  Baris lanjutan (tanpa pola "HH:mm TAG:") mengikuti kanal baris
+     *  sebelumnya. headSesi=true → tandai "== sesi" masuk SISTEM. */
+    private static int splitDiskInto(String raw, StringBuilder traf, StringBuilder file,
+                                     StringBuilder syst, boolean headSesi) {
+        if (raw == null || raw.length() == 0) return 0;
+        int n = 0;
+        char last = 'S';
+        String[] lines = raw.split("\n");
+        for (int i = 0; i < lines.length; i++) {
+            String ln = lines[i];
+            if (ln.length() == 0) continue;
+            if (headSesi && ln.startsWith("== sesi")) { syst.append(ln).append('\n'); last = 'S'; continue; }
+            Matcher m = DISK_LINE.matcher(ln);
+            char ch;
+            if (m.find()) ch = channelOf(m.group(2));
+            else ch = last; // baris lanjutan (POLL detail / ISI multiline)
+            (ch == 'T' ? traf : ch == 'F' ? file : syst).append(ln).append('\n');
+            last = ch;
+            n++;
+        }
+        return n;
     }
 
     private static String readFileHead(File f, int max) {
@@ -1385,24 +1589,27 @@ public final class DebugConsole {
     // --------------------------------------------------- CACHE (isi jawaban server)
 
     /** CACHE — isi file cache HTTP native kecil (jawaban server yang
-     *  menjelaskan kenapa game berhenti di login/SDK). Read-only. */
+     *  menjelaskan kenapa game berhenti di login/SDK). Read-only.
+     *  FIX v2.2: batas 4 KB → 200 KB + pratinjau 800 karakter — supaya
+     *  JAWABAN SERVER SAAT REGISTER/LOGIN SDK (socket.io, open, data akun)
+     *  ikut kebaca. "Semua data server build bisa kita ambil". */
     private static void doCache() {
         new Thread(new Runnable() {
             public void run() {
                 try {
                     Context c = appRef.get();
                     if (c == null) return;
-                    log('I', "CACHE", "── ISI CACHE HTTP NATIVE mulai (file kecil, TERBARU dulu) ──");
+                    log('I', "CACHE", "── ISI CACHE HTTP NATIVE mulai (terbaru dulu, batas 200 KB) ──");
                     List<File> files = new ArrayList<File>();
-                    try { walk(new File(c.getFilesDir(), "games"), files, new int[]{3000}); } catch (Throwable ignore) {}
+                    try { walk(new File(c.getFilesDir(), "games"), files, new int[]{8000}); } catch (Throwable ignore) {}
                     try {
                         File ext = c.getExternalFilesDir(null);
-                        if (ext != null) walk(new File(ext, "game"), files, new int[]{3000});
+                        if (ext != null) walk(new File(ext, "game"), files, new int[]{8000});
                     } catch (Throwable ignore) {}
                     List<File> small = new ArrayList<File>();
                     for (int i = 0; i < files.size(); i++) {
                         File f = files.get(i);
-                        if (f.isFile() && f.length() > 0 && f.length() <= 4096) small.add(f);
+                        if (f.isFile() && f.length() > 0 && f.length() <= (200 << 10)) small.add(f);
                     }
                     Collections.sort(small, new Comparator<File>() {
                         public int compare(File a, File b) {
@@ -1413,8 +1620,8 @@ public final class DebugConsole {
                     int shown = 0;
                     for (int i = 0; i < small.size(); i++) {
                         File f = small.get(i);
-                        if (shown >= 60) {
-                            log('I', "CACHE", "… +" + (small.size() - shown) + " file kecil lagi (terbaru sudah tampil di baris ISI)");
+                        if (shown >= 100) {
+                            log('I', "CACHE", "… +" + (small.size() - shown) + " file lagi (terbaru sudah tampil)");
                             break;
                         }
                         shown++;
@@ -1422,7 +1629,7 @@ public final class DebugConsole {
                         String prev = cachePreview(f);
                         if (prev.length() > 0) log('I', "CACHE", "   isi: " + prev);
                     }
-                    if (shown == 0) log('W', "CACHE", "belum ada cache kecil — jalankan game sampai lewat layar SDK dulu");
+                    if (shown == 0) log('W', "CACHE", "belum ada cache kecil — jalankan game / register SDK dulu");
                     log('I', "CACHE", "── CACHE selesai — " + shown + " file ditampilkan ──");
                 } catch (Throwable t) {
                     log('E', "CACHE", "cache gagal: " + t);
@@ -1445,16 +1652,16 @@ public final class DebugConsole {
     private static String cachePreview(File f) {
         FileInputStream in = null;
         try {
-            int want = (int) Math.min(f.length(), 500);
+            int want = (int) Math.min(f.length(), 900);
             byte[] buf = new byte[want];
             in = new FileInputStream(f);
             int off = 0, n;
             while (off < want && (n = in.read(buf, off, want - off)) > 0) off += n;
-            StringBuilder sb = new StringBuilder(520);
+            StringBuilder sb = new StringBuilder(920);
             for (int i = 0; i < off; i++) {
                 char ch = (char) (buf[i] & 0xFF);
                 sb.append((ch >= 32 && ch < 127) || ch == '\n' || ch == '\t' ? (ch == '\n' ? ' ' : ch) : '·');
-                if (sb.length() >= 400) { sb.append("…"); break; }
+                if (sb.length() >= 800) { sb.append("…"); break; }
             }
             return sb.toString().trim();
         } catch (Throwable t) {

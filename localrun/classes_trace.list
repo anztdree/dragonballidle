@@ -1,11 +1,13 @@
 classes_trace/com/dblocal/trace/DebugConsole$9.class
 classes_trace/com/dblocal/trace/DebugConsole$6.class
 classes_trace/com/dblocal/trace/DebugConsole.class
+classes_trace/com/dblocal/trace/DebugConsole$26.class
 classes_trace/com/dblocal/trace/DebugConsole$15.class
 classes_trace/com/dblocal/trace/DebugConsole$14.class
 classes_trace/com/dblocal/trace/Poller$1.class
 classes_trace/com/dblocal/trace/DebugConsole$21.class
 classes_trace/com/dblocal/trace/DebugConsole$12.class
+classes_trace/com/dblocal/trace/DebugConsole$26$1.class
 classes_trace/com/dblocal/trace/DebugConsole$13.class
 classes_trace/com/dblocal/trace/DebugConsole$19.class
 classes_trace/com/dblocal/trace/DebugConsole$6$1.class
@@ -20,7 +22,6 @@ classes_trace/com/dblocal/trace/DebugConsole$4.class
 classes_trace/com/dblocal/trace/DebugConsole$7.class
 classes_trace/com/dblocal/trace/DebugConsole$11.class
 classes_trace/com/dblocal/trace/DebugConsole$10.class
-classes_trace/com/dblocal/trace/DebugConsole$25$1.class
 classes_trace/com/dblocal/trace/DebugConsole$5$1.class
 classes_trace/com/dblocal/trace/DebugConsole$1.class
 classes_trace/com/dblocal/trace/DebugConsole$17.class

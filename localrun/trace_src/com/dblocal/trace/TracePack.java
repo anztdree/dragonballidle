@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class TracePack {
 
-    public static final String VER = "TRACE-2.1";
+    public static final String VER = "TRACE-2.2";
 
     private static boolean started = false;
     private static Context appCtx = null;
@@ -488,7 +488,22 @@ public final class TracePack {
      *  layak diredam dari panel? Panel tetap menerima baris UNDUH yang jelas
      *  dari unduhFromCache(); log disk tetap mencatat SEMUA kejadian mentah. */
     static boolean cacheNoise(String abs) {
+        return cacheInt(abs) || cacheMirror(abs);
+    }
+
+    /** FIX v2.2: cache INTERNAL = cache unduhan langsung engine
+     *  files/games/https/<host>/<path>#<kunci> — setiap file di sini =
+     *  file SERVER (jawaban HTTP langsung). */
+    static boolean cacheInt(String abs) {
         return abs != null && abs.contains("/games/https/");
+    }
+
+    /** FIX v2.2: mirror EKSTERNAL = pohon hasil unduhan/ekstraksi
+     *  files/game/https/<host>/<path> (tanpa #kunci) — juga asal SERVER
+     *  (masuk HP lewat paket update/unduhan engine), jadi layak baris
+     *  UNDUH via (zip) agar "mana file server" terjawab lengkap. */
+    static boolean cacheMirror(String abs) {
+        return abs != null && !cacheInt(abs) && abs.contains("/game/https/");
     }
 
     // ------------------------------------- dekoder unduhan native (v1.3)
@@ -513,13 +528,24 @@ public final class TracePack {
         try {
             if (f == null || !f.isFile()) return;
             String p = f.getAbsolutePath();
-            int i = p.indexOf("/games/https/");
-            if (i < 0) return; // bukan cache HTTP native
             String name = f.getName();
             // berhenti di jeda (#temp) dan simpulan JUGA saat file header
             // selesai — header tampil sendiri lewat cachePeek (tag ISI).
             if (name.endsWith("#temp") || name.endsWith("#header")) return;
-            String tail = p.substring(i + "/games/https/".length());
+            // FIX v2.2: dua pohon asal SERVER —
+            //   int  : files/games/https/<host>/<path>#<kunci>  (unduhan langsung)
+            //   mirror: files/game/https/<host>/<path>          (isi paket update/ekstraksi)
+            boolean mirror = false;
+            int i = p.indexOf("/games/https/");
+            int markLen = "/games/https/".length();
+            if (i < 0) {
+                i = p.indexOf("/game/https/");
+                if (i < 0) return; // bukan cache/mirror HTTP native
+                mirror = true;
+                markLen = "/game/https/".length();
+                via = "(zip)"; // file server yang masuk lewat paket update
+            }
+            String tail = p.substring(i + markLen);
             String host = tail, rest = "";
             int h = tail.indexOf('#');
             int s = tail.indexOf('/');
@@ -581,18 +607,32 @@ public final class TracePack {
         try {
             if (f == null || !f.isFile()) return;
             long len = f.length();
-            if (len <= 0 || len > 800) return;
+            if (len <= 0) return;
             String p = f.getAbsolutePath();
-            boolean cacheLike = p.contains("/games/https/") || p.contains("/game/https/");
-            if (!cacheLike) return;
+            boolean intCache = cacheInt(p);
+            boolean mirror = !intCache && cacheMirror(p);
+            if (!intCache && !mirror) return;
             String n = f.getName();
             boolean interesting = n.contains("#") || n.endsWith(".json")
                     || n.endsWith(".version") || n.endsWith(".bin");
             if (!interesting) return;
-            byte[] head = readHead(f, 400);
+            int headMax;
+            if (intCache) {
+                // FIX v2.2: cache internal = jawaban server LANGSUNG (login,
+                // socket.io, register SDK, config) — batas 800 B → 128 KB dan
+                // pratinjau 400 → 800 karakter supaya data register/akun ikut
+                // terbaca ("semua data server build bisa kita ambil").
+                if (len > (128 << 10)) return;
+                headMax = 800;
+            } else {
+                // mirror = pohon resource; hanya file kecil (hemat saat ekstraksi besar)
+                if (len > 800) return;
+                headMax = 400;
+            }
+            byte[] head = readHead(f, headMax);
             String prev = printableOf(head);
             if (prev.length() == 0) prev = "(biner)";
-            if (prev.length() > 300) prev = prev.substring(0, 300) + "…";
+            if (prev.length() > 800) prev = prev.substring(0, 800) + "…";
             DebugConsole.log('I', "ISI", via + " " + shortPath(p) + " • " + prev);
         } catch (Throwable ignore) {}
     }

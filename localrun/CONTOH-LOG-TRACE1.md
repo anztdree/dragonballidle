@@ -196,3 +196,65 @@ ALUR LENGKAP SATU SESI (dari log 08-34, aplikasi terbuka → lobby guide):
    sudah sampai tahap lobby guide.
 6. Sepanjang sesi: heartbeat "hidup • 3.187 kejadian file • ext:files 186 dir",
    POLL tiap 4 dtk, chip penghitung naik terus.
+
+---
+
+## TRACE-2.2 — log TRAFIK & log FILE DIPISAH + tanda asal file (permintaan user)
+
+"Log traffic dan log file jangan dicampur" + "mana file lokal, mana file server
+yang bisa diunduh/diedit" + "saat register SDK semua data server harus bisa
+kita ambil".
+
+### 1. Panel kini ber-TAB
+
+```
+[ TRAFFIK ]  [ FILE ]  [ SEMUA ]
+```
+- **TRAFFIK** (default) = DL/GET/**UNDUH**/ISI/NET/CACHE — apa yang diambil
+  game dari server, URL-nya, disimpan ke mana. MURNI server→HP.
+- **FILE** = FILE/POLL/SCAN/CFG — kejadian penyimpanan di HP.
+- **SEMUA** = kronologis campur + BOOT/SYS (heartbeat, tap panel).
+- COPY mengikuti tab aktif. Footer: `trafik N • file M • sys K • disk L baris`.
+
+### 2. Tanda asal file — SERVER vs LOKAL
+
+- **Setiap baris UNDUH = file SERVER resmi** (kandidat dikemas lokal nanti):
+```
+08:33 UNDUH: OK (tulis) • 63.7 KB • https://dragonh5cdn.popoh5.com/bs/resource/.../WKCY-beiji_tex.png  (kunci #/v=225043427) → SIMPAN KE /data/user/0/com.db.local/files/games/https/dragonh5cdn.popoh5.com/bs/resource/.../WKCY-beiji_tex.png#/v=225043427
+08:33 UNDUH: OK (zip)   • 197.3 KB • https://dragonh5cdn.popoh5.com/bs/js/egret.min_d9413192.js → SIMPAN KE /storage/emulated/0/Android/data/com.db.local/files/game/https/dragonh5cdn.popoh5.com/bs/js/egret.min_d9413192.js
+```
+  - `via (tulis)`/`(masuk)` = unduhan langsung engine (cache internal
+    `files/games/https/`).
+  - `via (zip)` = isi paket update all.zip (mirror eksternal
+    `files/game/https/`) — kini IKUT tercatat satu per satu di TRAFFIK.
+- **File LOKAL** (dibuat game/APK sendiri: prefs facebook, trace_log.txt,
+  database, sdk) hanya muncul di tab FILE/SEMUA, TIDAK diberi baris UNDUH.
+- Banjir UNDUH saat ekstraksi otomatis diredam dari panel
+  ("… +N unduhan lain ditekan (SAVE memuat SEMUA)") — log disk tetap utuh.
+
+### 3. SAVE kini menyusun 3 SEKSI (satu file, tidak bercampur)
+
+```
+== TRAFFIK (server → HP) — DL/GET/UNDUH/ISI/NET/CACHE ==
+(setiap baris UNDUH = file SERVER resmi: URL → SIMPAN KE lokasi di HP; via (zip) = isi paket update)
+08:32 DL: ...
+08:33 UNDUH: ...
+== FILE (penyimpanan HP) — FILE/POLL/SCAN/CFG ==
+...
+== SISTEM — BOOT/SYS (lainnya) ==
+...
+(baris trafik N • file M • sistem K — kronologis mentah tetap utuh di files/trace_log.txt)
+```
+
+### 4. Data server saat REGISTER SDK — pemeriksaan diperluas
+
+- ISI otomatis: cache internal (jawaban server langsung) kini dibaca sampai
+  **128 KB** (sebelumnya 800 B) dengan pratinjau 800 karakter — data
+  login/register socket.io & config ikut terekam.
+- Tombol **CACHE**: batas file 4 KB → **200 KB**, pratinjau 800 karakter,
+  100 file terbaru — tekan setelah register untuk melihat semua jawaban
+  server yang tersimpan.
+- Catatan jujur: SDK login (quickgame) punya jalur jaringannya sendiri; yang
+  TERCATAT adalah semua yang DITULIS ke penyimpanan (cache, prefs, database)
+  + semua unduhan engine. Setelah register: tekan CACHE + SAVE — bila ada
+  jawaban server yang tidak muncul, jadi bahan menambah hook berikutnya.

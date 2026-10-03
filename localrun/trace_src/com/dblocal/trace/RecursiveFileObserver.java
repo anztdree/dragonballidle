@@ -38,6 +38,17 @@ import java.util.Map;
  *       https://host/path → SIMPAN KE <path penuh> • ukuran
  *     (dekoder di TracePack.unduhFromCache — read-only).
  *
+ * FIX v2.2 (log trafik & file dipisah + tanda asal file):
+ *   cacheNoise kini mencakup DUA pohon asal SERVER:
+ *   - cache INTERNAL  files/games/https/... → UNDUH via (tulis)/(masuk)
+ *   - mirror EKSTERNAL files/game/https/... → UNDUH via (zip) — isi paket
+ *     update all.zip; kejadian FILE-nya senyap agar tab FILE tetap bersih,
+ *     gantinya SETIAP file server tercatat di tab TRAFFIK:
+ *       UNDUH: OK (zip) • ukuran • https://host/path → SIMPAN KE <path>
+ *   → jawaban "mana file server yang bisa diunduh/diedit" jadi daftar
+ *     lengkap URL + lokasi simpan. File LOKAL (prefs, log, db, sdk) tetap
+ *     tampil normal di tab FILE (tanpa baris UNDUH).
+ *
  * Kejadian yang ditekan panel (banjir ekstraksi) TETAP ditulis ke log disk
  * oleh DebugConsole — tidak ada yang lolos dari catatan.
  */
