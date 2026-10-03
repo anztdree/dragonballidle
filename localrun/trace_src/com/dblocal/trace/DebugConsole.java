@@ -86,17 +86,19 @@ import java.util.regex.Pattern;
  *   first-paint instan saat buka, lewati render bila isi tak berubah,
  *   dan throttle banjir 2 dtk.
  *
- * FIX v2.2 — LOG TRAFIK & LOG FILE DIPISAH (permintaan user):
- *   Panel diberi TAB: [TRAFFIK] [FILE] [SEMUA].
- *   - TRAFFIK = DL/GET/UNDUH/ISI/NET/CACHE → "apa yang diambil game dari
- *     server, URL-nya apa, disimpan ke mana" (asal SERVER).
- *   - FILE    = FILE/POLL/SCAN/CFG → kejadian penyimpanan di HP.
- *   - SEMUA   = kronologis campur + BOOT/SYS (heartbeat, tap panel).
- *   COPY mengikuti tab aktif; SAVE menyusun file 3 SEKSI rapi
- *   (TRAFFIK / FILE / SISTEM) — satu file, isi tidak bercampur.
- *   Asal file diberi tanda: baris UNDUH = file SERVER (diunduh dari
- *   server resmi — kandidat dikemas lokal nanti), via (zip) = isi paket
- *   update all.zip. File LOKAL (prefs/log/db) muncul di tab FILE/SEMUA.
+ * TRACE-1.0 — MODE CONFIG (permintaan user: "log meriah tapi tidak efisien;
+ * banyak file tertangkap tapi bukan bagian dari config"):
+ *   - TAB jadi [CONFIG] [FILE] [SEMUA]. CONFIG = server & config SAJA:
+ *     DL/GET/UNDUH (hanya file config), ISI (isi jawaban server, 2.000
+ *     karakter), ASSET (ringkasan hitungan asset — bukan baris per-file),
+ *     NET/CACHE/LOGIN. FILE = penyimpanan (config kecil individual;
+ *     asset & SDK pihak ketiga jadi hitungan). SEMUA = kronologis.
+ *   - Tombol LOGIN: MEMBONGKAR isi jawaban socket login.popoh5.com:610 +
+ *     server game dari cache native — teks/zlib/deflate/gzip dibongkar,
+ *     pratinjau masuk panel, TEKS PENUH disimpan ke server_answer.txt
+ *     (inilah "data server build" yang dicari saat register SDK).
+ *   - PENAMAAN (keputusan user): kembali ke v1.0 dan TETAP v1.0 sampai
+ *     dianggap sempurna — perbaikan menimpa rilis v1.0, bukan menaikkan nomor.
  */
 public final class DebugConsole {
 
@@ -240,14 +242,15 @@ public final class DebugConsole {
      *  SISTEM (BOOT/SYS). Trafik & file TIDAK lagi bercampur di satu tampilan. */
     static char channelOf(String tag) {
         if ("UNDUH".equals(tag) || "DL".equals(tag) || "GET".equals(tag)
-                || "ISI".equals(tag) || "NET".equals(tag) || "CACHE".equals(tag)) return 'T';
+                || "ISI".equals(tag) || "NET".equals(tag) || "CACHE".equals(tag)
+                || "ASSET".equals(tag) || "LOGIN".equals(tag)) return 'T';
         if ("FILE".equals(tag) || "POLL".equals(tag) || "SCAN".equals(tag)
                 || "CFG".equals(tag)) return 'F';
         return 'S';
     }
 
     static String channelName(char ch) {
-        return ch == 'T' ? "TRAFFIK" : ch == 'F' ? "FILE" : "SEMUA";
+        return ch == 'T' ? "CONFIG" : ch == 'F' ? "FILE" : "SEMUA";
     }
 
     private static String plainOf(Ent e) {
@@ -715,7 +718,7 @@ public final class DebugConsole {
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
         TextView title = new TextView(c);
-        title.setText("TRACE-2.2 • MODE AMATI");
+        title.setText("TRACE-1.0 • MODE CONFIG");
         title.setTextSize(12f);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setTextColor(Color.parseColor("#FFFFC107"));
@@ -730,14 +733,14 @@ public final class DebugConsole {
         LinearLayout tabs = new LinearLayout(c);
         tabs.setOrientation(LinearLayout.HORIZONTAL);
         tabs.setPadding(0, dp(5, c), 0, 0);
-        tabT = mkTab(c, "TRAFFIK", 'T');
+        tabT = mkTab(c, "CONFIG", 'T');
         tabF = mkTab(c, "FILE", 'F');
         tabA = mkTab(c, "SEMUA", 'A');
         tabs.addView(tabT);
         tabs.addView(tabF);
         tabs.addView(tabA);
         TextView tabHint = new TextView(c);
-        tabHint.setText("TRAFFIK=server→HP • FILE=penyimpanan • UNDUH=file server");
+        tabHint.setText("CONFIG=server+config • asset diringkas • FILE=penyimpanan");
         tabHint.setTextSize(8f);
         tabHint.setTextColor(Color.parseColor("#FF777777"));
         tabHint.setGravity(Gravity.CENTER_VERTICAL);
@@ -785,8 +788,11 @@ public final class DebugConsole {
         btns2.addView(mkBtn(c, "CACHE", new View.OnClickListener() {
             public void onClick(View v) { doCache(); }
         }));
+        btns2.addView(mkBtn(c, "LOGIN", new View.OnClickListener() {
+            public void onClick(View v) { doLogin(); }
+        }));
         TextView hint = new TextView(c);
-        hint.setText("SCAN=daftar file • CFG=config • NET=cek URL • CACHE=isi jawaban server");
+        hint.setText("SCAN=file • CFG=config • NET=URL • CACHE=isi config • LOGIN=bongkar jawaban socket server");
         hint.setTextSize(8.5f);
         hint.setTextColor(Color.parseColor("#FF777777"));
         hint.setGravity(Gravity.CENTER_VERTICAL);
@@ -1065,8 +1071,9 @@ public final class DebugConsole {
                 if (ch == 'T') nT++; else if (ch == 'F') nF++; else nS++;
             }
         }
-        return "trafik " + nT + " • file " + nF + " • sys " + nS
-                + " • disk " + TracePack.diskCount() + " baris";
+        long[] a = TracePack.assetTotals();
+        return "config " + nT + " • file " + nF + " • sys " + nS
+                + " • asset " + a[0] + " diringkas • disk " + TracePack.diskCount() + " baris";
     }
 
     // ------------------------------------------------------------- aksi tombol
@@ -1167,11 +1174,11 @@ public final class DebugConsole {
             if ((cur == null || cur.length() == 0) && nOld == 0) return null;
             if (cur != null && cur.length() > 0) splitDiskInto(cur, traf, file, syst, false);
             StringBuilder out = new StringBuilder(traf.length() + file.length() + syst.length() + 1024);
-            out.append("== TRAFFIK (server → HP) — DL/GET/UNDUH/ISI/NET/CACHE ==\n");
-            out.append("(setiap baris UNDUH = file SERVER resmi: URL → SIMPAN KE lokasi di HP; via (zip) = isi paket update)\n");
+            out.append("== CONFIG/SERVER (MODE CONFIG) — DL/GET/UNDUH/ISI/CACHE/LOGIN/NET ==\n");
+            out.append("(baris UNDUH = file SERVER bagian config: URL → SIMPAN KE; ASSET = ringkasan hitungan file non-config)\n");
             out.append(traf.length() == 0 ? "(kosong)\n" : traf);
             out.append('\n');
-            out.append("== FILE (penyimpanan HP) — FILE/POLL/SCAN/CFG ==\n");
+            out.append("== FILE (penyimpanan HP, diringkas MODE CONFIG) — FILE/POLL/SCAN/CFG ==\n");
             out.append(file.length() == 0 ? "(kosong)\n" : file);
             out.append('\n');
             out.append("== SISTEM — BOOT/SYS (lainnya) ==\n");
@@ -1599,7 +1606,7 @@ public final class DebugConsole {
                 try {
                     Context c = appRef.get();
                     if (c == null) return;
-                    log('I', "CACHE", "── ISI CACHE HTTP NATIVE mulai (terbaru dulu, batas 200 KB) ──");
+                    log('I', "CACHE", "── ISI CACHE (MODE CONFIG: hanya config/socket, terbaru dulu) ──");
                     List<File> files = new ArrayList<File>();
                     try { walk(new File(c.getFilesDir(), "games"), files, new int[]{8000}); } catch (Throwable ignore) {}
                     try {
@@ -1620,6 +1627,7 @@ public final class DebugConsole {
                     int shown = 0;
                     for (int i = 0; i < small.size(); i++) {
                         File f = small.get(i);
+                        if (!TracePack.isConfigPath(f.getAbsolutePath())) continue; // MODE CONFIG: asset dilewati
                         if (shown >= 100) {
                             log('I', "CACHE", "… +" + (small.size() - shown) + " file lagi (terbaru sudah tampil)");
                             break;
@@ -1629,7 +1637,7 @@ public final class DebugConsole {
                         String prev = cachePreview(f);
                         if (prev.length() > 0) log('I', "CACHE", "   isi: " + prev);
                     }
-                    if (shown == 0) log('W', "CACHE", "belum ada cache kecil — jalankan game / register SDK dulu");
+                    if (shown == 0) log('W', "CACHE", "belum ada config di cache — jalankan game / register SDK dulu");
                     log('I', "CACHE", "── CACHE selesai — " + shown + " file ditampilkan ──");
                 } catch (Throwable t) {
                     log('E', "CACHE", "cache gagal: " + t);
@@ -1668,6 +1676,172 @@ public final class DebugConsole {
             return "";
         } finally {
             if (in != null) try { in.close(); } catch (Throwable ignore) {}
+        }
+    }
+
+    // --------------------------------- LOGIN (bongkar jawaban server, v1.0)
+
+    /** LOGIN — bongkar ISI jawaban socket server dari cache native:
+     *  login.popoh5.com:610 (server list/login SDK) + s2105-bs:8101,
+     *  s49991-bs:8581 (server game). Frame engine.io teks ("0{…}", "40")
+     *  tampil langsung; jawaban terkompres (zlib/deflate/gzip) DIBONGKAR.
+     *  Pratinjau masuk panel; TEKS PENUH disimpan ke server_answer.txt di
+     *  storage eksternal agar mudah diunggah ke GitHub. Read-only. */
+    private static void doLogin() {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Context c = appRef.get();
+                    if (c == null) return;
+                    log('I', "LOGIN", "── BONGKAR JAWABAN SERVER (socket login & game) mulai ──");
+                    List<File> files = new ArrayList<File>();
+                    try { walk(new File(c.getFilesDir(), "games"), files, new int[]{12000}); } catch (Throwable ignore) {}
+                    StringBuilder all = new StringBuilder(1 << 16);
+                    int shown = 0;
+                    for (int i = 0; i < files.size(); i++) {
+                        File f = files.get(i);
+                        if (f.isDirectory()) continue;
+                        String p = f.getAbsolutePath();
+                        if (p.contains("#temp")) continue;      // masih ditulis engine
+                        if (p.endsWith("#header")) continue;    // header sudah tampil lewat ISI
+                        if (!p.contains("socket.io")) continue; // fokus: login + server game
+                        shown++;
+                        long len = f.length();
+                        byte[] raw = readFileBytes(f, 8 << 20);
+                        String text = textOrInflate(raw);
+                        String host = cacheShortPath(p);
+                        if (text == null) {
+                            log('I', "LOGIN", host + " • " + human(len) + " • (biner — format tidak dikenal)");
+                            continue;
+                        }
+                        log('I', "LOGIN", host + " • " + human(len) + " → teks " + human(text.length()));
+                        String prev = text.length() > 600
+                                ? text.substring(0, 600).replace('\n', ' ') + "…"
+                                : text.replace('\n', ' ');
+                        log('I', "LOGIN", "  isi: " + prev);
+                        all.append("===== ").append(host).append(" • ").append(human(len))
+                           .append(" =====\n").append(text).append("\n\n");
+                    }
+                    if (shown == 0) {
+                        log('W', "LOGIN", "belum ada jawaban socket di cache — jalankan game sampai layar login/server dulu");
+                    }
+                    if (all.length() > 0) {
+                        File ext = c.getExternalFilesDir(null);
+                        if (ext != null) {
+                            File out = new File(ext, "server_answer.txt");
+                            writeFile(out, all.toString());
+                            log('I', "LOGIN", "TEKS PENUH: " + out.getAbsolutePath()
+                                    + " (" + human(out.length()) + ") — unggah file ini ke GitHub");
+                        }
+                    }
+                    log('I', "LOGIN", "── selesai: " + shown + " file socket dibongkar ──");
+                } catch (Throwable t) {
+                    log('E', "LOGIN", "login gagal: " + t);
+                }
+            }
+        }, "DBTRACE-login").start();
+    }
+
+    private static byte[] readFileBytes(File f, int max) {
+        FileInputStream in = null;
+        try {
+            int want = (int) Math.min(f.length(), max);
+            byte[] buf = new byte[want];
+            in = new FileInputStream(f);
+            int off = 0, n;
+            while (off < want && (n = in.read(buf, off, want - off)) > 0) off += n;
+            byte[] out = new byte[off];
+            System.arraycopy(buf, 0, out, 0, off);
+            return out;
+        } catch (Throwable t) {
+            return new byte[0];
+        } finally {
+            if (in != null) try { in.close(); } catch (Throwable ignore) {}
+        }
+    }
+
+    /** Ubah isi cache jadi teks: teks polos → langsung; zlib/deflate/gzip → dibongkar. */
+    private static String textOrInflate(byte[] raw) {
+        try {
+            if (raw == null || raw.length == 0) return null;
+            String t = printableRatio(raw) >= 0.85 ? cleanText(new String(raw, "UTF-8")) : null;
+            if (t == null || t.length() == 0) {
+                byte[] d = inflateBytes(raw, false);        // zlib (HTTP "deflate" standar)
+                if (d == null) d = inflateBytes(raw, true); // deflate mentah
+                if (d == null) d = gunzipBytes(raw);        // gzip
+                if (d != null && printableRatio(d) >= 0.80) t = cleanText(new String(d, "UTF-8"));
+                else t = null;
+            }
+            return (t == null || t.length() == 0) ? null : t;
+        } catch (Throwable t2) {
+            return null;
+        }
+    }
+
+    private static String cleanText(String s) {
+        try {
+            StringBuilder sb = new StringBuilder(s.length());
+            for (int i = 0; i < s.length(); i++) {
+                char ch = s.charAt(i);
+                if ((ch >= 32 && ch < 127) || ch >= 128) sb.append(ch == '\t' ? ' ' : ch);
+                else if (ch == '\n' || ch == '\r') sb.append(' ');
+                else sb.append('·');
+            }
+            return sb.toString().trim();
+        } catch (Throwable t) {
+            return "";
+        }
+    }
+
+    private static double printableRatio(byte[] b) {
+        try {
+            if (b == null || b.length == 0) return 0;
+            int good = 0, n = Math.min(b.length, 4096);
+            for (int i = 0; i < n; i++) {
+                int ch = b[i] & 0xFF;
+                if ((ch >= 32 && ch < 127) || ch == '\n' || ch == '\r' || ch == '\t' || ch >= 128) good++;
+            }
+            return (double) good / n;
+        } catch (Throwable t) {
+            return 0;
+        }
+    }
+
+    private static byte[] inflateBytes(byte[] raw, boolean rawDeflate) {
+        try {
+            java.util.zip.Inflater inf = new java.util.zip.Inflater(rawDeflate);
+            inf.setInput(raw);
+            java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream(Math.max(1024, raw.length * 4));
+            byte[] buf = new byte[8192];
+            int stall = 0;
+            try {
+                while (!inf.finished() && bo.size() <= (8 << 20)) {
+                    int n = inf.inflate(buf);
+                    if (n > 0) { bo.write(buf, 0, n); stall = 0; }
+                    else if (inf.needsInput() || inf.needsDictionary()) break;
+                    else if (++stall > 2) break;
+                }
+            } finally {
+                try { inf.end(); } catch (Throwable ignore) {}
+            }
+            return bo.size() > 0 ? bo.toByteArray() : null;
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    private static byte[] gunzipBytes(byte[] raw) {
+        try {
+            java.io.ByteArrayInputStream bi = new java.io.ByteArrayInputStream(raw);
+            java.util.zip.GZIPInputStream gi = new java.util.zip.GZIPInputStream(bi);
+            java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream(Math.max(1024, raw.length * 4));
+            byte[] buf = new byte[8192];
+            int n;
+            while ((n = gi.read(buf)) > 0) bo.write(buf, 0, n);
+            try { gi.close(); } catch (Throwable ignore) {}
+            return bo.size() > 0 ? bo.toByteArray() : null;
+        } catch (Throwable t) {
+            return null;
         }
     }
 

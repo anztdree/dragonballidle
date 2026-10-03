@@ -83,66 +83,43 @@ final class Poller {
             }
             return;
         }
-        int lines = 0;
+        // TRACE-1.0 MODE CONFIG: detail per-file POLL dibuang (redundan dengan
+        // [FILE]); yang dipertahankan hanya ringkasan hitungan + path CONFIG.
         int added = 0, changed = 0, removed = 0;
-        StringBuilder buf = new StringBuilder(512);
-        StringBuilder diskExtra = new StringBuilder(256);
+        long bytes = 0;
+        StringBuilder cfg = new StringBuilder(256);
         synchronized (last) {
             // baru / berubah (ukuran ATAU mtime)
             for (Map.Entry<String, long[]> en : nowMap.entrySet()) {
                 long[] old = last.get(en.getKey());
                 if (old == null) {
                     added++;
-                    String line = "  + " + en.getKey() + " (" + DebugConsole.human(en.getValue()[0]) + ")";
-                    if (lines < MAX_LINES_PER_TICK) {
-                        buf.append(line).append('\n');
-                        lines++;
-                    } else {
-                        diskExtra.append(line).append('\n');
+                    if (TracePack.isConfigPath(en.getKey()) && cfg.length() < 1600) {
+                        cfg.append("  + ").append(en.getKey()).append(" (")
+                           .append(DebugConsole.human(en.getValue()[0])).append(")\n");
                     }
                 } else if (old[0] != en.getValue()[0] || old[1] != en.getValue()[1]) {
                     changed++;
-                    String line = "  ± " + en.getKey() + " "
-                            + DebugConsole.human(old[0]) + " → " + DebugConsole.human(en.getValue()[0]);
-                    if (lines < MAX_LINES_PER_TICK) {
-                        buf.append(line).append('\n');
-                        lines++;
-                    } else {
-                        diskExtra.append(line).append('\n');
+                    bytes += Math.max(0, en.getValue()[0] - old[0]);
+                    if (TracePack.isConfigPath(en.getKey()) && cfg.length() < 1600) {
+                        cfg.append("  ± ").append(en.getKey()).append(' ')
+                           .append(DebugConsole.human(old[0])).append(" → ")
+                           .append(DebugConsole.human(en.getValue()[0])).append("\n");
                     }
                 }
             }
             // hilang
             for (String path : last.keySet()) {
-                if (!nowMap.containsKey(path)) {
-                    removed++;
-                    String line = "  - " + path;
-                    if (lines < MAX_LINES_PER_TICK) {
-                        buf.append(line).append('\n');
-                        lines++;
-                    } else {
-                        diskExtra.append(line).append('\n');
-                    }
-                }
+                if (!nowMap.containsKey(path)) removed++;
             }
             last.clear();
             last.putAll(nowMap);
         }
         if (added + changed + removed == 0) return;
         String head = "selisih 4 dtk: +" + added + " baru • ±" + changed + " berubah • -" + removed + " hilang";
-        int over = added + changed + removed - lines;
-        if (over > 0) head += " (" + over + " baris lengkap di log disk)";
+        if (added + changed > 0) head += " • " + DebugConsole.human(bytes) + " bertambah";
+        if (cfg.length() > 0) head += "\n  config:\n" + cfg;
         TracePack.pollLine("semua root", head);
-        if (lines > 0) {
-            String body = buf.toString();
-            if (body.endsWith("\n")) body = body.substring(0, body.length() - 1);
-            TracePack.pollLine("detail", "\n" + body);
-        }
-        if (diskExtra.length() > 0) {
-            String extra = diskExtra.toString();
-            if (extra.endsWith("\n")) extra = extra.substring(0, extra.length() - 1);
-            TracePack.pollDiskOnly(extra);
-        }
     }
 
     private void walk(File dir, String label, Map<String, long[]> out, int[] budget) {

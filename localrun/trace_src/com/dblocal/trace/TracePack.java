@@ -9,11 +9,12 @@ import android.util.Log;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * TracePack — pintu masuk tunggal build TRACE-1.1 (perbaikan log).
+ * TracePack — pintu masuk tunggal build TRACE-1.0 (MODE CONFIG — log efisien).
  *
  * ATURAN (dari user, dikunci):
  *  - MULAI DARI 0: APK = base + SATU tambahan saja = LOG DEBUGGING.
@@ -33,11 +34,27 @@ import java.util.concurrent.TimeUnit;
  *    start dipasang begitu folder muncul.
  *  - POLL memakai ukuran+mtime → tulis-ulang ukuran sama tetap terlihat.
  *
+ * MODE CONFIG (TRACE-1.0 — permintaan user: "log meriah tapi tidak efisien,
+ * banyak file tertangkap tapi bukan bagian dari config"):
+ *  - Yang CONFIG/SERVER dicatat PENUH: config gerbang (.bin), tabel data
+ *    resource/json/, properties/ (clientversion, serversetting), manifest,
+ *    index-native, upgrade/size.json, dan SEMUA jawaban socket.io
+ *    (login.popoh5.com:610 + server game) — isi terkompres dibongkar lewat
+ *    tombol LOGIN di panel.
+ *  - Asset (png/mp3/js/fnt/texture) TIDAK dicatat satu-satu — hanya dihitung
+ *    dan diringkas satu baris tiap ±2 dtk (tag ASSET). Bukti log 09-31:
+ *    6.800 baris tapi hanya ±3% config — config tenggelam di noise.
+ *  - Kejadian penyimpanan: file pihak ketiga (Facebook dll.) dibuang;
+ *    config kecil (.json/.bin/.version/.xml/.properties/.db) tetap baris
+ *    individual; sisanya diringkas jadi hitungan.
+ *  - PENAMAAN (keputusan user): kembali ke "v1.0" dan TETAP di sana sampai
+ *    dianggap sempurna — perbaikan menimpa rilis v1.0, tidak menaikkan nomor.
+ *
  * Semua metode anti-crash: kegagalan logging tidak boleh mengganggu game.
  */
 public final class TracePack {
 
-    public static final String VER = "TRACE-2.2";
+    public static final String VER = "TRACE-1.0";
 
     private static boolean started = false;
     private static Context appCtx = null;
@@ -158,7 +175,7 @@ public final class TracePack {
             // 2) log disk SEBELUM baris BOOT pertama — tidak ada yang lolos
             startDisk(c);
 
-            DebugConsole.log('I', "BOOT", "TRACE-2.0 mulai — MODE AMATI: game jalan 100% server RESMI");
+            DebugConsole.log('I', "BOOT", VER + " mulai — MODE CONFIG: game jalan 100% server RESMI; panel hanya config & server, asset diringkas");
             DebugConsole.log('I', "BOOT", "APK ini TIDAK melayani apa pun: tanpa kit, tanpa server lokal, tanpa panduan");
             DebugConsole.log('I', "BOOT", "tugasnya hanya MENCATAT: file apa yang diambil & disimpan ke mana");
             DebugConsole.log('I', "BOOT", "panel = JENDELA OVERLAY sendiri — bila diminta, izinkan “Tampil di atas aplikasi lain” SEKALI agar panel kebal game");
@@ -471,17 +488,26 @@ public final class TracePack {
 
     // -------------------------------------------------- jalur log pemantau
 
-    /** Dipanggil RecursiveFileObserver — dengan kontrol banjir di DebugConsole. */
+    /** Dipanggil RecursiveFileObserver — MODE CONFIG: config kecil tetap baris
+     *  individual; asset & pihak ketiga diringkas jadi hitungan (efisiensi). */
     static void fileLine(String kind, String label, String msg) {
         evtFile++;
-        DebugConsole.log('I', "FILE", kind + " " + label + " • " + msg);
+        try {
+            String whole = label + " • " + msg;
+            if (isThirdPartyNoise(whole)) return; // dibuang total (tetap dihitung evtFile)
+            if (isSmallConfigEvent(msg)) {
+                DebugConsole.log('I', "FILE", kind + " " + label + " • " + msg);
+                return;
+            }
+            countFileEvent(sizeOfParen(msg));
+        } catch (Throwable ignore) {}
     }
 
-    /** FIX v1.3: varian senyap — tetap dihitung & masuk log disk, tapi tidak
-     *  memenuhi panel (kejadian antara cache HTTP native: #temp, #header, BUAT). */
+    /** Varian senyap (kejadian antara cache HTTP native): MODE CONFIG tidak
+     *  mencatat per-baris — file server config diwakili baris UNDUH/ISI,
+     *  asset diwakili hitungan ASSET. */
     static void fileLineQuiet(String kind, String label, String msg) {
         evtFile++;
-        DebugConsole.logDiskOnly('I', "FILE", kind + " " + label + " • " + msg);
     }
 
     /** FIX v1.3: apakah path ini kejadian antara cache HTTP native yang
@@ -504,6 +530,119 @@ public final class TracePack {
      *  UNDUH via (zip) agar "mana file server" terjawab lengkap. */
     static boolean cacheMirror(String abs) {
         return abs != null && !cacheInt(abs) && abs.contains("/game/https/");
+    }
+
+    // -------------------------------- MODE CONFIG: filter & agregasi (v1.0)
+
+    /** MODE CONFIG: apakah path/URL ini bagian dari CONFIG/SERVER yang wajib
+     *  dicatat penuh? Sisanya = asset (dihitung, tidak dicatat satu-satu). */
+    static boolean isConfigPath(String s) {
+        try {
+            if (s == null) return false;
+            String l = s.toLowerCase(Locale.US);
+            if (l.contains("socket.io")) return true;          // login + server game
+            if (l.contains("/resource/json/")) return true;    // tabel data game
+            if (l.contains("/properties/")) return true;       // clientversion/serversetting
+            if (l.endsWith(".bin") || l.endsWith(".bin_")) return true; // config gerbang
+            if (l.endsWith(".version")) return true;
+            if (l.contains("upgrade.json") || l.contains("size.json")) return true;
+            if (l.contains("manifest.json") || l.contains("index-native")) return true;
+            return false;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    /** Noise SDK pihak ketiga — dibuang total dari panel & ringkasan. */
+    private static boolean isThirdPartyNoise(String s) {
+        try {
+            String l = s.toLowerCase(Locale.US);
+            return l.contains("facebook") || l.contains("app_event")
+                    || l.contains("app_measurement") || l.contains("firebase")
+                    || l.contains("crashlytics") || l.contains("appsflyer")
+                    || l.contains("adjust") || l.contains("leakcanary");
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    // agregat MODE CONFIG — asset & kejadian bukan-config hanya dihitung
+    private static final Object AG_LOCK = new Object();
+    private static long agAssetN = 0, agAssetB = 0, agAssetAt = 0;
+    private static long agFileN = 0, agFileB = 0, agFileAt = 0;
+
+    /** File SERVER yang BUKAN config (asset) — hitung; ringkas 1 baris / ±2 dtk. */
+    static void countAsset(long bytes) {
+        try {
+            long now = System.currentTimeMillis();
+            long n, b;
+            synchronized (AG_LOCK) {
+                agAssetN++;
+                agAssetB += Math.max(0, bytes);
+                n = agAssetN;
+                b = agAssetB;
+                if (now - agAssetAt >= 2000) agAssetAt = now;
+                else return;
+            }
+            DebugConsole.log('I', "ASSET", "ringkas • " + n + " file asset server • "
+                    + DebugConsole.human(b) + " (bukan config — tidak dicatat satu-satu)");
+        } catch (Throwable ignore) {}
+    }
+
+    /** Kejadian penyimpanan bukan-config — hitung; ringkas 1 baris / ±2 dtk. */
+    static void countFileEvent(long bytes) {
+        try {
+            long now = System.currentTimeMillis();
+            long n, b;
+            synchronized (AG_LOCK) {
+                agFileN++;
+                agFileB += Math.max(0, bytes);
+                n = agFileN;
+                b = agFileB;
+                if (now - agFileAt >= 2000) agFileAt = now;
+                else return;
+            }
+            DebugConsole.log('I', "FILE", "ringkas • " + n + " kejadian • " + DebugConsole.human(b)
+                    + " berubah (bukan config — diringkas; SCAN utk rincian)");
+        } catch (Throwable ignore) {}
+    }
+
+    /** Total asset ter-ringkas (utk footer). */
+    static long[] assetTotals() {
+        synchronized (AG_LOCK) { return new long[]{agAssetN, agAssetB}; }
+    }
+
+    /** Kejadian file yang layak baris individual: file config/versi kecil. */
+    private static boolean isSmallConfigEvent(String msg) {
+        try {
+            if (msg == null) return false;
+            String l = msg.toLowerCase(Locale.US);
+            if (l.contains("(folder)")) return false;
+            return l.endsWith(".json)") || l.endsWith(".bin)") || l.endsWith(".version)")
+                    || l.endsWith(".properties)") || l.endsWith(".xml)") || l.endsWith(".db)")
+                    || l.endsWith(".db-wal)") || l.endsWith(".db-shm)");
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+
+    /** "(1.2 KB)" / "(203 B)" → byte; -1 bila bukan ukuran. */
+    private static long sizeOfParen(String msg) {
+        try {
+            if (msg == null) return -1;
+            int a = msg.lastIndexOf('('), b = msg.lastIndexOf(')');
+            if (a < 0 || b <= a) return -1;
+            String t = msg.substring(a + 1, b).trim().toLowerCase(Locale.US);
+            double v;
+            if (t.endsWith("kb")) v = Double.parseDouble(t.substring(0, t.length() - 2).trim()) * 1024.0;
+            else if (t.endsWith("mb")) v = Double.parseDouble(t.substring(0, t.length() - 2).trim()) * 1048576.0;
+            else if (t.endsWith("gb")) v = Double.parseDouble(t.substring(0, t.length() - 2).trim()) * 1073741824.0;
+            else if (t.endsWith("b")) v = Double.parseDouble(t.substring(0, t.length() - 1).trim());
+            else return -1;
+            return (long) v;
+        } catch (Throwable t) {
+            return -1;
+        }
     }
 
     // ------------------------------------- dekoder unduhan native (v1.3)
@@ -585,6 +724,13 @@ public final class TracePack {
                 kunci = hash2 >= 0 ? rest.substring(hash2) : "";
             }
             StringBuilder url = new StringBuilder("https://").append(host).append(port).append(path);
+            // MODE CONFIG (TRACE-1.0): hanya file CONFIG/SERVER yang mendapat
+            // baris UNDUH; asset (mayoritas isi all.zip & unduhan engine)
+            // cukup dihitung — log tetap efisien tanpa kehilangan config.
+            if (!isConfigPath(p) && !isConfigPath(url.toString())) {
+                countAsset(f.length());
+                return;
+            }
             StringBuilder line = new StringBuilder(192);
             line.append("OK ").append(via).append(" • ").append(DebugConsole.human(f.length()))
                 .append(" • ").append(url);
@@ -612,27 +758,16 @@ public final class TracePack {
             boolean intCache = cacheInt(p);
             boolean mirror = !intCache && cacheMirror(p);
             if (!intCache && !mirror) return;
-            String n = f.getName();
-            boolean interesting = n.contains("#") || n.endsWith(".json")
-                    || n.endsWith(".version") || n.endsWith(".bin");
-            if (!interesting) return;
-            int headMax;
-            if (intCache) {
-                // FIX v2.2: cache internal = jawaban server LANGSUNG (login,
-                // socket.io, register SDK, config) — batas 800 B → 128 KB dan
-                // pratinjau 400 → 800 karakter supaya data register/akun ikut
-                // terbaca ("semua data server build bisa kita ambil").
-                if (len > (128 << 10)) return;
-                headMax = 800;
-            } else {
-                // mirror = pohon resource; hanya file kecil (hemat saat ekstraksi besar)
-                if (len > 800) return;
-                headMax = 400;
-            }
-            byte[] head = readHead(f, headMax);
+            // MODE CONFIG (TRACE-1.0): hanya isi file CONFIG/SERVER yang
+            // ditampilkan. Asset & metadata texture (_tex/_ske) dibuang di sini
+            // — jawaban socket besar dibongkar lewat tombol LOGIN.
+            if (!isConfigPath(p)) return;
+            if (mirror && len > (64 << 10)) return;    // tabel data besar → tombol CFG
+            if (intCache && len > (2 << 20)) return;   // jawaban raksasa → tombol LOGIN
+            byte[] head = readHead(f, 2000);
             String prev = printableOf(head);
             if (prev.length() == 0) prev = "(biner)";
-            if (prev.length() > 800) prev = prev.substring(0, 800) + "…";
+            if (prev.length() > 2000) prev = prev.substring(0, 2000) + "…";
             DebugConsole.log('I', "ISI", via + " " + shortPath(p) + " • " + prev);
         } catch (Throwable ignore) {}
     }
@@ -656,8 +791,8 @@ public final class TracePack {
 
     private static String printableOf(byte[] b) {
         try {
-            StringBuilder sb = new StringBuilder(Math.min(b.length, 320));
-            for (int i = 0; i < b.length && sb.length() < 320; i++) {
+            StringBuilder sb = new StringBuilder(Math.min(b.length, 2200));
+            for (int i = 0; i < b.length && sb.length() < 2200; i++) {
                 char ch = (char) (b[i] & 0xFF);
                 sb.append((ch >= 32 && ch < 127) || ch == '\n' || ch == '\t' ? (ch == '\n' ? ' ' : ch) : '·');
             }

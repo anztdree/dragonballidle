@@ -316,3 +316,23 @@ Stage Summary:
 - Log trafik dan log file resmi TERPISAH: tab panel + SAVE 3 seksi + COPY per kanal. Satu file export tetap (workflow push GitHub user tidak berubah), tapi isinya tidak bercampur lagi.
 - "Mana file server" kini terjawab mekanis: SEMUA file asal server (cache internal + mirror ekstraksi) menghasilkan baris UNDUH "URL → SIMPAN KE" di TRAFFIK; file lokal tidak. Daftar lengkap = kandidat pengemasan lokal di fase berikutnya.
 - Data server saat register SDK: ISI otomatis sampai 128 KB + tombol CACHE sampai 200 KB/100 file. Batas jujur dicatat: jalur jaringan SDK sendiri tidak di-hook; yang tercatat = semua yang ditulis ke penyimpanan + unduhan engine.
+
+---
+Task ID: 22
+Agent: Z.ai Code (main)
+Task: "Log terbaru sudah saya update di github, mari baca dulu lalu tentukan langkah running local" — BACA SAJA (mode amati), lalu usulkan langkah; TANPA build/rilis.
+
+Work Log:
+- Git pull: trace_log_09-31.txt (6.800 baris, sesi 09:30→09:31, TRACE-2.2) menggantikan trace_log_08-34.txt; commit 9bdcba2 dari user.
+- Verifikasi fitur v2.2 dari lapangan: SAVE 3 seksi (TRAFFIK baris 1-1704 / FILE 1705-6763 / SISTEM 6764+), UNDUH membedakan asal (OK (zip)=ekstraksi all.zip 1.473 file; OK (masuk)=unduhan engine native), header HTTP cache native tertangkap (#header: nginx/1.16.0, Set-Cookie io=, ETag), flood guard bekerja (+523/+650 ditekan di panel, ringkasan tercetak).
+- Kronologi sesi: BOOT 09:30 → GET config (setting_BS_Android.bin 711 B OK 2×, com_db_local.bin null 2×) → DL all.zip?v=11011390 18,5 MB (19.385.098 B) → ekstraksi → HWLoginActivity (SDK) → MainActivity resume 09:31 → engine native: index-native.html 10,5 KB + manifest.json + clientversion.json {"clientVersion":"20260724_110536-EN"} + serversetting.json {"loginserver":"https://login.popoh5.com:610","requireSDK":false} → socket login.popoh5.com:610 (601,8 KB server list, Content-Length 31152 deflate) → s2105-bs:8101 + s49991-bs:8581 handshake (104/54/17/103/46 B) → asset login+lobby (sound_click, guild1.mp3 47,6 KB, denglujiemian..., Telegram/Instagram/Discord_png 555 B, skill effects) → guide_idle2 muncul → user SAVE 09:31.
+- 0 baris GAGAL. Game MELEWATI titik stuck sesi 08-34 (kali ini login SDK sukses dan game lanjut loading lobby).
+- Statistik: 1.204 path SIMPAN KE unik (1.474 mirror ext files/game/https [zip], 31 cache int files/games/https [runtime]), 1.177 URL dragonh5cdn unik. CATATAN: flood guard menekan ±1.173 baris panel — untuk daftar pengemasan final, sumber harus folder mirror device / size.json, bukan log.
+- Peta server lengkap (bahan running local): configus.sjmobilegame.com (config gerbang), dragonh5cdn.popoh5.com/bs/ (semua asset), login.popoh5.com:610 (login socket), s2105-bs.popoh5.com:8101 + s49991-bs.popoh5.com:8581 (server game realtime).
+- Kosmetik tercatat: baris BOOT masih menulis "TRACE-2.0 mulai" (string lama, bukan VER) — perbaiki bila ada build berikutnya.
+- TIDAK ada build, TIDAK ada rilis, TIDAK ada push — hanya baca + usulan (pelajaran Task 20/21).
+
+Stage Summary:
+- Log 09-31 membuktikan TRACE-2.2 bekerja persis seperti dirancang dan sesi register SDK sukses penuh sampai loading lobby.
+- Bahan "running local" kini lengkap: alamat semua komponen server + lokasi mirror/cache di device + jumlah file.
+- Usulan 3 langkah (menunggu izin): (A) uji pesawat oleh user setelah sesi lengkap → tahu apakah cache native Egret dipakai offline; (B) server lokal mini di APK untuk ASSET CDN saja (login/socket tetap resmi, isi file tak diubah) — perlu izin build; (C) pengemasan penuh manifest asset.

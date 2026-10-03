@@ -258,3 +258,61 @@ kita ambil".
   TERCATAT adalah semua yang DITULIS ke penyimpanan (cache, prefs, database)
   + semua unduhan engine. Setelah register: tekan CACHE + SAVE — bila ada
   jawaban server yang tidak muncul, jadi bahan menambah hook berikutnya.
+
+---
+
+## TRACE-1.0 — MODE CONFIG (log efisien; PENAMAAN kembali ke v1.0)
+
+**Latar** (permintaan user): "log anda memang meriah banyak tapi tidak efisien sama sekali.. banyak file
+tertangkap tapi bukan mereka bagian dari config". Bukti log 09-31: 6.800 baris, hanya ±3% config —
+sisanya unduhan asset (png/mp3/fnt/js), kejadian disk per-file, dan prefs SDK pihak ketiga.
+
+**Keputusan penamaan (user)**: kembali ke nama **v1.0** dan TETAP di sana sampai dianggap sempurna —
+perbaikan berikutnya MENIMPA rilis v1.0, tidak menaikkan nomor.
+
+### Perubahan
+1. **Panel: tab `[CONFIG] [FILE] [SEMUA]`** (ganti TRAFFIK). CONFIG = server & config saja.
+2. **Filter trafik** — hanya file config yang dapat baris UNDUH/ISI:
+   `socket.io` (login+server game), `/resource/json/` (tabel data), `/properties/`
+   (clientversion/serversetting), `*.bin` (config gerbang), `*.version`,
+   `upgrade.json`, `size.json`, `manifest.json`, `index-native`.
+   Asset → tag **ASSET**: satu baris ringkasan tiap ±2 dtk
+   (`ASSET: ringkas • 1473 file asset server • 18,5 MB (bukan config)`).
+3. **ISI lebih dalam**: file config kini pratinjau 2.000 karakter (sebelumnya 800/400).
+4. **FILE senyap**: file SDK pihak ketiga (Facebook dll.) dibuang; config kecil
+   (.json/.bin/.version/.xml/.properties/.db) tetap individual; sisanya ringkasan hitungan.
+   POLL: detail per-file dibuang, hanya ringkasan + path config.
+5. **Tombol LOGIN (baru)** — MEMBONGKAR jawaban socket server dari cache native:
+   login.popoh5.com:610 + s2105-bs:8101 + s49991-bs:8581. Frame teks engine.io
+   (`0{"sid":…}`, `40`) tampil langsung; jawaban terkompres dibongkar
+   (zlib → deflate mentah → gzip). Pratinjau masuk log; **TEKS PENUH disimpan ke
+   `Android/data/com.db.local/files/server_answer.txt`** — inilah "data server build"
+   yang dicari saat register SDK; unggah file itu ke GitHub untuk dianalisis.
+6. **Tombol CACHE** kini hanya menampilkan file config (bukan asset).
+7. Footer: `config N • file M • sys K • asset A diringkas • disk L baris`.
+
+### Contoh bentuk log sesuatu (perkiraan)
+```
+09:30 BOOT: TRACE-1.0 mulai — MODE CONFIG: game jalan 100% server RESMI; ...
+09:30 GET: https://configus.sjmobilegame.com/bs/db/android/setting_BS_Android.bin?rnd=...
+09:30 GET:     OK • 711 B (711 B)
+09:30 DL: https://dragonh5cdn.popoh5.com/bs/upgrade/all.zip?v=11011390
+09:30 DL:     SIMPAN KE /storage/.../bs/tmp.zip
+09:30 DL:     OK • 18.5 MB (19385098 B)
+09:30 ASSET: ringkas • 962 file asset server • 12,1 MB (bukan config — tidak dicatat satu-satu)
+09:30 ISI: TULIS game/https/dragonh5cdn.popoh5.com/bs/resource/json/battleMedalShop.json • {"101":{"id":101,...
+09:31 UNDUH: OK (masuk) • 73 B • https://dragonh5cdn.popoh5.com/bs/resource/properties/serversetting.json → SIMPAN KE ...
+09:31 ISI: MASUK games/https/dragonh5cdn.popoh5.com/bs/resource/properties/serversetting.json • {"loginserver":"https://login.popoh5.com:610","requireSDK":false}
+09:31 UNDUH: OK (masuk) • 601.8 KB • https://login.popoh5.com:610/socket.io/ (kunci #index#/dd37…) → SIMPAN KE ...
+09:31 SYS: 🐞 tap → panel DIBUKA
+  (tekan LOGIN →)
+09:31 LOGIN: games/https/login.popoh5.com#0A610/socket.io/#index#/dd37… • 601.8 KB → teks 512.3 KB
+09:31 LOGIN:   isi: 0{"sid":"…","upgrades":["websocket"],…} 42{"sid":…}[[1,"s2105-bs.popoh5.com",…],…
+09:31 LOGIN: TEKS PENUH: /storage/.../files/server_answer.txt (512.3 KB) — unggah file ini ke GitHub
+09:31 FILE: ringkas • 2140 kejadian • 19.8 MB berubah (bukan config — diringkas; SCAN utk rincian)
+```
+
+### Identitas build
+- versionCode 1 / versionName **1.0.0** / targetSdk 30 (tetap)
+- cert SHA-256 `3898c8f0…` (identik semua versi → pasang menimpa)
+- dex trace: 86.324 B, 40 class
