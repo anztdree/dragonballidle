@@ -186,12 +186,14 @@ public final class RecursiveFileObserver {
                     }
                 } else if (e == FileObserver.CLOSE_WRITE) {
                     TracePack.fileLine("TULIS", label, relOf(abs) + " (" + DebugConsole.human(f.length()) + ")");
+                    TracePack.cachePeek(f, "TULIS");
                 } else if (e == FileObserver.MOVED_TO) {
                     if (isDir) {
                         dropDir(abs);
                         watchDir(f);
                     }
                     TracePack.fileLine("MASUK", label, relOf(abs) + " (" + DebugConsole.human(f.length()) + ")");
+                    TracePack.cachePeek(f, "MASUK");
                 } else if (e == FileObserver.MOVED_FROM || e == FileObserver.DELETE) {
                     // FIX v1.1: SELALU lepas watch — folder sudah tidak ada, entri lama pasti mati.
                     dropDir(abs);

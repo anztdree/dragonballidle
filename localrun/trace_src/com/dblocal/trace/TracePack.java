@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class TracePack {
 
-    public static final String VER = "TRACE-1.1";
+    public static final String VER = "TRACE-1.2";
 
     private static boolean started = false;
     private static Context appCtx = null;
@@ -467,6 +467,79 @@ public final class TracePack {
     static void fileLine(String kind, String label, String msg) {
         evtFile++;
         DebugConsole.log('I', "FILE", kind + " " + label + " • " + msg);
+    }
+
+    // ---------------------------------------------- isi cache kecil (v1.2)
+
+    /**
+     * cachePeek — bila file yang baru ditulis adalah file cache HTTP native
+     * yang KECIL (jawaban server: engine.io open, clientversion.json, header
+     * HTTP, dsb.), tampilkan ISI-nya di log. Inilah yang menjawab "game
+     * macet di SDK": kelihatan apa yang server login balas.
+     * Read-only — hanya MEMBACA file yang game tulis sendiri.
+     */
+    static void cachePeek(File f, String via) {
+        try {
+            if (f == null || !f.isFile()) return;
+            long len = f.length();
+            if (len <= 0 || len > 800) return;
+            String p = f.getAbsolutePath();
+            boolean cacheLike = p.contains("/games/https/") || p.contains("/game/https/");
+            if (!cacheLike) return;
+            String n = f.getName();
+            boolean interesting = n.contains("#") || n.endsWith(".json")
+                    || n.endsWith(".version") || n.endsWith(".bin");
+            if (!interesting) return;
+            byte[] head = readHead(f, 400);
+            String prev = printableOf(head);
+            if (prev.length() == 0) prev = "(biner)";
+            if (prev.length() > 300) prev = prev.substring(0, 300) + "…";
+            DebugConsole.log('I', "ISI", via + " " + shortPath(p) + " • " + prev);
+        } catch (Throwable ignore) {}
+    }
+
+    private static byte[] readHead(File f, int max) {
+        try {
+            int want = (int) Math.min(f.length(), max);
+            byte[] buf = new byte[want];
+            java.io.FileInputStream in = new java.io.FileInputStream(f);
+            try {
+                int off = 0, r;
+                while (off < want && (r = in.read(buf, off, want - off)) > 0) off += r;
+            } finally {
+                try { in.close(); } catch (Throwable ignore) {}
+            }
+            return buf;
+        } catch (Throwable t) {
+            return new byte[0];
+        }
+    }
+
+    private static String printableOf(byte[] b) {
+        try {
+            StringBuilder sb = new StringBuilder(Math.min(b.length, 320));
+            for (int i = 0; i < b.length && sb.length() < 320; i++) {
+                char ch = (char) (b[i] & 0xFF);
+                sb.append((ch >= 32 && ch < 127) || ch == '\n' || ch == '\t' ? (ch == '\n' ? ' ' : ch) : '·');
+            }
+            return sb.toString().trim();
+        } catch (Throwable t) {
+            return "";
+        }
+    }
+
+    private static String shortPath(String p) {
+        try {
+            int i = p.indexOf("/games/https/");
+            if (i < 0) i = p.indexOf("/game/https/");
+            if (i >= 0) {
+                p = p.substring(i + 1);
+                return p.length() <= 120 ? p : "…" + p.substring(p.length() - 120);
+            }
+            return p.length() <= 120 ? p : "…" + p.substring(p.length() - 120);
+        } catch (Throwable t) {
+            return p;
+        }
     }
 
     /** Dipanggil Poller. */

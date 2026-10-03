@@ -424,8 +424,11 @@ public final class DebugConsole {
         btns2.addView(mkBtn(act, "NET", new View.OnClickListener() {
             public void onClick(View v) { doNet(); }
         }));
+        btns2.addView(mkBtn(act, "CACHE", new View.OnClickListener() {
+            public void onClick(View v) { doCache(); }
+        }));
         TextView hint = new TextView(act);
-        hint.setText("SCAN=daftar file • CFG=isi config • NET=cek URL server");
+        hint.setText("SCAN=daftar file • CFG=config • NET=cek URL • CACHE=isi jawaban server");
         hint.setTextSize(8.5f);
         hint.setTextColor(Color.parseColor("#FF777777"));
         hint.setGravity(Gravity.CENTER_VERTICAL);
@@ -582,6 +585,8 @@ public final class DebugConsole {
 
     private static int colorOf(char lvl, String tag) {
         if ("NET".equals(tag))  return Color.parseColor("#FFFFB74D"); // oranye
+        if ("ISI".equals(tag)) return Color.parseColor("#FFFFAB91"); // salmon — isi jawaban server
+        if ("CACHE".equals(tag)) return Color.parseColor("#FFF48FB1"); // pink
         if ("BOOT".equals(tag)) return Color.parseColor("#FFFFC107"); // amber
         if ("FILE".equals(tag)) return Color.parseColor("#FF81C784"); // hijau
         if ("POLL".equals(tag)) return Color.parseColor("#FFAED581"); // hijau muda
@@ -1042,6 +1047,88 @@ public final class DebugConsole {
             return new String(buf, 0, off, "UTF-8");
         } catch (Throwable t) {
             return null;
+        } finally {
+            if (in != null) try { in.close(); } catch (Throwable ignore) {}
+        }
+    }
+
+    // --------------------------------------------------- CACHE (isi jawaban server)
+
+    /** CACHE — isi file cache HTTP native kecil (jawaban server yang
+     *  menjelaskan kenapa game berhenti di login/SDK). Read-only. */
+    private static void doCache() {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    Context c = appRef.get();
+                    if (c == null) return;
+                    log('I', "CACHE", "── ISI CACHE HTTP NATIVE mulai (file kecil, TERBARU dulu) ──");
+                    List<File> files = new ArrayList<File>();
+                    try { walk(new File(c.getFilesDir(), "games"), files, new int[]{3000}); } catch (Throwable ignore) {}
+                    try {
+                        File ext = c.getExternalFilesDir(null);
+                        if (ext != null) walk(new File(ext, "game"), files, new int[]{3000});
+                    } catch (Throwable ignore) {}
+                    List<File> small = new ArrayList<File>();
+                    for (int i = 0; i < files.size(); i++) {
+                        File f = files.get(i);
+                        if (f.isFile() && f.length() > 0 && f.length() <= 4096) small.add(f);
+                    }
+                    Collections.sort(small, new Comparator<File>() {
+                        public int compare(File a, File b) {
+                            long d = b.lastModified() - a.lastModified();
+                            return d > 0 ? 1 : (d < 0 ? -1 : 0);
+                        }
+                    });
+                    int shown = 0;
+                    for (int i = 0; i < small.size(); i++) {
+                        File f = small.get(i);
+                        if (shown >= 60) {
+                            log('I', "CACHE", "… +" + (small.size() - shown) + " file kecil lagi (terbaru sudah tampil di baris ISI)");
+                            break;
+                        }
+                        shown++;
+                        log('I', "CACHE", cacheShortPath(f.getAbsolutePath()) + " (" + human(f.length()) + ")");
+                        String prev = cachePreview(f);
+                        if (prev.length() > 0) log('I', "CACHE", "   isi: " + prev);
+                    }
+                    if (shown == 0) log('W', "CACHE", "belum ada cache kecil — jalankan game sampai lewat layar SDK dulu");
+                    log('I', "CACHE", "── CACHE selesai — " + shown + " file ditampilkan ──");
+                } catch (Throwable t) {
+                    log('E', "CACHE", "cache gagal: " + t);
+                }
+            }
+        }, "DBTRACE-cache").start();
+    }
+
+    private static String cacheShortPath(String p) {
+        try {
+            int i = p.indexOf("/games/https/");
+            if (i < 0) i = p.indexOf("/game/https/");
+            if (i >= 0) p = p.substring(i + 1);
+            return p.length() <= 110 ? p : "…" + p.substring(p.length() - 110);
+        } catch (Throwable t) {
+            return p;
+        }
+    }
+
+    private static String cachePreview(File f) {
+        FileInputStream in = null;
+        try {
+            int want = (int) Math.min(f.length(), 500);
+            byte[] buf = new byte[want];
+            in = new FileInputStream(f);
+            int off = 0, n;
+            while (off < want && (n = in.read(buf, off, want - off)) > 0) off += n;
+            StringBuilder sb = new StringBuilder(520);
+            for (int i = 0; i < off; i++) {
+                char ch = (char) (buf[i] & 0xFF);
+                sb.append((ch >= 32 && ch < 127) || ch == '\n' || ch == '\t' ? (ch == '\n' ? ' ' : ch) : '·');
+                if (sb.length() >= 400) { sb.append("…"); break; }
+            }
+            return sb.toString().trim();
+        } catch (Throwable t) {
+            return "";
         } finally {
             if (in != null) try { in.close(); } catch (Throwable ignore) {}
         }

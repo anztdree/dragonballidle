@@ -41,14 +41,14 @@ perangkat: itel S665L • Android 12 (SDK 31) • paket: com.db.local 1.0.0 (1)
 09:41 GET https://dragonh5cdn.popoh5.com/bs/upgrade/resource.version • 200 • 5 B • "11390"
 09:41 GET https://dragonh5cdn.popoh5.com/bs/upgrade/upgrade.json • 200 • 139 B
 09:41 DL  https://dragonh5cdn.popoh5.com/bs/upgrade/all.zip
-09:41     SIMPAN KE /data/user/0/com.db.local/files/document/tmp.zip
+09:41     SIMPAN KE /storage/emulated/0/Android/data/com.db.local/files/game/https/dragonh5cdn.popoh5.com/bs/tmp.zip
 09:41     OK • 19.4 MB (19,385,778 B)
-09:41 FILE: TULIS /data/user/0/com.db.local/files/document/resource/resource.config.js (2.2 KB)
-09:41 FILE: TULIS /data/user/0/com.db.local/files/document/resource/assets/teamDungeon.json (5.9 KB)
-09:41 FILE: TULIS /data/user/0/com.db.local/files/document/resource/assets/default.res-en.json (48.1 KB)
+09:41 FILE: TULIS /storage/emulated/0/Android/data/com.db.local/files/game/https/dragonh5cdn.popoh5.com/bs/resource/resource.config.js (2.2 KB)
+09:41 FILE: TULIS /storage/emulated/0/Android/data/com.db.local/files/game/https/dragonh5cdn.popoh5.com/bs/resource/assets/teamDungeon.json (5.9 KB)
+09:41 FILE: TULIS /storage/emulated/0/Android/data/com.db.local/files/game/https/dragonh5cdn.popoh5.com/bs/resource/assets/default.res-en.json (48.1 KB)
 09:41 FILE: … +596 kejadian lain ditekan (ekstraksi besar) — SCAN utk daftar penuh
-09:41 FILE: HAPUS /data/user/0/com.db.local/files/document/tmp.zip
-09:41 POLL: +652 baru • -1 hilang (tmp.zip) — semua di /data/user/0/com.db.local/files/document/
+09:41 FILE: HAPUS /storage/emulated/0/Android/data/com.db.local/files/game/https/dragonh5cdn.popoh5.com/bs/tmp.zip
+09:41 POLL: +652 baru • -1 hilang (tmp.zip) — semua di /storage/emulated/0/Android/data/com.db.local/files/game/https/dragonh5cdn.popoh5.com/bs/
 
 09:42 FILE: TULIS /data/user/0/com.db.local/shared_prefs/hw_login.xml (312 B)
 
@@ -68,8 +68,8 @@ perangkat: itel S665L • Android 12 (SDK 31) • paket: com.db.local 1.0.0 (1)
 
 09:44 SCAN: ── DAFTAR FILE LENGKAP mulai ──
 09:44 SCAN: /data/user/0/com.db.local → 661 file • 21.3 MB
-09:44 SCAN:   files/document/resource.version (5 B)
-09:44 SCAN:   files/document/resource/assets/teamDungeon.json (5.9 KB)
+09:44 SCAN:   files/game/https/dragonh5cdn.popoh5.com/bs/resource.version (5 B)
+09:44 SCAN:   files/game/https/dragonh5cdn.popoh5.com/bs/resource/assets/teamDungeon.json (5.9 KB)
 09:44 SCAN:   … +655 lagi (lengkap di scan_manifest.txt)
 09:44 SCAN: /storage/emulated/0/Android/data/com.db.local/files → 1 file • 12.8 KB
 09:44 SCAN:   scan_manifest.txt (satu-satunya tambahan APK ini di Android/data)
