@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class TracePack {
 
-    public static final String VER = "TRACE-2.0";
+    public static final String VER = "TRACE-2.1";
 
     private static boolean started = false;
     private static Context appCtx = null;
@@ -533,16 +533,20 @@ public final class TracePack {
             String path = rest;
             String kunci = "";
             if (cut == h && h >= 0) {
-                // bentuk "host#<kunci-port>/<path>#<kunci>…" (contoh: login :610)
+                // bentuk "host#<kunci-port>/<path>#<kunci>…" (contoh: login :610,
+                // server game :8101/:8581 — dibuktikan probe HTTP 200)
                 String seg = rest.startsWith("#") ? rest.substring(1) : rest;
                 int slash = seg.indexOf('/');
                 String key1 = slash >= 0 ? seg.substring(0, slash) : seg;
                 String after = slash >= 0 ? seg.substring(slash) : "";
                 String digits = key1.replaceAll("\\D", "");
-                if (digits.length() >= 2 && digits.length() <= 5) {
+                if (digits.length() >= 2 && digits.length() <= 6) {
                     try {
-                        int pt = Integer.parseInt(
-                                digits.length() > 3 ? digits.substring(digits.length() - 3) : digits);
+                        // FIX v2.1 (BUKTI PROBE LANGSUNG): kunci "0A610" → 0610 →
+                        // :610 ✓, "0A8101" → 08101 → :8101 (HTTP 200 handshake,
+                        // 104 B = persis baris UNDUH), ":101" → GAGAL. Pola lama
+                        // (potongan 3 digit terakhir) salah utk port 4 digit.
+                        int pt = Integer.parseInt(digits);
                         if (pt > 0 && pt < 65536) port = ":" + pt;
                     } catch (Throwable ignore) {}
                 }

@@ -276,3 +276,24 @@ Stage Summary:
 - Arsitektur UI diganti total: dari "menempel di activity game" (rapuh) → "jendela overlay sistem sendiri" (kebal). Ini perbaikan struktural untuk keluhan chip-mati, bukan tambal sulam.
 - Menunggu satu tindakan user: izinkan "Tampil di atas aplikasi lain" (APK otomatis membuka setelannya). Setelah itu chip overlay hidup permanen + penghitung hidup di badan chip.
 - Rilis: v2.0-float (DB-LOCAL-TRACE1.apk). Mode AMATI tetap; tidak ada perubahan perilaku game.
+
+---
+Task ID: 20
+Agent: Z.ai Code (main)
+Task: Bug #4 — "FLOATING button muncul, tapi diklik gak muncul isi log" (user: kerjakan sepenuh hati, bukan revisi asal). Input: log baru trace_log_08-34.txt dari GitHub + analisis alur aplikasi terbuka → lobby guide.
+
+Work Log:
+- Git pull: trace_log_08-34.txt (5.004 baris) menggantikan trace_log_07-30.txt. Sesi 08:32→08:34, TRACE-2.0 jalan (OVERLAY AKTIF tercatat di baris 61).
+- Analisis garis waktu SYS: tap panel 7× (buka/tutup), SAVE 8× sukses, COPY 5× sukses — "log di-copy ke clipboard (722 baris, 136136 karakter)" → data log ADA, tombol JALAN, jendela overlay TAMPIL; hanya AREA TEKS LOG kosong.
+- Diagnosis akar masalah: layout starvation. Render lama = SpannableStringBuilder 400 baris (~800 span + 800 Color.parse per render) + setText ulang tiap 250ms–1dtk; panel pertama dibuka PERSIS di tengah ekstraksi all.zip 18,5 MB (baris 2408, tmp.zip 848KB→15.6MB); layout TextView ~6000px di HP lemah butuh >1dtk dan SELALU dibatalkan setText berikutnya → area log tidak pernah selesai digambar (kosong permanen), judul+tombol (layout kecil sekali jadi) tetap tampil.
+- Perbaikan DebugConsole (TRACE-2.1): (1) render teks POLOS — nol span/nol parseColor; (2) RENDER_MAX 400→150 (data penuh tetap di buffer 4000 + disk; COPY/SAVE = semua); (3) FIRST-PAINT instan saat panel terbuka ("memuat N baris • M baris disk…") — area log tidak mungkin kosong dari frame pertama; (4) SKIP-IF-UNCHANGED (lastRenderedSize+lastRenderedKey) — setText hanya bila ada baris baru, layout tak pernah dibatalkan; (5) throttle banjir 1→2 dtk; (6) footer bukti hidup "buffer N • disk M baris • COPY/SAVE = SEMUA"; (7) togglePanel mencatat kegagalan tampil + firstPaint dipanggil setelah panelShown pasti true; (8) reset penanda render di enableOverlay/buildPanelViews; (9) colorOf + import span dihapus.
+- FIX PORT (TracePack.unduhFromCache): pola "3 digit terakhir" salah utk port 4 digit. BUKTI PROBE LANGSUNG dari sandbox: s2105-bs.popoh5.com:8101/socket.io/ → HTTP 200 handshake engine.io 104 B (= persis baris UNDUH device), :101 → GAGAL; s49991-bs:8581 → HTTP 200 103 B (= UNDUH), :581 → GAGAL; baseline login.popoh5.com:610 → 200. Kini kunci "0A8101"→08101→:8101, "0A610"→0610→:610 (parse semua digit).
+- Build: ECJ 37 class OK → d8 trace_classes.dex 74.788 B → apktool → zipalign → apksigner (SIGN OK). Verifikasi dex strings: TRACE-2.1/firstPaint/lastRenderedKey/"sedang menggambar…"/"COPY/SAVE = SEMUA"/"panel gagal tampil" semua ada; badging com.db.local/1/1.0.0/targetSdk 30; cert SHA-256 3898c8f0… (konsisten → pasang menimpa).
+- CONTOH-LOG-TRACE1.md: seksi TRACE-2.1 (akar masalah, 7 perbaikan, bukti port, ALUR LENGKAP SATU SESI boot→config→all.zip→login SDK→lobby guide).
+- Rilis GitHub: release v2.1-panelfastif + aset APK; commit source + docs push main.
+
+Stage Summary:
+- Keluhan "klik gak muncul isi log" akhirnya TUNTAS dari sisi yang benar: bukan log yang mati (log 722 baris hidup, SAVE/COPY sukses) melainkan RENDER panel yang kelaparan di HP lemah saat banjir ekstraksi. TRACE-2.1 membuat area log mustahil kosong: first-paint instan + render 150 baris polos + skip-if-unchanged + throttle 2 dtk.
+- Bonus akurasi: port server game di baris UNDUH kini benar (:8101/:8581, dibuktikan probe HTTP 200 ke server resmi).
+- Alur lobby guide terkonfirmasi dari log: BOOT → config gerbang → all.zip 18,5 MB + ekstraksi → HWLoginActivity (SDK) → socket login:610 → server game s2105-bs:8101 → masuk lobby (bgm_main.mp3) → asset guide (guide_idle2/guide_still2) = sampai lobby guide.
+- APK: DB-LOCAL-TRACE1.apk SHA-256 abdcd760921a66d7be8359132896690a269a76fb7fee94761c89df0977b71da1 (105.022.494 B).

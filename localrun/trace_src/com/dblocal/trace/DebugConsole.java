@@ -18,9 +18,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -69,8 +66,25 @@ import java.util.regex.Pattern;
  *     NET   : URL server resmi (penunjuk jalan) + URL yang ditemukan di file,
  *             dicek satu per satu (status + ukuran) — jawab "file server apa
  *             lagi yang bisa diambil"
- * - Tombol: COPY, SHARE, SAVE, SCAN, CFG, NET, CLR.
+ * - Tombol: COPY, SHARE, SAVE, SCAN, CFG, NET, CACHE, CLR.
  * - Semua metode anti-crash: kegagalan UI tidak boleh mengganggu game.
+ *
+ * FIX v2.1 — AKAR MASALAH "panel terbuka tapi isi log TIDAK MUNCUL":
+ *   BUKTI dari log device 08-34 (5.004 baris): panel dibuka-tutup 7×,
+ *   SAVE ditekan 8×, COPY 5× dan selalu sukses ("722 baris, 136136
+ *   karakter") → data log ADA, tombol JALAN, jendela overlay TAMPIL —
+ *   hanya AREA TEKS LOG yang selalu kosong.
+ *   Penyebab: render lama membangun SpannableStringBuilder 400 baris
+ *   (~800 objek span + 800 Color.parseColor per render) lalu setText
+ *   ulang tiap 250ms–1dtk. Saat panel pertama dibuka (tepat di tengah
+ *   ekstraksi all.zip 18,5 MB), layout TextView monospace ~6000 px di HP
+ *   lemah butuh >1 dtk — setText berikutnya MEMBATALKAN layout yang
+ *   sedang berjalan → layout TIDAK PERNAH selesai → area log KOSONG
+ *   selamanya (layout starvation), sementara judul+tombol (layout kecil,
+ *   sekali jadi) tetap tampak.
+ *   Solusi: teks POLOS (0 span), 150 baris (~2.000 px, <0,3 dtk),
+ *   first-paint instan saat buka, lewati render bila isi tak berubah,
+ *   dan throttle banjir 2 dtk.
  */
 public final class DebugConsole {
 
@@ -90,7 +104,10 @@ public final class DebugConsole {
     private static final Object BUF_LOCK = new Object();
     private static final List<Ent> BUF = new ArrayList<Ent>();
     private static final int CAP = 4000;
-    private static final int RENDER_MAX = 400;
+    // FIX v2.1: 400 → 150 baris. Data penuh tetap utuh di BUF (4000) dan di
+    // log disk — COPY/SAVE selalu mengambil SEMUA. Yang dipangkas hanya
+    // beban layout layar agar area log PASTI selesai digambar di HP lemah.
+    private static final int RENDER_MAX = 150;
 
     // kontrol banjir [FILE] (ekstraksi zip besar bisa ratusan kejadian/detik)
     private static int floodCount = 0;
@@ -231,6 +248,10 @@ public final class DebugConsole {
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     private static boolean refreshPending = false;
     private static int lastBufSize = -1;
+    // FIX v2.1: penanda render terakhir — bila isi buffer tidak berubah,
+    // JANGAN setText ulang (mencegah layout starvation saat banjir).
+    private static int lastRenderedSize = -1;
+    private static String lastRenderedKey = null;
 
     // FIX v2.0 — AKAR KELUHAN "tombol muncul tapi diklik tidak muncul isi log":
     // UI lama menempel di DECOR ACTIVITY game. Dialog SDK fullscreen,
@@ -389,6 +410,7 @@ public final class DebugConsole {
             } catch (Throwable ignore) {}
             chip = null; panel = null; logView = null; footer = null; scroller = null;
             lastBufSize = -1;
+            lastRenderedSize = -1; lastRenderedKey = null;
             showOverlayChip();
             log('I', "SYS", "OVERLAY AKTIF: 🐞 sekarang JENDELA SENDIRI di atas game — tap = buka/tutup panel, tahan = sembunyikan. Sentuhan tidak bisa dimakan game lagi.");
             if (open) {
@@ -617,7 +639,7 @@ public final class DebugConsole {
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
         TextView title = new TextView(c);
-        title.setText("TRACE-2.0 • MODE AMATI");
+        title.setText("TRACE-2.1 • MODE AMATI");
         title.setTextSize(12f);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setTextColor(Color.parseColor("#FFFFC107"));
@@ -700,6 +722,7 @@ public final class DebugConsole {
         panel.addView(footer);
 
         lastBufSize = -1;
+        lastRenderedSize = -1; lastRenderedKey = null;
         return panel;
     }
 
@@ -748,17 +771,28 @@ public final class DebugConsole {
         return Math.round(v * 1.5f);
     }
 
-    /** FIX v2.0: toggle yang selalu MENCATAT + bekerja di kedua mode.
+    /** FIX v2.1: toggle yang selalu MENCATAT + bekerja di kedua mode.
      *  Setiap tap chip tercatat di log — kalau panel tak muncul, log disk
-     *  tetap membuktikan tap terkirim (diagnosa mudah). */
+     *  tetap membuktikan tap terkirim (diagnosa mudah).
+     *  Baru v2.1: begitu panel overlay tampil, area log LANGSUNG diberi
+     *  tulisan instan (firstPaint) — area log tidak mungkin kosong; render
+     *  penuh 150 baris menyusul pada detak refresh yang sama. */
     private static void togglePanel() {
         try {
             open = !open;
             log('I', "SYS", "🐞 tap → panel " + (open ? "DIBUKA" : "ditutup")
                     + " (mode " + (overlayMode ? "overlay/jendela-sendiri" : "dekor-activity") + ")");
             if (overlayMode) {
-                if (open) showOverlayPanel();
-                else hideOverlayPanel();
+                if (open) {
+                    showOverlayPanel();
+                    if (!panelShown) {
+                        log('W', "SYS", "panel gagal tampil di jendela overlay — tap sekali lagi utk mencoba ulang");
+                    } else {
+                        firstPaint();
+                    }
+                } else {
+                    hideOverlayPanel();
+                }
             } else if (panel != null) {
                 panel.setVisibility(open ? View.VISIBLE : View.GONE);
             }
@@ -766,6 +800,25 @@ public final class DebugConsole {
         } catch (Throwable t) {
             try { log('W', "SYS", "toggle panel gagal: " + t); } catch (Throwable ignore) {}
         }
+    }
+
+    /** FIX v2.1: tulisan INSTAN di area log saat panel terbuka — satu baris
+     *  pendek, layout puluhan milidetik, TIDAK mungkin gagal digambar.
+     *  Menjawab keluhan "panel terbuka tapi kosong": dari frame pertama
+     *  area log sudah berisi informasi jumlah baris (bukti log hidup). */
+    private static void firstPaint() {
+        try {
+            if (logView == null) return;
+            int n;
+            synchronized (BUF_LOCK) { n = BUF.size(); }
+            int show = Math.min(n, RENDER_MAX);
+            logView.setText("memuat " + show + " dari " + n + " baris buffer • "
+                    + TracePack.diskCount() + " baris disk — sedang menggambar…");
+            try { if (scroller != null) scroller.scrollTo(0, 0); } catch (Throwable ignore) {}
+            lastRenderedSize = -1;   // paksa render penuh pada refresh berikutnya
+            lastRenderedKey = null;
+            if (footer != null) footer.setText(footerText());
+        } catch (Throwable ignore) {}
     }
 
     // ------------------------------------------------------------- refresh
@@ -783,15 +836,16 @@ public final class DebugConsole {
 
     /** FIX v1.1: throttle render — maks 1× per 250 ms agar panel lancar di HP
      *  low-end meski banjir log (ekstraksi zip besar).
-     *  FIX v1.3: saat banjir (ekstraksi besar), jeda diperpanjang ke 1 dtk —
-     *  inilah penyebab panel terasa "macet saat SDK loading" di v1: TextView
-     *  dirender ulang tiap 250 ms dengan ribuan baris di HP lemah. */
+     *  FIX v1.3: saat banjir, jeda diperpanjang.
+     *  FIX v2.1: banjir → 2 dtk (bukan 1 dtk). Render 150 baris teks polos
+     *  selesai <0,3 dtk; dengan jeda 2 dtk + skip-if-unchanged, layout tidak
+     *  pernah dibatalkan di tengah jalan → area log TIDAK mungkin kosong. */
     private static void postRefresh() {
         try {
             synchronized (DebugConsole.class) {
                 if (refreshPending) return;
                 refreshPending = true;
-                int throttle = floodBusy() ? 1000 : 250;
+                int throttle = floodBusy() ? 2000 : 250;
                 long delay = Math.max(0, throttle - (System.currentTimeMillis() - lastRenderAt));
                 MAIN.postDelayed(RENDER, delay);
             }
@@ -812,34 +866,30 @@ public final class DebugConsole {
                 return;
             }
             int size;
+            Ent tail = null;
             List<Ent> copy = new ArrayList<Ent>();
             synchronized (BUF_LOCK) {
                 size = BUF.size();
+                if (size > 0) tail = BUF.get(size - 1);
                 int from = Math.max(0, size - RENDER_MAX);
                 for (int i = from; i < size; i++) copy.add(BUF.get(i));
             }
-            SpannableStringBuilder sb = new SpannableStringBuilder();
-            for (int i = 0; i < copy.size(); i++) {
-                Ent e = copy.get(i);
-                String stamp = ts(e.at);
-                int start = sb.length();
-                sb.append(stamp);
-                sb.append(' ');
-                sb.append(e.tag);
-                sb.append(": ");
-                sb.append(e.msg);
-                if (e.dup > 1) {
-                    sb.append("  ×");
-                    sb.append(String.valueOf(e.dup));
-                }
-                sb.append('\n');
-                int len = sb.length() - start;
-                sb.setSpan(new ForegroundColorSpan(Color.parseColor("#FF8A8A8A")), start, start + stamp.length() + 1,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                int bodyFrom = start + stamp.length() + 1;
-                sb.setSpan(new ForegroundColorSpan(colorOf(e.lvl, e.tag)), bodyFrom, start + len,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // FIX v2.1: lewati render bila isi buffer persis sama — layout yang
+            // sedang berjalan TIDAK dibatalkan. Inilah penangkal starvation:
+            // selama banjir, setText hanya terjadi bila ADA baris baru.
+            String key = size + "|" + (tail != null ? tail.at + ":" + tail.dup + ":" + tail.msg.length() : "k");
+            if (size == lastRenderedSize && key.equals(lastRenderedKey)) {
+                footer.setText(footerText());
+                return;
             }
+            lastRenderedSize = size;
+            lastRenderedKey = key;
+            // FIX v2.1: teks POLOS — nol objek span, nol parseColor per baris.
+            // Warna per-tag dikorbankan demi jaminan tampil; tag depan tetap
+            // membedakan jenis baris (UNDUH/POLL/FILE/ISI/…).
+            StringBuilder sb = new StringBuilder(copy.size() * 96 + 64);
+            for (int i = 0; i < copy.size(); i++) sb.append(plainOf(copy.get(i))).append('\n');
+            if (copy.size() == 0) sb.append("(buffer layar kosong — log PENUH tetap terekam di disk; tekan SAVE/COPY utk mengambil)\n");
             // FIX v1.1: auto-scroll hanya bila pembaca sudah di dekat dasar —
             // kalau sedang membaca ke atas, posisi baca TIDAK dijarah.
             boolean nearBottom = true;
@@ -850,7 +900,7 @@ public final class DebugConsole {
                 nearBottom = cv == null
                         || (cv.getBottom() - (scroller.getHeight() + keepY)) < dpAny(48);
             } catch (Throwable ignore) {}
-            logView.setText(sb);
+            logView.setText(sb.toString());
             if (size != lastBufSize && scroller != null) {
                 if (nearBottom) {
                     scroller.post(new Runnable() {
@@ -871,22 +921,9 @@ public final class DebugConsole {
     private static String footerText() {
         int size;
         synchronized (BUF_LOCK) { size = BUF.size(); }
-        return "MODE AMATI • " + size + " baris • COPY → paste ke chat";
-    }
-
-    private static int colorOf(char lvl, String tag) {
-        if ("UNDUH".equals(tag)) return Color.parseColor("#FFDCE775"); // lime — unduhan cache native
-        if ("NET".equals(tag))  return Color.parseColor("#FFFFB74D"); // oranye
-        if ("ISI".equals(tag)) return Color.parseColor("#FFFFAB91"); // salmon — isi jawaban server
-        if ("CACHE".equals(tag)) return Color.parseColor("#FFF48FB1"); // pink
-        if ("BOOT".equals(tag)) return Color.parseColor("#FFFFC107"); // amber
-        if ("FILE".equals(tag)) return Color.parseColor("#FF81C784"); // hijau
-        if ("POLL".equals(tag)) return Color.parseColor("#FFAED581"); // hijau muda
-        if ("SCAN".equals(tag)) return Color.parseColor("#FF4DB6AC"); // teal
-        if ("CFG".equals(tag))  return Color.parseColor("#FF80CBC4"); // teal muda
-        if (lvl == 'E') return Color.parseColor("#FFFF5252");         // merah
-        if (lvl == 'W') return Color.parseColor("#FFFFD54F");         // kuning
-        return Color.parseColor("#FFE0E0E0");
+        // FIX v2.1: footer = bukti hidup di panel — hitungan disk naik terus.
+        return "buffer " + size + " • disk " + TracePack.diskCount()
+                + " baris • COPY/SAVE = SEMUA";
     }
 
     // ------------------------------------------------------------- aksi tombol

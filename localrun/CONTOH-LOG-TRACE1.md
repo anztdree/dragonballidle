@@ -138,3 +138,61 @@ TRACE-2.0:
 - Setiap tap chip tercatat: "🐞 tap → panel DIBUKA (mode overlay/jendela-sendiri)".
 - Semua fitur TRACE-1.3 tetap: UNDUH decoder, log disk penuh, heartbeat,
   throttle adaptif, tombol SCAN/CFG/NET/CACHE.
+
+---
+
+## TRACE-2.1 — panel ANTI-BLANK (jawaban "panel terbuka tapi isi log tetap kosong")
+
+BUKTI dari log device (trace_log_08-34.txt, 5.004 baris): panel dibuka-tutup 7×,
+SAVE ditekan 8×, COPY 5× — semuanya SUKSES (COPY melaporkan "722 baris, 136136
+karakter"). Artinya: data log ADA, tombol JALAN, jendela overlay TAMPIL — hanya
+AREA TEKS LOG yang selalu kosong.
+
+Akar masalah (layout starvation):
+- Render lama = SpannableStringBuilder 400 baris (~800 objek span + 800
+  Color.parseColor per render) + setText ulang tiap 250ms–1 dtk.
+- Panel pertama kali dibuka PERSIS di tengah ekstraksi all.zip 18,5 MB.
+- Layout TextView monospace ~6000 px di HP lemah butuh >1 dtk; setText
+  berikutnya MEMBATALKAN layout yang sedang berjalan → layout tidak pernah
+  selesai → area log kosong selamanya. Judul+tombol (layout kecil) tetap tampil.
+
+Perbaikan TRACE-2.1:
+1. Render teks POLOS (0 span, 0 parseColor per baris).
+2. RENDER_MAX 150 baris (~2000 px, layout <0,3 dtk). Data penuh tetap di
+   buffer 4000 + log disk — COPY/SAVE selalu mengambil SEMUA.
+3. FIRST-PAINT instan: begitu panel tampil, area log langsung diisi tulisan
+   "memuat N baris • M baris disk…" — tidak mungkin kosong dari frame pertama.
+4. SKIP-IF-UNCHANGED: bila isi buffer tidak berubah, setText TIDAK dipanggil —
+   layout tidak pernah dibatalkan di tengah jalan.
+5. Throttle banjir 2 dtk (sebelumnya 1 dtk).
+6. Footer = bukti hidup: "buffer N • disk M baris • COPY/SAVE = SEMUA".
+7. FIX PORT (bukti probe langsung): kunci cache `host#0A8101` → port `:8101`
+   (HTTP 200 handshake engine.io, 104 B = persis baris UNDUH), bukan `:101`
+   (GAGAL total). Sama untuk `0A8581` → `:8581`. Baris UNDUH sekarang benar:
+
+```
+08:33 UNDUH: OK (masuk) • 104 B • https://s2105-bs.popoh5.com:8101/socket.io/  (kunci #index#/8b36cef…) → SIMPAN KE /data/user/0/com.db.local/files/games/https/s2105-bs.popoh5.com#0A8101/socket.io/#index#/8b36cef…
+08:33 UNDUH: OK (masuk) • 103 B • https://s49991-bs.popoh5.com:8581/socket.io/  (kunci #index#/d7c1fda…) → SIMPAN KE /data/user/0/com.db.local/files/games/https/s49991-bs.popoh5.com#0A8581/socket.io/#index#/d7c1fda…
+```
+
+ALUR LENGKAP SATU SESI (dari log 08-34, aplikasi terbuka → lobby guide):
+1. BOOT 08:32 — TRACE-2.1 aktif, EntryPoint resmi configus.sjmobilegame.com,
+   LaunchActivity jalan, chip+panel jendela overlay siap.
+2. CONFIG — GET setting_BS_Android.bin → OK 711 B (config gerbang);
+   com_db_local.bin → null (config per-paket tidak ada, game tetap lanjut).
+3. VERSI & UPDATE — base.version "110", resource.version "11390", upgrade.json
+   (daftar patch), size.json (all 19.385.098 B) → DL all.zip?v=11011390 18,5 MB
+   → SIMPAN KE ext:files/game/https/dragonh5cdn.popoh5.com/bs/tmp.zip →
+   ekstraksi ribuan file (js engine, json, gambar, suara) ke pohon
+   ext:files/game/https/<host>/<path>.
+4. LOGIN SDK 08:33 — MainActivity → HWLoginActivity (com.quickgame SDK);
+   socket handshake login.popoh5.com:610 (UNDUH 601,8 KB), server game
+   s2105-bs:8101 & s49991-bs:8581; ISI: clientversion.json, serversetting.json,
+   downloadAward.json (berisi URL APK resmi + hadiah download).
+5. MASUK GAME → LOBBY GUIDE 08:33–08:34 — UNDUH bgm_main.mp3 171,8 KB (musik
+   lobby), guild1.mp3, sound_click.mp3, animasi naga (c3swk_beiji02,
+   WKCY-beiji, fulishacgaidazhao), dan ASSET PANDUAN:
+   guide_still2.png + guide_idle2.json/png (en/hero_related/) — bukti game
+   sudah sampai tahap lobby guide.
+6. Sepanjang sesi: heartbeat "hidup • 3.187 kejadian file • ext:files 186 dir",
+   POLL tiap 4 dtk, chip penghitung naik terus.
