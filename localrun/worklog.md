@@ -252,3 +252,27 @@ Stage Summary:
 - Diagnosis final: BUKAN watcher mati; DL/GET berhenti karena unduhan pasca-SDK dilakukan engine C++ dan jejaknya (cache files/games/https/…) belum diterjemahkan jadi baris unduhan. Panel membeku karena render berat saat banjir di HP lemah.
 - TRACE-1.3: UNDUH decoder + peredam noise cache + throttle adaptif = panel tetap jelas & hidup dari boot sampai lobby; log disk tetap tanpa terkecuali.
 - Rilis: v1.3-traceunduh (APK DB-LOCAL-TRACE1.apk). Mode AMATI tetap: hanya membaca nama/ukuran file — tidak mengubah isi apa pun.
+
+---
+Task ID: 20
+Agent: Z.ai (main)
+Task: Laporan user — "Log masih jelas stuck .. FLOATING button muncul tp di klik gak muncul isi log!" → kerjakan sepenuh hati (bukan revisi kecil): bangun ulang lapisan UI menjadi jendela overlay sistem.
+
+Work Log:
+- Diagnosis UI lama: chip+panel menempel di DECOR ACTIVITY game. Dialog SDK fullscreen / SurfaceView z-order tinggi / activity recreation oleh engine C++ membuat sentuhan tidak pernah sampai ke chip — chip KELIHATAN tapi MATI (persis laporan user). Ini kelas bug yang tidak bisa diperbaiki dengan patch kecil → ganti arsitektur UI.
+- TRACE-2.0 (bangun ulang DebugConsole lapisan UI):
+  1) Chip + panel = JENDELA OVERLAY sistem sendiri (WindowManager, TYPE_APPLICATION_OVERLAY, FLAG_NOT_FOCUSABLE|NOT_TOUCH_MODAL|LAYOUT_IN_SCREEN, PixelFormat.TRANSLUCENT) — di atas semua window game; sentuhan pasti sampai; kebal activity recreation & dialog SDK.
+  2) Izin SYSTEM_ALERT_WINDOW (sudah ada di manifest base, diverifikasi aapt) diminta SEKALI: 2 dtk setelah start, bila Settings.canDrawOverlays()==false → log panduan + toast + auto-buka ACTION_MANAGE_OVERLAY_PERMISSION; thread pemantau izin tiap 1 dtk (maks 180 dtk) → begitu diizinkan, enableOverlay() memasang chip overlay & melepas UI dekor lama (anti dobel).
+  3) FALLBACK: sebelum izin diberikan, mode dekor lama tetap berfungsi (attach() tetap memasang chip dekor).
+  4) Chip = penghitung HIDUP "🐞 N" (TracePack.diskCount(), ticker 2 dtk) — bukti visual pencatatan berjalan walau panel tertutup.
+  5) Setiap tap chip TERCATAT ke log: "🐞 tap → panel DIBUKA (mode overlay/jendela-sendiri)" — diagnosa mudah bila ada masalah lagi.
+  6) Refactor menyeluruh: dp/roundBg/mkBtn/toast/doCopy/doShare/doSave → Context (bukan Activity); buildChip(Context) + buildPanelViews(Context) dipakai overlay & fallback; dpAny pakai appCtx; SHARE pakai FLAG_ACTIVITY_NEW_TASK; refreshNow() sadar-mode (panelShown utk overlay).
+  7) TracePack: diskLines counter + diskCount(); VER=TRACE-2.0; BOOT line panduan overlay.
+- Kompilasi ECJ: 37 class OK (setelah perbaikan import PixelFormat → android.graphics). Build penuh: trace_classes.dex 74.792 B, SIGN OK.
+- Verifikasi APK: 105.022.494 B, SHA-256 09ff253e87a0c022f60ec8ab5db136f02b2ae44dcff0e95ac9eeb9cfd44fc816; badging com.db.local/1/1.0.0/targetSdk 30; aapt permissions: SYSTEM_ALERT_WINDOW ada; cert SHA-256 3898c8f0… (sama semua versi → pasang menimpa); dex strings: TRACE-2.0/unduhFromCache/logDiskOnly/diskCount/CHIP_TICK/ironoriginhoblike_dbtrace semua ada.
+- CONTOH-LOG-TRACE1.md: seksi TRACE-2.0.
+
+Stage Summary:
+- Arsitektur UI diganti total: dari "menempel di activity game" (rapuh) → "jendela overlay sistem sendiri" (kebal). Ini perbaikan struktural untuk keluhan chip-mati, bukan tambal sulam.
+- Menunggu satu tindakan user: izinkan "Tampil di atas aplikasi lain" (APK otomatis membuka setelannya). Setelah itu chip overlay hidup permanen + penghitung hidup di badan chip.
+- Rilis: v2.0-float (DB-LOCAL-TRACE1.apk). Mode AMATI tetap; tidak ada perubahan perilaku game.

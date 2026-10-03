@@ -116,3 +116,25 @@ Catatan:
 - `#temp` / `#header` / `BUAT` / `HAPUS` cache = senyap di panel, TETAP UTUH di log disk (SAVE memuat semua).
 - Hasil ekstraksi zip (ext `game/https/...`) tetap tampil sebagai FILE biasa — itu bukan unduhan.
 - Port login `:610` dibaca otomatis dari kunci cache (`login.popoh5.com#0A610`).
+
+---
+
+## TRACE-2.0 — panel JENDELA OVERLAY (jawaban "tombol muncul tapi diklik tidak muncul isi log")
+
+Akar masalah: UI lama menempel di DECOR ACTIVITY game. Dialog SDK fullscreen /
+SurfaceView z-order tinggi / activity yang dibuat ulang engine membuat sentuhan
+tidak pernah sampai — chip kelihatan tapi MATI.
+
+TRACE-2.0:
+- Panel & chip = JENDELA OVERLAY sistem sendiri (WindowManager,
+  TYPE_APPLICATION_OVERLAY) — di atas SEMUA window game; sentuhan pasti sampai;
+  tidak ikut hancur saat activity dibuat ulang.
+- Izin `android.permission.SYSTEM_ALERT_WINDOW` (sudah ada di manifest) harus
+  diizinkan SEKALI: APK otomatis membuka Setelan + toast panduan; begitu
+  diizinkan, chip overlay langsung aktif (pemantau izin tiap 1 dtk).
+- Sebelum izin diberikan: fallback mode dekor (perilaku lama) tetap jalan.
+- Badan chip menampilkan PENGHITUNG HIDUP: "🐞 1,2k" = jumlah baris log disk
+  terus bertambah — bukti visual pencatatan berjalan walau panel tertutup.
+- Setiap tap chip tercatat: "🐞 tap → panel DIBUKA (mode overlay/jendela-sendiri)".
+- Semua fitur TRACE-1.3 tetap: UNDUH decoder, log disk penuh, heartbeat,
+  throttle adaptif, tombol SCAN/CFG/NET/CACHE.

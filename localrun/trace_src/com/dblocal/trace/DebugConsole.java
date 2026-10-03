@@ -9,12 +9,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.net.TrafficStats;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -23,6 +26,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -228,6 +232,23 @@ public final class DebugConsole {
     private static boolean refreshPending = false;
     private static int lastBufSize = -1;
 
+    // FIX v2.0 — AKAR KELUHAN "tombol muncul tapi diklik tidak muncul isi log":
+    // UI lama menempel di DECOR ACTIVITY game. Dialog SDK fullscreen,
+    // SurfaceView ber-z-order tinggi, atau activity yang dibuat ulang engine
+    // membuat sentuhan tidak pernah sampai / panel tertutup — chip kelihatan
+    // tapi MATI. Sekarang panel = JENDELA OVERLAY sistem sendiri (WindowManager):
+    // berdiri di atas SEMUA window game, sentuhan pasti sampai, tidak ikut
+    // hancur saat activity dibuat ulang.
+    private static WindowManager WM = null;
+    private static TextView chipOv = null;
+    private static WindowManager.LayoutParams chipLp = null;
+    private static LinearLayout panelOv = null;
+    private static WindowManager.LayoutParams panelLp = null;
+    private static boolean overlayMode = false;
+    private static boolean panelShown = false;
+    private static boolean promptedOverlay = false;
+    private static boolean watchingGrant = false;
+
     /** Dipanggil TracePack.start(). */
     public static void register(final Application app) {
         try {
@@ -243,16 +264,27 @@ public final class DebugConsole {
                 @Override public void onActivitySaveInstanceState(Activity a, android.os.Bundle b) {}
                 @Override public void onActivityDestroyed(Activity a) {}
             });
-            log('I', "SYS", "panel debug siap — ketuk 🐞 di layar untuk buka");
+            log('I', "SYS", "panel debug siap — ketuk 🐞 untuk buka");
+            // FIX v2.0: 2 dtk setelah start, siapkan jendela overlay sendiri
+            // (izin sekali). UI tidak lagi bergantung pada activity game.
+            MAIN.postDelayed(new Runnable() {
+                public void run() { bootstrapOverlay(); }
+            }, 2000);
         } catch (Throwable t) {
             Log.w("DBTRACE", "register console: " + t);
         }
     }
 
-    /** Pasang chip+panel di decor Activity yang sedang resume (idempoten). */
+    /** Pasang chip+panel di decor Activity (FALLBACK bila overlay belum
+     *  diizinkan). Di mode overlay tidak dipakai sama sekali. */
     public static void attach(Activity act) {
         try {
             if (act == null || act.isFinishing()) return;
+            log('I', "SYS", "activity resume: " + act.getClass().getName());
+            if (overlayMode) {
+                if (chipOv == null) showOverlayChip(); // chip pernah disembunyikan tahan-lama?
+                return; // UI = jendela overlay sendiri — decor tidak dipakai
+            }
             ViewGroup decor = (ViewGroup) act.getWindow().getDecorView();
             if (decor == null) return;
             if (decor.findViewWithTag("DBTRACE_CHIP") != null) return;
@@ -260,246 +292,480 @@ public final class DebugConsole {
             if (old == decor && chip != null && chip.getParent() == decor) return;
             actRef = new WeakReference<Activity>(act);
             decorRef = new WeakReference<ViewGroup>(decor);
-            buildViews(act, decor);
-            log('I', "SYS", "chip dipasang di " + act.getClass().getSimpleName()
+            buildDecorUi(act, decor);
+            log('I', "SYS", "chip menempel di " + act.getClass().getSimpleName()
                     + " • layar " + act.getResources().getDisplayMetrics().widthPixels
-                    + "x" + act.getResources().getDisplayMetrics().heightPixels);
+                    + "x" + act.getResources().getDisplayMetrics().heightPixels
+                    + " (mode dekor — sementara)");
         } catch (Throwable t) {
             Log.w("DBTRACE", "attach console: " + t);
         }
     }
 
-    // ---------------------------------------------------------------- views
+    // --------------------------------------------------- jendela overlay v2.0
 
-    private static int dp(float v, Activity act) {
-        return Math.round(v * act.getResources().getDisplayMetrics().density);
+    private static boolean canOverlay(Context c) {
+        try {
+            if (Build.VERSION.SDK_INT >= 23) return Settings.canDrawOverlays(c);
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
     }
 
-    private static GradientDrawable roundBg(Activity act, int fillColor, int radiusDp, int strokeColor, int strokeDp) {
+    /** Siapkan jendela overlay: bila izin sudah ada → langsung; bila belum →
+     *  buka Setelan SEKALI + pantau sampai diizinkan. */
+    private static void bootstrapOverlay() {
+        try {
+            Context c = appRef.get();
+            if (c == null || overlayMode) return;
+            if (canOverlay(c)) {
+                enableOverlay();
+                return;
+            }
+            if (promptedOverlay) {
+                startGrantWatcher();
+                return;
+            }
+            promptedOverlay = true;
+            log('I', "SYS", "OVERLAY: izin “Tampil di atas aplikasi lain” belum ada — inilah sebab chip bisa mati diklik (UI menempel di activity game). SEKALI SAJA: izinkan com.db.local di Setelan yang terbuka, lalu BACK ke game.");
+            toast(c, "Izinkan “Tampil di atas aplikasi lain” utk com.db.local, lalu BACK ke game");
+            try {
+                Intent i = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + c.getPackageName()));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                c.startActivity(i);
+            } catch (Throwable t) {
+                try {
+                    Intent i2 = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:" + c.getPackageName()));
+                    i2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    c.startActivity(i2);
+                } catch (Throwable ignore) {}
+            }
+            startGrantWatcher();
+        } catch (Throwable ignore) {}
+    }
+
+    private static void startGrantWatcher() {
+        try {
+            if (watchingGrant) return;
+            watchingGrant = true;
+            new Thread(new Runnable() {
+                public void run() {
+                    for (int i = 0; i < 180; i++) {
+                        try { Thread.sleep(1000); } catch (Throwable ignore) {}
+                        Context c = appRef.get();
+                        if (c == null) return;
+                        if (canOverlay(c)) {
+                            MAIN.post(new Runnable() { public void run() { enableOverlay(); } });
+                            return;
+                        }
+                    }
+                }
+            }, "DBTRACE-grant").start();
+        } catch (Throwable ignore) {}
+    }
+
+    /** Pasang UI sebagai JENDELA OVERLAY sistem — kebal dialog/SurfaceView/
+     *  activity-recreation milik game. */
+    private static void enableOverlay() {
+        try {
+            if (overlayMode) return;
+            Context c = appRef.get();
+            if (c == null) return;
+            WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
+            if (wm == null) return;
+            overlayMode = true;
+            WM = wm;
+            // lepas UI dekor lama (fallback) supaya tidak dobel
+            try {
+                ViewGroup decor = decorRef.get();
+                if (decor != null) {
+                    View old1 = decor.findViewWithTag("DBTRACE_CHIP");
+                    if (old1 != null) decor.removeView(old1);
+                    if (panel != null && panel.getParent() == decor) decor.removeView(panel);
+                }
+            } catch (Throwable ignore) {}
+            chip = null; panel = null; logView = null; footer = null; scroller = null;
+            lastBufSize = -1;
+            showOverlayChip();
+            log('I', "SYS", "OVERLAY AKTIF: 🐞 sekarang JENDELA SENDIRI di atas game — tap = buka/tutup panel, tahan = sembunyikan. Sentuhan tidak bisa dimakan game lagi.");
+            if (open) {
+                showOverlayPanel();
+                refreshNow();
+            }
+        } catch (Throwable t) {
+            overlayMode = false;
+            try { log('W', "SYS", "overlay gagal: " + t); } catch (Throwable ignore) {}
+        }
+    }
+
+    private static int overlayType() {
+        return Build.VERSION.SDK_INT >= 26
+                ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                : 2003; // TYPE_PHONE (perangkat lama)
+    }
+
+    private static void showOverlayChip() {
+        try {
+            Context c = appRef.get();
+            if (c == null || WM == null || chipOv != null) return;
+            chipOv = buildChip(c);
+            chipLp = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    overlayType(),
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                            | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                            | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                    PixelFormat.TRANSLUCENT);
+            chipLp.gravity = Gravity.TOP | Gravity.START;
+            chipLp.x = 24;
+            chipLp.y = 160;
+            WM.addView(chipOv, chipLp);
+            MAIN.postDelayed(CHIP_TICK, 2000);
+        } catch (Throwable t) {
+            chipOv = null;
+            try { log('W', "SYS", "chip overlay gagal: " + t); } catch (Throwable ignore) {}
+        }
+    }
+
+    /** Penghitung HIDUP di badan chip: “🐞 1,2rb” naik terus = pencatatan
+     *  berjalan meski panel tertutup — jawaban visual utk “log macet?”. */
+    private static final Runnable CHIP_TICK = new Runnable() {
+        public void run() {
+            try {
+                if (chipOv != null) {
+                    long n = TracePack.diskCount();
+                    String cnt = n >= 1000000 ? (n / 1000000) + "jt"
+                            : n >= 1000 ? String.format(Locale.US, "%.1fk", n / 1000.0)
+                            : String.valueOf(n);
+                    chipOv.setText("🐞 " + cnt);
+                }
+            } catch (Throwable ignore) {}
+            MAIN.postDelayed(CHIP_TICK, 2000);
+        }
+    };
+
+    private static void showOverlayPanel() {
+        try {
+            Context c = appRef.get();
+            if (c == null || WM == null) return;
+            if (panelOv == null) {
+                panelOv = buildPanelViews(c);
+                int h = (int) (c.getResources().getDisplayMetrics().heightPixels * 0.62f);
+                panelLp = new WindowManager.LayoutParams(
+                        WindowManager.LayoutParams.MATCH_PARENT, h, overlayType(),
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                        PixelFormat.TRANSLUCENT);
+                panelLp.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+            }
+            if (!panelShown) {
+                WM.addView(panelOv, panelLp);
+                panelShown = true;
+            }
+        } catch (Throwable t) {
+            panelShown = false;
+            try { log('W', "SYS", "panel overlay gagal: " + t); } catch (Throwable ignore) {}
+        }
+    }
+
+    private static void hideOverlayPanel() {
+        try {
+            if (panelOv != null && panelShown && WM != null) {
+                WM.removeView(panelOv);
+            }
+        } catch (Throwable ignore) {}
+        panelShown = false;
+    }
+
+    // ---------------------------------------------------------------- views
+
+    private static int dp(float v, Context c) {
+        return Math.round(v * c.getResources().getDisplayMetrics().density);
+    }
+
+    private static GradientDrawable roundBg(Context c, int fillColor, int radiusDp, int strokeColor, int strokeDp) {
         GradientDrawable g = new GradientDrawable();
         g.setColor(fillColor);
-        g.setCornerRadius(dp(radiusDp, act));
-        if (strokeColor != 0) g.setStroke(Math.max(1, dp(strokeDp, act)), strokeColor);
+        g.setCornerRadius(dp(radiusDp, c));
+        if (strokeColor != 0) g.setStroke(Math.max(1, dp(strokeDp, c)), strokeColor);
         return g;
     }
 
-    private static TextView mkBtn(Activity act, String label, View.OnClickListener onClick) {
-        TextView b = new TextView(act);
+    private static TextView mkBtn(Context c, String label, View.OnClickListener onClick) {
+        TextView b = new TextView(c);
         b.setText(label);
         b.setTextSize(10f);
         b.setTypeface(Typeface.DEFAULT_BOLD);
         b.setTextColor(Color.parseColor("#FFE0E0E0"));
-        b.setBackground(roundBg(act, Color.parseColor("#2EFFFFFF"), 14, Color.parseColor("#33FFFFFF"), 1));
-        b.setPadding(dp(10, act), dp(6, act), dp(10, act), dp(6, act));
+        b.setBackground(roundBg(c, Color.parseColor("#2EFFFFFF"), 14, Color.parseColor("#33FFFFFF"), 1));
+        b.setPadding(dp(10, c), dp(6, c), dp(10, c), dp(6, c));
         b.setGravity(Gravity.CENTER);
-        b.setMinWidth(dp(44, act));
-        b.setMinHeight(dp(36, act));
+        b.setMinWidth(dp(44, c));
+        b.setMinHeight(dp(36, c));
         b.setOnClickListener(onClick);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(dp(3, act), 0, dp(3, act), 0);
+        lp.setMargins(dp(3, c), 0, dp(3, c), 0);
         b.setLayoutParams(lp);
         return b;
     }
 
-    private static void buildViews(final Activity act, final ViewGroup decor) {
-        // ---- chip 🐞
-        chip = new TextView(act);
-        chip.setTag("DBTRACE_CHIP");
-        chip.setText("🐞");
-        chip.setTextSize(17f);
-        chip.setGravity(Gravity.CENTER);
-        chip.setBackground(roundBg(act, Color.parseColor("#B3000000"), 23, Color.parseColor("#88FFC107"), 1));
-        chip.setAlpha(0.92f);
-        int chipSize = dp(46, act);
-        FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(chipSize, chipSize, Gravity.TOP | Gravity.START);
-        chip.setLayoutParams(clp);
-        chip.setOnTouchListener(new View.OnTouchListener() {
-            float downRawX, downRawY, downX, downY, dist;
+    /** Chip 🐞 — dipakai di JENDELA OVERLAY (mode utama) maupun DECOR
+     *  (fallback). Geser = pindah; tap = buka/tutup panel; tahan 0,7 dtk =
+     *  sembunyikan. */
+    private static TextView buildChip(final Context c) {
+        final TextView v = new TextView(c);
+        v.setTag("DBTRACE_CHIP");
+        v.setText("🐞");
+        v.setTextSize(17f);
+        v.setGravity(Gravity.CENTER);
+        v.setBackground(roundBg(c, Color.parseColor("#B3000000"), 23, Color.parseColor("#88FFC107"), 1));
+        v.setAlpha(0.92f);
+        int chipSize = dp(46, c);
+        v.setMinimumWidth(chipSize);
+        v.setMinimumHeight(chipSize);
+        v.setPadding(dp(4, c), dp(4, c), dp(4, c), dp(4, c));
+        v.setOnTouchListener(new View.OnTouchListener() {
+            float downRawX, downRawY;
+            float downVX, downVY;
+            int downLpX, downLpY;
             long downAt;
-            boolean longFired;
+            boolean longFired, moved;
             final Runnable longRun = new Runnable() {
                 public void run() {
                     longFired = true;
                     try {
-                        chip.setVisibility(View.GONE);
-                        toast(act, "🐞 disembunyikan sementara — muncul lagi saat game dibuka ulang");
+                        if (overlayMode) {
+                            if (chipOv != null && WM != null) { WM.removeView(chipOv); chipOv = null; }
+                        } else {
+                            chip.setVisibility(View.GONE);
+                        }
+                        toast(c, "🐞 disembunyikan — muncul lagi saat game dibuka/resume");
+                        log('I', "SYS", "chip disembunyikan (tahan lama)");
                     } catch (Throwable ignore) {}
                 }
             };
-            public boolean onTouch(View v, MotionEvent e) {
+            public boolean onTouch(View vv, MotionEvent e) {
                 try {
                     switch (e.getActionMasked()) {
                         case MotionEvent.ACTION_DOWN:
                             downRawX = e.getRawX(); downRawY = e.getRawY();
-                            downX = v.getX(); downY = v.getY();
+                            downVX = vv.getX(); downVY = vv.getY();
+                            downLpX = chipLp != null ? chipLp.x : 0;
+                            downLpY = chipLp != null ? chipLp.y : 0;
                             downAt = System.currentTimeMillis();
-                            dist = 0; longFired = false;
-                            v.postDelayed(longRun, 700);
+                            longFired = false; moved = false;
+                            vv.postDelayed(longRun, 700);
                             return true;
                         case MotionEvent.ACTION_MOVE: {
                             float dx = e.getRawX() - downRawX, dy = e.getRawY() - downRawY;
-                            dist = Math.max(Math.abs(dx), Math.abs(dy));
-                            if (dist > 8) v.removeCallbacks(longRun);
-                            float nx = downX + dx, ny = downY + dy;
-                            ViewGroup p = (ViewGroup) v.getParent();
-                            if (p != null) {
-                                nx = Math.max(0, Math.min(nx, p.getWidth() - v.getWidth()));
-                                ny = Math.max(0, Math.min(ny, p.getHeight() - v.getHeight()));
+                            if (Math.max(Math.abs(dx), Math.abs(dy)) > 10) {
+                                moved = true;
+                                vv.removeCallbacks(longRun);
                             }
-                            v.setX(nx); v.setY(ny);
+                            if (moved) {
+                                if (overlayMode && WM != null && chipLp != null && vv == chipOv) {
+                                    chipLp.x = Math.max(0, downLpX + (int) dx);
+                                    chipLp.y = Math.max(0, downLpY + (int) dy);
+                                    try { WM.updateViewLayout(chipOv, chipLp); } catch (Throwable ignore) {}
+                                } else {
+                                    float nx = downVX + dx, ny = downVY + dy;
+                                    ViewGroup p = (ViewGroup) vv.getParent();
+                                    if (p != null) {
+                                        nx = Math.max(0, Math.min(nx, p.getWidth() - vv.getWidth()));
+                                        ny = Math.max(0, Math.min(ny, p.getHeight() - vv.getHeight()));
+                                    }
+                                    vv.setX(nx); vv.setY(ny);
+                                }
+                            }
                             return true;
                         }
                         case MotionEvent.ACTION_UP:
                         case MotionEvent.ACTION_CANCEL:
-                            v.removeCallbacks(longRun);
+                            vv.removeCallbacks(longRun);
                             if (e.getActionMasked() == MotionEvent.ACTION_UP
-                                    && !longFired && dist <= 8
+                                    && !longFired && !moved
                                     && System.currentTimeMillis() - downAt < 700) {
                                 togglePanel();
                             }
                             return true;
                         default:
-                            v.removeCallbacks(longRun);
+                            vv.removeCallbacks(longRun);
                             return true;
                     }
                 } catch (Throwable t) { return false; }
             }
         });
-        decor.addView(chip);
-        chip.post(new Runnable() {
-            public void run() {
-                try {
-                    ViewGroup p = (ViewGroup) chip.getParent();
-                    if (p != null) {
-                        chip.setX(Math.max(dp(8, act), p.getWidth() - chip.getWidth() - dp(10, act)));
-                        chip.setY(dp(72, act));
-                    }
-                } catch (Throwable ignore) {}
-            }
-        });
+        return v;
+    }
 
-        // ---- panel
-        panel = new LinearLayout(act);
+    /** ISI panel (judul + tombol + log + footer) — Context murni, tanpa
+     *  Activity. Dipakai jendela overlay maupun fallback dekor. */
+    private static LinearLayout buildPanelViews(final Context c) {
+        panel = new LinearLayout(c);
         panel.setOrientation(LinearLayout.VERTICAL);
-        panel.setBackground(roundBg(act, Color.parseColor("#F0101010"), 14, Color.parseColor("#44FFC107"), 1));
-        int h = (int) (act.getResources().getDisplayMetrics().heightPixels * 0.62f);
-        FrameLayout.LayoutParams plp = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT, h, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-        int m = dp(8, act);
-        plp.setMargins(m, m, m, m + dp(6, act));
-        panel.setLayoutParams(plp);
-        panel.setVisibility(View.GONE);
-        panel.setPadding(dp(10, act), dp(8, act), dp(10, act), dp(8, act));
+        panel.setBackground(roundBg(c, Color.parseColor("#F0101010"), 14, Color.parseColor("#44FFC107"), 1));
+        int m = dp(8, c);
+        panel.setPadding(dp(10, c), dp(8, c), dp(10, c), dp(8, c));
 
         // baris judul + tombol tutup
-        LinearLayout head = new LinearLayout(act);
+        LinearLayout head = new LinearLayout(c);
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);
-        TextView title = new TextView(act);
-        title.setText("TRACE-1.3 • MODE AMATI");
+        TextView title = new TextView(c);
+        title.setText("TRACE-2.0 • MODE AMATI");
         title.setTextSize(12f);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setTextColor(Color.parseColor("#FFFFC107"));
         title.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         head.addView(title);
-        head.addView(mkBtn(act, "✕", new View.OnClickListener() {
+        head.addView(mkBtn(c, "✕", new View.OnClickListener() {
             public void onClick(View v) { togglePanel(); }
         }));
         panel.addView(head);
 
         // baris tombol aksi 1
-        LinearLayout btns1 = new LinearLayout(act);
+        LinearLayout btns1 = new LinearLayout(c);
         btns1.setOrientation(LinearLayout.HORIZONTAL);
-        btns1.setPadding(0, dp(6, act), 0, 0);
-        btns1.addView(mkBtn(act, "COPY", new View.OnClickListener() {
-            public void onClick(View v) { doCopy(act); }
+        btns1.setPadding(0, dp(6, c), 0, 0);
+        btns1.addView(mkBtn(c, "COPY", new View.OnClickListener() {
+            public void onClick(View v) { doCopy(c); }
         }));
-        btns1.addView(mkBtn(act, "SHARE", new View.OnClickListener() {
-            public void onClick(View v) { doShare(act); }
+        btns1.addView(mkBtn(c, "SHARE", new View.OnClickListener() {
+            public void onClick(View v) { doShare(c); }
         }));
-        btns1.addView(mkBtn(act, "SAVE", new View.OnClickListener() {
-            public void onClick(View v) { doSave(act); }
+        btns1.addView(mkBtn(c, "SAVE", new View.OnClickListener() {
+            public void onClick(View v) { doSave(c); }
         }));
-        btns1.addView(mkBtn(act, "CLR", new View.OnClickListener() {
+        btns1.addView(mkBtn(c, "CLR", new View.OnClickListener() {
             public void onClick(View v) {
                 synchronized (BUF_LOCK) { BUF.clear(); floodHidden = 0; floodCount = 0; }
                 refreshNow();
-                toast(act, "panel dibersihkan — log disk tetap utuh (SAVE memuat semuanya)");
+                toast(c, "panel dibersihkan — log disk tetap utuh (SAVE memuat semuanya)");
             }
         }));
         panel.addView(btns1);
 
         // baris tombol aksi 2 (pemetaan)
-        LinearLayout btns2 = new LinearLayout(act);
+        LinearLayout btns2 = new LinearLayout(c);
         btns2.setOrientation(LinearLayout.HORIZONTAL);
-        btns2.setPadding(0, dp(4, act), 0, dp(6, act));
-        btns2.addView(mkBtn(act, "SCAN", new View.OnClickListener() {
+        btns2.setPadding(0, dp(4, c), 0, dp(6, c));
+        btns2.addView(mkBtn(c, "SCAN", new View.OnClickListener() {
             public void onClick(View v) { doScan(); }
         }));
-        btns2.addView(mkBtn(act, "CFG", new View.OnClickListener() {
+        btns2.addView(mkBtn(c, "CFG", new View.OnClickListener() {
             public void onClick(View v) { doCfg(); }
         }));
-        btns2.addView(mkBtn(act, "NET", new View.OnClickListener() {
+        btns2.addView(mkBtn(c, "NET", new View.OnClickListener() {
             public void onClick(View v) { doNet(); }
         }));
-        btns2.addView(mkBtn(act, "CACHE", new View.OnClickListener() {
+        btns2.addView(mkBtn(c, "CACHE", new View.OnClickListener() {
             public void onClick(View v) { doCache(); }
         }));
-        TextView hint = new TextView(act);
+        TextView hint = new TextView(c);
         hint.setText("SCAN=daftar file • CFG=config • NET=cek URL • CACHE=isi jawaban server");
         hint.setTextSize(8.5f);
         hint.setTextColor(Color.parseColor("#FF777777"));
         hint.setGravity(Gravity.CENTER_VERTICAL);
         LinearLayout.LayoutParams hlp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        hlp.setMargins(dp(6, act), 0, 0, 0);
+        hlp.setMargins(dp(6, c), 0, 0, 0);
         hint.setLayoutParams(hlp);
         btns2.addView(hint);
         panel.addView(btns2);
 
         // log
-        scroller = new ScrollView(act);
+        scroller = new ScrollView(c);
         scroller.setFillViewport(true);
-        logView = new TextView(act);
+        logView = new TextView(c);
         logView.setTypeface(Typeface.MONOSPACE);
         logView.setTextSize(10f);
         logView.setTextColor(Color.parseColor("#FFE0E0E0"));
-        // FIX v1.1: selectable OFF — sangat berat di HP low-end; COPY tombol
-        // sudah menyalin SEMUA baris.
+        // selectable OFF — sangat berat di HP low-end; COPY tombol sudah
+        // menyalin SEMUA baris.
         logView.setTextIsSelectable(false);
-        logView.setPadding(dp(4, act), dp(4, act), dp(4, act), dp(4, act));
+        logView.setPadding(dp(4, c), dp(4, c), dp(4, c), dp(4, c));
         scroller.addView(logView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         panel.addView(scroller, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
-        footer = new TextView(act);
+        footer = new TextView(c);
         footer.setTextSize(9f);
         footer.setTextColor(Color.parseColor("#FF9E9E9E"));
         footer.setSingleLine(true);
-        footer.setPadding(0, dp(4, act), 0, 0);
+        footer.setPadding(0, dp(4, c), 0, 0);
         panel.addView(footer);
 
-        decor.addView(panel);
         lastBufSize = -1;
-        if (open) panel.setVisibility(View.VISIBLE);
-        refreshNow();
+        return panel;
     }
 
-    /** dp tanpa konteks Activity (utk utilitas scroll). */
+    /** FALLBACK lama: UI menempel di decor activity (bila overlay belum
+     *  diizinkan). Mode utama sekarang jendela overlay. */
+    private static void buildDecorUi(final Activity act, final ViewGroup decor) {
+        try {
+            chip = buildChip(act);
+            int chipSize = dp(46, act);
+            FrameLayout.LayoutParams clp = new FrameLayout.LayoutParams(chipSize, chipSize, Gravity.TOP | Gravity.START);
+            chip.setLayoutParams(clp);
+            decor.addView(chip);
+            chip.post(new Runnable() {
+                public void run() {
+                    try {
+                        ViewGroup p = (ViewGroup) chip.getParent();
+                        if (p != null) {
+                            chip.setX(Math.max(dp(8, act), p.getWidth() - chip.getWidth() - dp(10, act)));
+                            chip.setY(dp(72, act));
+                        }
+                    } catch (Throwable ignore) {}
+                }
+            });
+            panel = buildPanelViews(act);
+            FrameLayout.LayoutParams plp = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    (int) (act.getResources().getDisplayMetrics().heightPixels * 0.62f),
+                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+            int m = dp(8, act);
+            plp.setMargins(m, m, m, m + dp(6, act));
+            panel.setLayoutParams(plp);
+            decor.addView(panel);
+            panel.setVisibility(open ? View.VISIBLE : View.GONE);
+            refreshNow();
+        } catch (Throwable t) {
+            Log.w("DBTRACE", "buildDecorUi: " + t);
+        }
+    }
+
+    /** dp tanpa konteks (utk utilitas scroll) — pakai appCtx. */
     private static int dpAny(float v) {
         try {
-            Activity a = actRef.get();
-            if (a != null) return dp(v, a);
+            Context c = appRef.get();
+            if (c != null) return dp(v, c);
         } catch (Throwable ignore) {}
         return Math.round(v * 1.5f);
     }
 
+    /** FIX v2.0: toggle yang selalu MENCATAT + bekerja di kedua mode.
+     *  Setiap tap chip tercatat di log — kalau panel tak muncul, log disk
+     *  tetap membuktikan tap terkirim (diagnosa mudah). */
     private static void togglePanel() {
         try {
             open = !open;
-            if (panel != null) panel.setVisibility(open ? View.VISIBLE : View.GONE);
+            log('I', "SYS", "🐞 tap → panel " + (open ? "DIBUKA" : "ditutup")
+                    + " (mode " + (overlayMode ? "overlay/jendela-sendiri" : "dekor-activity") + ")");
+            if (overlayMode) {
+                if (open) showOverlayPanel();
+                else hideOverlayPanel();
+            } else if (panel != null) {
+                panel.setVisibility(open ? View.VISIBLE : View.GONE);
+            }
             if (open) refreshNow();
-        } catch (Throwable ignore) {}
+        } catch (Throwable t) {
+            try { log('W', "SYS", "toggle panel gagal: " + t); } catch (Throwable ignore) {}
+        }
     }
 
     // ------------------------------------------------------------- refresh
@@ -535,7 +801,9 @@ public final class DebugConsole {
     private static void refreshNow() {
         try {
             if (panel == null || logView == null || footer == null) return;
-            if (panel.getVisibility() != View.VISIBLE) {
+            boolean visible = overlayMode ? panelShown
+                    : panel.getVisibility() == View.VISIBLE;
+            if (!visible) {
                 long now = System.currentTimeMillis();
                 if (now - lastFooterAt >= 1000) {
                     lastFooterAt = now;
@@ -623,52 +891,53 @@ public final class DebugConsole {
 
     // ------------------------------------------------------------- aksi tombol
 
-    private static void toast(final Activity act, final String msg) {
-        if (act == null) return;
+    private static void toast(final Context c, final String msg) {
+        if (c == null) return;
         MAIN.post(new Runnable() {
             public void run() {
-                try { Toast.makeText(act, msg, Toast.LENGTH_SHORT).show(); } catch (Throwable ignore) {}
+                try { Toast.makeText(c, msg, Toast.LENGTH_SHORT).show(); } catch (Throwable ignore) {}
             }
         });
     }
 
-    private static void doCopy(final Activity act) {
+    private static void doCopy(final Context c) {
         try {
             final String dump = dumpAll();
             int n;
             synchronized (BUF_LOCK) { n = BUF.size(); }
-            ClipboardManager cm = (ClipboardManager) act.getSystemService(Context.CLIPBOARD_SERVICE);
-            if (cm == null) { toast(act, "clipboard tidak tersedia"); return; }
+            ClipboardManager cm = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);
+            if (cm == null) { toast(c, "clipboard tidak tersedia"); return; }
             cm.setPrimaryClip(ClipData.newPlainText("TRACE-1 debug", dump));
-            toast(act, "✔ " + n + " baris tersalin — paste ke chat");
+            toast(c, "✔ " + n + " baris tersalin — paste ke chat");
             log('I', "SYS", "log di-copy ke clipboard (" + n + " baris, " + dump.length() + " karakter)");
         } catch (Throwable t) {
-            toast(act, "copy gagal: " + t);
+            toast(c, "copy gagal: " + t);
         }
     }
 
-    private static void doShare(final Activity act) {
+    private static void doShare(final Context c) {
         try {
             String dump = dumpAll();
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, "TRACE-1 debug log");
             i.putExtra(Intent.EXTRA_TEXT, dump);
-            act.startActivity(Intent.createChooser(i, "Kirim log TRACE-1"));
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            c.startActivity(Intent.createChooser(i, "Kirim log TRACE-1"));
         } catch (Throwable t) {
-            toast(act, "share gagal: " + t);
+            toast(c, "share gagal: " + t);
         }
     }
 
     /** FIX v1.1: SAVE sekarang menyimpan log PENUH dari disk (semua sesi,
      *  tidak terpotong 4000 baris) dengan nama bertimestamp. */
-    private static void doSave(final Activity act) {
+    private static void doSave(final Context c) {
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    Context c = appRef.get();
-                    File ext = c != null ? c.getExternalFilesDir(null) : null;
-                    if (ext == null) { toast(act, "save gagal — pakai COPY"); return; }
+                    Context cc = c != null ? c : appRef.get();
+                    File ext = cc != null ? cc.getExternalFilesDir(null) : null;
+                    if (ext == null) { toast(c, "save gagal — pakai COPY"); return; }
                     String stamp;
                     try { stamp = new SimpleDateFormat("HH-mm", Locale.US).format(new Date()); }
                     catch (Throwable t) { stamp = String.valueOf(System.currentTimeMillis() / 1000); }
@@ -677,10 +946,10 @@ public final class DebugConsole {
                     if (full == null) full = dumpAll(); // disk gagal → buffer saja
                     writeFile(f, full);
                     log('I', "SYS", "log disimpan: " + f.getAbsolutePath() + " (" + human(f.length()) + ")");
-                    toast(act, "✔ tersimpan: " + f.getAbsolutePath());
+                    toast(c, "✔ tersimpan: " + f.getAbsolutePath());
                 } catch (Throwable t) {
                     log('E', "SYS", "save log gagal: " + t);
-                    toast(act, "save gagal — pakai COPY");
+                    toast(c, "save gagal — pakai COPY");
                 }
             }
         }, "DBTRACE-save").start();

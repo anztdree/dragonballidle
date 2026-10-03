@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class TracePack {
 
-    public static final String VER = "TRACE-1.3";
+    public static final String VER = "TRACE-2.0";
 
     private static boolean started = false;
     private static Context appCtx = null;
@@ -59,14 +59,21 @@ public final class TracePack {
 
     private static final LinkedBlockingQueue<String> DISK_Q = new LinkedBlockingQueue<String>();
     private static volatile File diskFile = null;
+    private static volatile long diskLines = 0;
 
     private TracePack() {}
 
     /** Satu baris ke log disk SAJA (tanpa panel). Tidak boleh melempar. */
     static void diskLine(String line) {
         try {
+            diskLines++;
             if (diskFile != null) DISK_Q.offer(line);
         } catch (Throwable ignore) {}
+    }
+
+    /** Jumlah baris yang pernah dicatat (badan chip 🐞 — bukti hidup). */
+    public static long diskCount() {
+        return diskLines;
     }
 
     /** File log disk (untuk tombol SAVE). Bisa null bila disk gagal. */
@@ -151,9 +158,10 @@ public final class TracePack {
             // 2) log disk SEBELUM baris BOOT pertama — tidak ada yang lolos
             startDisk(c);
 
-            DebugConsole.log('I', "BOOT", "TRACE-1.1 mulai — MODE AMATI: game jalan 100% server RESMI");
+            DebugConsole.log('I', "BOOT", "TRACE-2.0 mulai — MODE AMATI: game jalan 100% server RESMI");
             DebugConsole.log('I', "BOOT", "APK ini TIDAK melayani apa pun: tanpa kit, tanpa server lokal, tanpa panduan");
             DebugConsole.log('I', "BOOT", "tugasnya hanya MENCATAT: file apa yang diambil & disimpan ke mana");
+            DebugConsole.log('I', "BOOT", "panel = JENDELA OVERLAY sendiri — bila diminta, izinkan “Tampil di atas aplikasi lain” SEKALI agar panel kebal game");
 
             // 3) peta server pertama: EntryPoint hasil decode dari assets/config.properties
             logEntryPoints(c);
