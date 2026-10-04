@@ -1,0 +1,31 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>T4GAME呈天游</title>
+<style type="text/css">
+ HTML, body, div, span, object, iframe,h1, h2, h3, h4, h5, h6, p,a, address, big, cite, code,del, dfn, em, font, img, q, s, small, strong, b, u, i, dl, dt, dd, ol, ul, li,fieldset, form, label, table, caption, tbody, tfoot, thead, tr, th, td {margin:0; padding:0; border:0; font:12px/1.125 Arial, Helvetica, sans-serif;_font-family:"SimSun";}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+address,caption,cite,code,dfn,em,th,var{font-style:normal;font-weight:normal;}
+
+.error{ width:545px; height:316px; margin:50px auto 0;}
+.error .pic{ margin-bottom:20px;}
+.error img{ float:left}
+.error p{ padding:25px 0 0 20px; color:#3b3b3b; line-height:2; display:inline-block}
+.error p a,.error p a:hover{ color:#c83b01; text-decoration:none}
+</style>
+</head>
+<body>
+<div class="error">
+ <img src="http://t4game.com:80/images/find.jpg" alt=""  class="pic"/>
+ <img src="http://t4game.com:80/images/errorpic2.jpg" alt="" />
+ <p>
+   系统建设中，为此给您带来的不便敬请谅解。<br />
+   <a href="http://t4game.com:80/">返回首页</a>  <a href="javascript:history.go(-1)">返回上级</a>
+ </p>
+</div>
+</body>
+</html>
+

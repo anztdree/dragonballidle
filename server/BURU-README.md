@@ -1,6 +1,6 @@
 # HASIL BURUAN — File Config + PROTOKOL Server (TIDAK Ada di dalam APK)
 
-> Buruan: **3–4 Okt 2026** (batch 1, 2, 3) · Metode: **FETCH LANGSUNG + BICARA PROTOKOL** ke server persis seperti kode game — bukan capture.
+> Buruan: **3–4 Okt 2026** (batch 1–4) · Metode: **FETCH LANGSUNG + BICARA PROTOKOL** ke server persis seperti kode game — bukan capture.
 > Tiap file disertai `.hdr` = header respons server asli (provenance).
 > Sumber URL = bukti kode APK: setting_BS_Android, config.properties EntryPoint1, asset QHinfo, main.min.js, quickgame SDK smali, libegret.so.
 
@@ -27,7 +27,7 @@
 | `s1/s501/s949/s1300/.../s2105-bs.popoh5.com:8xxx` (32 host) | ✅ **32/32 HIDUP** | handshake socket.io 200 semua; tidak ada file statis (readme/robots/index = 404) |
 | `t4game.com` (portal perusahaan, Java/Tomcat) | ✅ 200 | homepage + 11 halaman portal (loginpage, registerpage, product, refund, zhpmr...) → `t4game.com/` |
 | `t4game.com/manager/` | 🔒 **403** | panel manager ADA tapi terproteksi |
-| `admin.t4game.com` | ⚠️ 500 + PHPSESSID | aplikasi PHP hidup (PHP/5.4.37), error saat diakses |
+| `admin.t4game.com` | ✅ **DIBUKA (batch 4)** | platform operasi terbuka — **33 file asli di tangan** → lihat HOST 4 |
 | `qsdk.t4game.com` | ✅ | API PHP/5.4.37; `/v1/*` = router JSON (`Params error` utk path tak dikenal); `.git`/admin = halaman "Page 500" |
 | `res.popoh5.com` | ⚠️ 400 | service hidup, host ketat |
 | `log.sjflaregame.com:10000` | ⏭️ 302 | redirect ke webblock dnspod (parked) |
@@ -70,8 +70,60 @@
 | `POST /v1/system/dmsg` | ⏳ | butuh func_code event runtime |
 | 40 path API dari smali | 🗺️ terpetakan | auth/user/system (createOrder, bindMail, getUserInfo, ...) |
 
+## HOST 4 — admin.t4game.com (PLATFORM OPERASI "游戏联运平台(海外版)" — batch 4, 4 Okt 2026) ✅ DIBUKA
+
+Kemarin hanya 500; sekarang halaman login asli keluar → semua path asset yang dirujuk (HTML/CSS/JS) di-fetch satu per satu: **33 FILE ASLI + 37 `.hdr` provenance**. `/static/` = 403 (listing dilarang) tapi FILE di dalamnya 200 semua.
+
+| File | Ukuran | Last-Modified server |
+|---|---|---|
+| `index.html` (halaman 登陆-游戏联运平台(海外版)) | 9.544 B | — |
+| `robots.txt` | 26 B | 11 Apr 2019 |
+| `favicon.ico` | 4.286 B | 11 Apr 2019 |
+| `base/loginHandle` (API login PHP HIDUP: validasi 账号密码不能为空) | 99 B | — |
+| `base/scode` (captcha PNG PHP HIDUP, X-Powered-By PHP/5.4.37) | 2.130 B | — |
+| `marketconsole/index.html` (halaman login console marketing) | 9.358 B | — |
+| `marketconsole/loginHandle` (API login hidup) | 99 B | — |
+| `marketconsole/qrUrlcreate` (**TERBITKAN TOKEN QR status:true**, token fdc5a3e4…) | 212 B | — |
+| `static/css/regLogin_v2.css` | 4.062 B | 22 Nov 2022 |
+| `static/layer330/layer/layer.js?v=20180607` | 22.151 B | 22 Nov 2022 |
+| `static/images/market_loginbg.png` | 211.177 B | 22 Nov 2022 |
+| `static/images/qr_login_guide.gif` | 24.907 B | 22 Sep 2022 |
+| `static/images/qrlogin.png` | 1.841 B | 22 Sep 2022 |
+| `static/images/success.gif` | 59.075 B | 22 Sep 2022 |
+| `static/images/waitload.gif` | 390.434 B | 22 Sep 2022 |
+| `static/js/jquery.js` | 93.107 B | 11 Apr 2019 |
+| `static/js/jquery.cookie.js` | 3.140 B | 22 Sep 2022 |
+| `static/js/particles.js` | 16.997 B | 11 Apr 2019 |
+| `static/js/layer/layer.js` | 14.893 B | 11 Apr 2019 |
+| `static/js/layer/skin/layer.css` | 13.037 B | 22 Sep 2022 |
+| `static/js/layer/skin/default/icon.png` | 11.488 B | 11 Apr 2019 |
+| `static/js/layer/skin/default/loading-0/1/2.gif` | 5.793/701/1.787 B | 11 Apr 2019 |
+| `static/tncode/tn_code.js` (captcha JS) | 18.082 B | 22 Sep 2022 |
+| `static/tncode/style.css` | 7.187 B | 22 Sep 2022 |
+| `static/v2/images/loginLogo.png` | 5.546 B | 11 Apr 2019 |
+| `static/v2/images/login_sprite.png` | 2.786 B | 11 Apr 2019 |
+| `static/v3/css/login.css` | 5.966 B | 22 Sep 2022 |
+| `static/v3/images/login_bg.jpg` | 79.926 B | 22 Sep 2022 |
+| `static/v3/images/loginbanner.png` | 56.779 B | 22 Sep 2022 |
+| `static/v3/images/pclogin.png` | 645 B | 22 Sep 2022 |
+| `static/v3/images/qrtips.gif` | 1.171.665 B | 22 Sep 2022 |
+
+**Gate (tercatat di `_gates/`)**: `/console/ /doc/ /docs/ /gameconsole/ /help/ /kfconsole/ /manual/ /operconsole/ /payconsole/ /statconsole/ /userconsole/` = PHP error (modul tak berhalaman publik); `readme.md`/`readme.html` di host ini = PHP error, BUKAN file.
+
+## BURUAN FILE-SERVER BATCH 4 — port internal + bucket listing (4 Okt 2026)
+
+| Sasaran | Hasil | Bukti |
+|---|---|---|
+| **32 port internal** `sNNNN-bs.popoh5.com:8011…8371` (pola `inner = publik+10`, dari `urlInner` serverList ASLI) | ✅ **32/32 HIDUP** — layanan HTTP node polos (404 kosong tanpa header); seluruh kamus 65 path (`/pay /gm /loginchecknative /serverlist /config …`) = 404 semua | `buru/_probe/fileserver-hunt-summary.json` (800 request) |
+| Bucket listing OSS `configus.sjmobilegame.com` (`?list-type=2`, `?prefix=`, `?location`, `?acl`) | 🔒 **403 AccessDenied** (XML asli tersimpan) | `buru/configus.sjmobilegame.com/…403.hdr` |
+| Bucket listing CDN `dragonh5cdn.popoh5.com` | 🔒 **403** (EdgeOne) | `buru/dragonh5cdn.popoh5.com/…403.hdr` |
+| `res.popoh5.com` (20 path, http+https) | ⚠️ 400 semua — service hidup, ketat host/path | `buru/_probe/fileserver-hunt-summary.json` |
+| `login.popoh5.com:510` (12 path file) | JSON catch-all `没有开通` — API router, bukan file server | idem |
+| Panen path-file dari 15 JS game → fetch ke CDN/inner/OSS | hanya 3 path unik (sudah kita punya / github-link Egret) | `buru/_probe/hunt2-summary.json` |
+
 ## PROVENANCE
 - Semua `.hdr` = header HTTP asli server.
 - Frame WebSocket tersimpan: `login.popoh5.com_610/ws-frames3.log`, `s2105-bs.../attack8-frames.log` + `attack7-frames.log`.
 - Skrip pembicara protokol: `probe/login-talk*.ts` (registerVisitor → loginchecknative → verify XXTEA → GetServerList → enterGame → Notify).
 - 32 host game server = dari serverList ASLI (bukan tebakan).
+- Skrip batch 4: `probe/fileserver-hunt.ts`, `probe/hunt2.ts`, `probe/hunt3.ts`, `probe/hunt4.ts` (fetch massal + auto-provenance).

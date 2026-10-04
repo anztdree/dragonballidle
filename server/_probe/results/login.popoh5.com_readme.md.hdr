@@ -1,0 +1,7 @@
+HTTP/1.1 500 Internal Server Error
+Server: nginx/1.16.0
+Date: Sun, 04 Oct 2026 01:16:45 GMT
+Content-Type: text/html
+Content-Length: 579
+Connection: close
+

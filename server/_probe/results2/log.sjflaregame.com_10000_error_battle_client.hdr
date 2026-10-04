@@ -1,0 +1,4 @@
+HTTP/1.1 302 OK
+Connection: Keep-Alive
+Location: https://dnspod.qcloud.com/static/webblock.html?d=log.sjflaregame.com:10000
+

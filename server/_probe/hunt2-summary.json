@@ -1,0 +1,1775 @@
+{
+ "waktu": "2026-10-04T02:19:58.695Z",
+ "files": [
+  {
+   "url": "http://admin.t4game.com/static/tncode/style.css",
+   "status": 200,
+   "len": 7187,
+   "ctype": "text/css",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/tncode/style.css"
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/jquery.cookie.js",
+   "status": 200,
+   "len": 3140,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/jquery.cookie.js"
+  },
+  {
+   "url": "http://admin.t4game.com/base/scode",
+   "status": 200,
+   "len": 2107,
+   "ctype": "image/png",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/base/scode"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/css/login.css",
+   "status": 200,
+   "len": 5966,
+   "ctype": "text/css",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/v3/css/login.css"
+  },
+  {
+   "url": "http://admin.t4game.com/base/loginHandle",
+   "status": 200,
+   "len": 99,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/base/loginHandle"
+  },
+  {
+   "url": "http://admin.t4game.com/favicon.ico",
+   "status": 200,
+   "len": 4286,
+   "ctype": "image/x-icon",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/favicon.ico"
+  },
+  {
+   "url": "http://admin.t4game.com/marketconsole/qrUrlcreate",
+   "status": 200,
+   "len": 212,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/marketconsole/qrUrlcreate"
+  },
+  {
+   "url": "http://admin.t4game.com/static/tncode/tn_code.js",
+   "status": 200,
+   "len": 18082,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/tncode/tn_code.js"
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/particles.js",
+   "status": 200,
+   "len": 16997,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/particles.js"
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/layer/layer.js?v=20160121",
+   "status": 200,
+   "len": 14893,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/layer/layer.js"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/images/loginbanner.png",
+   "status": 200,
+   "len": 56779,
+   "ctype": "image/png",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/v3/images/loginbanner.png"
+  },
+  {
+   "url": "http://admin.t4game.com/static/images/success.gif",
+   "status": 200,
+   "len": 59075,
+   "ctype": "image/gif",
+   "lastmod": "Thu, 22 Sep 2022 07:21:16 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/images/success.gif"
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/jquery.js?v=20160811",
+   "status": 200,
+   "len": 93107,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/jquery.js"
+  },
+  {
+   "url": "https://www.facebook.com/robots.txt",
+   "status": 200,
+   "len": 49992,
+   "ctype": "text/plain; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.facebook.com/robots.txt"
+  },
+  {
+   "url": "http://github.com/robots.txt",
+   "status": 200,
+   "len": 16739,
+   "ctype": "text/plain",
+   "lastmod": "Sun, 04 Oct 2026 02:12:01 GMT",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/robots.txt"
+  },
+  {
+   "url": "https://github.com/robots.txt",
+   "status": 200,
+   "len": 16739,
+   "ctype": "text/plain",
+   "lastmod": "Sun, 04 Oct 2026 02:12:01 GMT",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/robots.txt"
+  },
+  {
+   "url": "http://www.facebook.com/robots.txt",
+   "status": 200,
+   "len": 49992,
+   "ctype": "text/plain; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.facebook.com/robots.txt"
+  },
+  {
+   "url": "https://github.com/readme.md",
+   "status": 200,
+   "len": 325229,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/readme.md"
+  },
+  {
+   "url": "https://github.com/",
+   "status": 200,
+   "len": 576687,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/index.html"
+  },
+  {
+   "url": "http://github.com/readme.md",
+   "status": 200,
+   "len": 325228,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/readme.md"
+  },
+  {
+   "url": "https://discord.gg/robots.txt",
+   "status": 200,
+   "len": 23,
+   "ctype": "text/plain",
+   "lastmod": "",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/robots.txt"
+  },
+  {
+   "url": "https://discord.gg/",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/index.html"
+  },
+  {
+   "url": "https://discord.gg/readme.md",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.md"
+  },
+  {
+   "url": "http://discord.gg/",
+   "status": 200,
+   "len": 170386,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/index.html"
+  },
+  {
+   "url": "https://discord.gg/readme.txt",
+   "status": 200,
+   "len": 170386,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.txt"
+  },
+  {
+   "url": "http://discord.gg/readme.md",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.md"
+  },
+  {
+   "url": "http://discord.gg/robots.txt",
+   "status": 200,
+   "len": 23,
+   "ctype": "text/plain",
+   "lastmod": "",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/robots.txt"
+  },
+  {
+   "url": "http://github.com/",
+   "status": 200,
+   "len": 576688,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/index.html"
+  },
+  {
+   "url": "http://discord.gg/readme.txt",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.txt"
+  },
+  {
+   "url": "https://www.instagram.com/robots.txt",
+   "status": 200,
+   "len": 614160,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/robots.txt"
+  },
+  {
+   "url": "http://www.instagram.com/",
+   "status": 200,
+   "len": 614116,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/index.html"
+  },
+  {
+   "url": "http://www.instagram.com/robots.txt",
+   "status": 200,
+   "len": 614137,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/robots.txt"
+  },
+  {
+   "url": "http://admin.t4game.com/static/images/waitload.gif",
+   "status": 200,
+   "len": 390434,
+   "ctype": "image/gif",
+   "lastmod": "Thu, 22 Sep 2022 07:21:16 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/images/waitload.gif"
+  },
+  {
+   "url": "https://www.instagram.com/",
+   "status": 200,
+   "len": 614126,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/index.html"
+  },
+  {
+   "url": "https://www.instagram.com/readme.md",
+   "status": 200,
+   "len": 615685,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/readme.md"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/images/qrtips.gif",
+   "status": 200,
+   "len": 1171665,
+   "ctype": "image/gif",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/v3/images/qrtips.gif"
+  },
+  {
+   "url": "https://t.me/",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/index.html"
+  },
+  {
+   "url": "https://t.me/readme.md",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.md"
+  },
+  {
+   "url": "https://t.me/readme.txt",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.txt"
+  },
+  {
+   "url": "http://t.me/",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/index.html"
+  },
+  {
+   "url": "http://t.me/readme.md",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.md"
+  },
+  {
+   "url": "http://t.me/readme.txt",
+   "status": 200,
+   "len": 18368,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.txt"
+  }
+ ],
+ "gates": [
+  {
+   "url": "http://admin.t4game.com/static/js/layer/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/images/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/css/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  }
+ ],
+ "semua": [
+  {
+   "url": "http://admin.t4game.com/static/js/layer/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  },
+  {
+   "url": "http://admin.t4game.com/static/tncode/style.css",
+   "status": 200,
+   "len": 7187,
+   "ctype": "text/css",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/tncode/style.css"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/images/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/css/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/jquery.cookie.js",
+   "status": 200,
+   "len": 3140,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/jquery.cookie.js"
+  },
+  {
+   "url": "http://admin.t4game.com/base/scode",
+   "status": 200,
+   "len": 2107,
+   "ctype": "image/png",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/base/scode"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/css/login.css",
+   "status": 200,
+   "len": 5966,
+   "ctype": "text/css",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/v3/css/login.css"
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/",
+   "status": 403,
+   "len": 564,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "note": "gate"
+  },
+  {
+   "url": "http://admin.t4game.com/base/loginHandle",
+   "status": 200,
+   "len": 99,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/base/loginHandle"
+  },
+  {
+   "url": "http://admin.t4game.com/favicon.ico",
+   "status": 200,
+   "len": 4286,
+   "ctype": "image/x-icon",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/favicon.ico"
+  },
+  {
+   "url": "http://admin.t4game.com/marketconsole/qrUrlcreate",
+   "status": 200,
+   "len": 212,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/marketconsole/qrUrlcreate"
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/pay",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/pay/callback",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/pay_cb",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/order",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/cmd",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/recharge",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/gm",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/payment",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/gm/cmd",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/paycallback",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/notify",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://admin.t4game.com/static/tncode/tn_code.js",
+   "status": 200,
+   "len": 18082,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/tncode/tn_code.js"
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/particles.js",
+   "status": 200,
+   "len": 16997,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/particles.js"
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/layer/layer.js?v=20160121",
+   "status": 200,
+   "len": 14893,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/layer/layer.js"
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/checkversion",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/checkVersion",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/hotupdate",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/update",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/getVersion",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/notice",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/getNotice",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/announce",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/getnotice",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/serverlist",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/announcement",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/logincheck",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/loginchecknative",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/command",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/admin",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/admin/",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/login",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/verify",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/getversion",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/loginCheck",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/version",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/white",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/check",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/online",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/onlineCount",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/whitelist",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/usercount",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/stat",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/stats",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/metrics",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/health",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/status",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/info",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/config",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/file",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/images/loginbanner.png",
+   "status": 200,
+   "len": 56779,
+   "ctype": "image/png",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/v3/images/loginbanner.png"
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/files",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/download",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/res",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/web",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/GetServerList",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/favicon.ico",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/h5",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/resource",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/index.html",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/getserverlist",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/game",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://admin.t4game.com/static/images/success.gif",
+   "status": 200,
+   "len": 59075,
+   "ctype": "image/gif",
+   "lastmod": "Thu, 22 Sep 2022 07:21:16 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/images/success.gif"
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/api/",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/serverList",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/api",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/v1",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/test",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/debug",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/monitor",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/report",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/log",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/logs",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/upload",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/upload.html",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/github.com/egret-labs/resourcemanager/blob/master/docs/README.md",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/properties/clientversion.json",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/properties/serversetting.json",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://admin.t4game.com/static/js/jquery.js?v=20160811",
+   "status": 200,
+   "len": 93107,
+   "ctype": "application/x-javascript",
+   "lastmod": "Thu, 11 Apr 2019 03:03:48 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/js/jquery.js"
+  },
+  {
+   "url": "https://www.facebook.com/robots.txt",
+   "status": 200,
+   "len": 49992,
+   "ctype": "text/plain; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.facebook.com/robots.txt"
+  },
+  {
+   "url": "http://github.com/robots.txt",
+   "status": 200,
+   "len": 16739,
+   "ctype": "text/plain",
+   "lastmod": "Sun, 04 Oct 2026 02:12:01 GMT",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/robots.txt"
+  },
+  {
+   "url": "https://github.com/robots.txt",
+   "status": 200,
+   "len": 16739,
+   "ctype": "text/plain",
+   "lastmod": "Sun, 04 Oct 2026 02:12:01 GMT",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/robots.txt"
+  },
+  {
+   "url": "https://github.com/readme.txt",
+   "status": 406,
+   "len": 0,
+   "ctype": "text/plain",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false
+  },
+  {
+   "url": "http://github.com/readme.txt",
+   "status": 406,
+   "len": 0,
+   "ctype": "text/plain",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false
+  },
+  {
+   "url": "http://www.facebook.com/robots.txt",
+   "status": 200,
+   "len": 49992,
+   "ctype": "text/plain; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.facebook.com/robots.txt"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/properties/clientversion.json",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.16.0",
+   "listing": false
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/properties/clientversion.json",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.16.0",
+   "listing": false
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/properties/serversetting.json",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.16.0",
+   "listing": false
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/github.com/egret-labs/resourcemanager/blob/master/docs/README.md",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.16.0",
+   "listing": false
+  },
+  {
+   "url": "https://github.com/readme.md",
+   "status": 200,
+   "len": 325229,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/readme.md"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/properties/serversetting.json",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.16.0",
+   "listing": false
+  },
+  {
+   "url": "https://configus.sjmobilegame.com/bs/db/android/github.com/egret-labs/resourcemanager/blob/master/docs/README.md",
+   "status": 404,
+   "len": 500,
+   "ctype": "application/xml",
+   "lastmod": "",
+   "server": "tencent-cos",
+   "listing": false
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/github.com/egret-labs/resourcemanager/blob/master/docs/README.md",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.16.0",
+   "listing": false
+  },
+  {
+   "url": "https://github.com/",
+   "status": 200,
+   "len": 576687,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/index.html"
+  },
+  {
+   "url": "http://github.com/readme.md",
+   "status": 200,
+   "len": 325228,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/readme.md"
+  },
+  {
+   "url": "https://configus.sjmobilegame.com/bs/db/android/properties/serversetting.json",
+   "status": 404,
+   "len": 465,
+   "ctype": "application/xml",
+   "lastmod": "",
+   "server": "tencent-cos",
+   "listing": false
+  },
+  {
+   "url": "https://discord.gg/robots.txt",
+   "status": 200,
+   "len": 23,
+   "ctype": "text/plain",
+   "lastmod": "",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/robots.txt"
+  },
+  {
+   "url": "https://discord.gg/",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/index.html"
+  },
+  {
+   "url": "https://discord.gg/readme.md",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.md"
+  },
+  {
+   "url": "http://discord.gg/",
+   "status": 200,
+   "len": 170386,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/index.html"
+  },
+  {
+   "url": "https://discord.gg/readme.txt",
+   "status": 200,
+   "len": 170386,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.txt"
+  },
+  {
+   "url": "http://discord.gg/readme.md",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.md"
+  },
+  {
+   "url": "http://discord.gg/robots.txt",
+   "status": 200,
+   "len": 23,
+   "ctype": "text/plain",
+   "lastmod": "",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/robots.txt"
+  },
+  {
+   "url": "http://github.com/",
+   "status": 200,
+   "len": 576688,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "github.com",
+   "listing": false,
+   "saved": "github.com/index.html"
+  },
+  {
+   "url": "https://www.facebook.com/",
+   "status": 400,
+   "len": 3676,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://discord.gg/readme.txt",
+   "status": 200,
+   "len": 170374,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "Sat, 03 Oct 2026 21:55:04 GMT",
+   "server": "cloudflare",
+   "listing": false,
+   "saved": "discord.gg/readme.txt"
+  },
+  {
+   "url": "https://configus.sjmobilegame.com/bs/db/android/properties/clientversion.json",
+   "status": 404,
+   "len": 465,
+   "ctype": "application/xml",
+   "lastmod": "",
+   "server": "tencent-cos",
+   "listing": false
+  },
+  {
+   "url": "https://www.instagram.com/robots.txt",
+   "status": 200,
+   "len": 614160,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/robots.txt"
+  },
+  {
+   "url": "http://www.instagram.com/",
+   "status": 200,
+   "len": 614116,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/index.html"
+  },
+  {
+   "url": "https://www.instagram.com/readme.txt",
+   "status": 429,
+   "len": 0,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://www.facebook.com/",
+   "status": 400,
+   "len": 3676,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://www.instagram.com/robots.txt",
+   "status": 200,
+   "len": 614137,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/robots.txt"
+  },
+  {
+   "url": "http://www.instagram.com/readme.md",
+   "status": 429,
+   "len": 0,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://www.instagram.com/readme.txt",
+   "status": 429,
+   "len": 0,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "https://www.facebook.com/readme.md",
+   "status": 400,
+   "len": 3676,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "https://www.facebook.com/readme.txt",
+   "status": 400,
+   "len": 3676,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://www.facebook.com/readme.txt",
+   "status": 400,
+   "len": 3676,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "http://admin.t4game.com/static/images/waitload.gif",
+   "status": 200,
+   "len": 390434,
+   "ctype": "image/gif",
+   "lastmod": "Thu, 22 Sep 2022 07:21:16 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/images/waitload.gif"
+  },
+  {
+   "url": "https://www.instagram.com/",
+   "status": 200,
+   "len": 614126,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/index.html"
+  },
+  {
+   "url": "http://www.facebook.com/readme.md",
+   "status": 400,
+   "len": 3676,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "",
+   "listing": false
+  },
+  {
+   "url": "https://www.instagram.com/readme.md",
+   "status": 200,
+   "len": 615685,
+   "ctype": "text/html; charset=\"utf-8\"",
+   "lastmod": "",
+   "server": "",
+   "listing": false,
+   "saved": "www.instagram.com/readme.md"
+  },
+  {
+   "url": "https://t.me/robots.txt",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false
+  },
+  {
+   "url": "http://admin.t4game.com/static/v3/images/qrtips.gif",
+   "status": 200,
+   "len": 1171665,
+   "ctype": "image/gif",
+   "lastmod": "Thu, 22 Sep 2022 07:21:17 GMT",
+   "server": "nginx",
+   "listing": false,
+   "saved": "admin.t4game.com/static/v3/images/qrtips.gif"
+  },
+  {
+   "url": "http://t.me/robots.txt",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false
+  },
+  {
+   "url": "https://t.me/",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/index.html"
+  },
+  {
+   "url": "https://t.me/readme.md",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.md"
+  },
+  {
+   "url": "https://t.me/readme.txt",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.txt"
+  },
+  {
+   "url": "http://t.me/",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/index.html"
+  },
+  {
+   "url": "http://t.me/readme.md",
+   "status": 200,
+   "len": 18369,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.md"
+  },
+  {
+   "url": "http://t.me/readme.txt",
+   "status": 200,
+   "len": 18368,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": "",
+   "server": "nginx/1.30.1",
+   "listing": false,
+   "saved": "t.me/readme.txt"
+  }
+ ]
+}

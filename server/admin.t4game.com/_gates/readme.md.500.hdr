@@ -1,0 +1,12 @@
+HTTP/1.1 500 Internal Server Error
+Server: nginx
+Date: Sun, 04 Oct 2026 01:18:44 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+X-Powered-By: PHP/5.4.37
+Set-Cookie: PHPSESSID=3lnl3feuv92l0244so4mn6ji47; path=/
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+

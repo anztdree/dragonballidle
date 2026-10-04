@@ -1,0 +1,145 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>T4GAME呈天游-公司简介</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="T4GAME呈天游 网游 手游 页游 诛神 醉江湖 游戏平台 信息 技术 研发商 运营商 精彩 游戏 娱乐 体验 互动 RPG 即时战斗 即时战略 射击 呈天 时空 OL 中国 古典 神话 全球化 It's time for Game! 第一 品牌 影响力 北京 信息 技术 有限 公司" name="keywords"/>
+<meta content="T4GAME-呈天游（北京信息技术有限公司）是一家具有全球化影响力的多平台网络游戏开发商及运营商。T4GAME：'It's time for Game!，精彩游戏不...'T4GAME致力于打造网游第一品牌。" name="description"/>
+<link type="image/x-icon" href="http://t4game.com:80/view/front/images/favicon.ico" rel="shortcut icon"/>
+<link type="image/x-icon" href="http://t4game.com:80/view/front/images/favicon.ico" rel="icon"/>
+<link href="http://t4game.com:80/view/front/style/style.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" language="javascript" src="http://t4game.com:80/view/front/js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+  //页面加载
+	window.onload = function() {
+		$("#a2").addClass("sel");
+		$("#left1").addClass("selL");
+		
+	};
+  
+</script>
+</head>
+<body>
+	 <!-- header -->
+		<div class="w980">
+			 
+
+<div class="c-head">
+    <ul class="menu-tit">
+        
+            <li id="unlogin" class="menuLb"><a href="http://t4game.com:80/loginpage" target="_blank">登陆</a>|
+                <a href="http://t4game.com:80/registerpage" target="_blank">注册</a></li>
+        
+        
+	<li class="menuRb"></li>
+	<!--
+        <li class="menuRb"><a href="http://t4game.com:80/service/ucenter/procharge" target="_blank">充值</a></li>
+    	-->
+    </ul>
+    <h1><a href="http://www.t4game.com" title="T4GAME呈天游"></a></h1>
+</div>
+<div class="nav">
+    <ul>
+        <li class="nav01"><a href="http://t4game.com:80/" id="a1">首页<span></span></a></li>
+        <li class="nav02"><a href="http://t4game.com:80/jianjie" id="a2">关于T4GAME呈天游<span></span></a></li>
+        <li class="nav03"><a href="http://t4game.com:80/culture" id="a3">企业文化<span></span></a></li>
+        <li class="nav04"><a href="http://t4game.com:80/product" id="a4">旗下产品<span></span></a></li>
+        <li class="nav05"><a href="http://t4game.com:80/service/newsinfo/zhaopinList" id="a5">加入T4GMAE<span></span></a></li>
+        <li class="nav06"><a href="http://t4game.com:80/hezuo" id="a6">商务合作<span></span></a></li>
+    </ul>
+</div>
+
+			 <h2 class="tit"><span onclick='window.external.AddFavorite("http://www.t4game.com/","【T4GAME呈天游】")'></span><a href="javascript:void(0);">关于T4GAME呈天游</a><a href="javascript:void(0);">公司简介</a></h2>
+			<!--banner-->
+			<div class="banner">
+				<img src="http://t4game.com:80/view/front/images/banner.jpg" width="980"
+					height="213" alt="t4game" />
+			</div>
+   <!--left-->
+   		
+
+<link href="http://t4game.com:80/view/front/style/style.css" rel="stylesheet" type="text/css" />
+ <!--left-->
+   <div class="c-left">
+     <h3><a href="http://t4game.com:80/jianjie">关于T4GAME呈天游</a></h3>
+     <div class="c-left01">
+       <ul>
+         <li><a href="http://t4game.com:80/jianjie" id="left1" >公 司 简 介<i></i></a></li>
+         <li><a href="http://t4game.com:80/Course" id="left2">发 展 历 程<i></i></a></li>
+         <li><a href="http://t4game.com:80/Road" id="left3">荣 誉 之 路<i></i></a></li>
+         <li><a href="http://t4game.com:80/listgameInformation" id="left4">新 闻 动 态<i></i></a></li>
+       </ul>
+     </div>
+   </div>
+   <!--right-->
+   <div class="jj"> 
+     <h2></h2> 
+     <p>　　T4GAME呈天游是一家中国领先的多平台在线游戏开发商和运营商。公司的使命是为用户创造最优秀的随身的娱乐体验！</p> 
+     <p>　　T4GAME呈天游成立于2008年，目前有300多名员工，包括技术研发部、策划部、美术部、运营部、商务部、市场部等。人员全部为本科以上学历，技术人员主要来自清华大学、浙江大学、中国人民大学、北京师范大学等，具有充足的专业知识和丰富的行业经验，管理团队更是具有卓越的市场眼光与优秀的管理才能。</p>   
+     <p>　　T4GAME呈天游位于北京CBD东延长线的莱锦文化创意产业园区的4200平米绿色花园式独栋写字楼，地理位置优越。游戏项目采用成熟的管理体制、专业的资源管理模式、人才培训体制以及市场运作模式，为打造一流的动漫游戏技术团队以及特色衍生产品开发与运营平台奠定了坚实的基础。</p>
+     <p>　　T4GAME呈天游于2009年7月推出第一款网络游戏《诛神online》手机版，并取得了巨大成功。这是一款自主研发的中国古典文化题材的MMORPG手机网游，支持symbian、android等多平台，制作精美，品质上乘，操作便捷流畅，功能丰富，内容富有浓郁的中国传统文化气息，是国内手游市场上首屈一指的精品作品，至今已囊括了2009-2011年度游戏行业全部知名奖项。除中国大陆市场外，《诛神online》目前已拓展至台湾、越南等国家和地区，同样受到广泛认可和热烈欢迎。</p> 
+     <p>　　《醉江湖online》作为T4GAME呈天游 2011年的新作，是一款中国传统武侠题材的MMORPG手机网游，同样支持多平台，多语言版本，业绩表现优秀，使其成为2011年中国手机网游市场又一道耀目的风景线。</p> 
+     <p>　　T4GAME呈天游在移动互联网市场的巨大成功，并未丝毫滞缓公司发展的脚步。2011年7月，公司首部网页游戏大作《诛神世界》问世，上线短短3个月，即突破月营收千万的大关，稳居国内页游市场一线阵营。同时，《诛神世界》成功打入港澳台、新加坡、马来西亚、韩国、北美、泰国市场，同样取得了骄人的业绩。该作品目前正在与日本、越南、土耳其等国家和地区的代理商接洽，计划全面进入国际市场!</p>
+     <p>　　文化创意产业正成为国家的新兴支柱型产业，对于专注于研发、具备核心竞争力的游戏企业而言，这意味着巨大的机遇与挑战。T4GAME呈天游正乘风破浪大步前行，在移动互联网和有线互联网领域，将成为举足轻重的领军企业，并力争为中国文创产业发展做出贡献，为中国本土的自研企业做出榜样做精品游戏，创完美体验！</p>
+     <img src="http://t4game.com:80/view/front/images/icon2.jpg"  width="153" height="41"　alt="" />
+   </div>
+   </div>
+ <p class="cl"></p>
+  
+
+<script src="http://t4game.com:80/view/front/js/public.js"></script>
+<script src="http://t4game.com:80/view/front/js/JSON.js"></script>
+<div class="fot">
+   <div class="w980">
+     <ul>
+       <li><a href="http://t4game.com:80/" class="ml" target="_blank">首页</a>|</li>
+       <li><a href="http://t4game.com:80/shengming" target="_blank">法律声明</a>|</li>
+       <li><a href="http://t4game.com:80/link" target="_blank">合作伙伴</a>|</li>
+       <li><a href="http://t4game.com:80/zhpmr" target="_blank">加入T4GAME</a>|</li>
+       <li><a href="http://t4game.com:80/jzhjh" target="_blank">家长监护</a>|</li>
+       <li><a href="http://t4game.com:80/Contactus" target="_blank">联系我们</a>|</li>
+       <li><a href="http://t4game.com:80/jwwimg" target="_blank">京网文[2019]0032-003号</a>|</li>
+       <li><a href="http://t4game.com:80/jiufen" target="_blank">纠纷处理</a>|</li>
+       <li><a href="http://t4game.com:80/refund" target="_blank">退款服务</a>|</li>
+     </ul><br />
+     <p >
+      
+       
+       
+       健康游戏公告：抵制不良游戏，拒绝盗版游戏。 注意自我保护，谨防受骗上当。 适度游戏益脑，沉迷游戏伤身。 合理安排时间，享受健康生活。公司游戏产品适合18岁以上用户。
+       <br/>
+       北京呈天网络科技股份有限公司　Copyright© 2009t4game.com,All Rights Reserved　版权所有　联系电话：010-57892687
+       <br/>
+       <a href="https://beian.miit.gov.cn" target="_blank">京ICP证080671号 备08103297号-3</a>
+	 
+	 
+   </div>
+ </div>
+<!--二维码-->
+<div class="black_overlay"  id="fade"> </div>
+<div class="wx" id="MyDiv">
+  <a href="javascript:viod(0)" title="关闭"  onclick="CloseDiv('MyDiv','fade')"></a>
+  <h3></h3>
+  <dl>
+    <dt><img src="http://t4game.com:80/view/front/images/wx-icon.jpg" alt="" /><p>开起手机,<b>扫一扫</b><br />
+随时关注T4GAME呈天游</p></dt>
+    <dd>
+      <ul>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon1.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon2.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon3.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon4.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon5.jpg" alt="" /></li>
+      </ul>
+    </dd>
+  </dl>
+</div>
+
+  <script type="text/javascript">
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F27f5321ed84b9a29a9cac37ce84fc0d0' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</body>
+</html>

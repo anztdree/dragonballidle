@@ -1,0 +1,248 @@
+
+
+ 
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<base href="http://t4game.com:80/" />
+		<title>T4GAME呈天游-新闻列表</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta content="T4GAME呈天游 网游 手游 页游 诛神 醉江湖 游戏平台 信息 技术 研发商 运营商 精彩 游戏 娱乐 体验 互动 RPG 即时战斗 即时战略 射击 呈天 时空 OL 中国 古典 神话 全球化 It's time for Game! 第一 品牌 影响力 北京 信息 技术 有限 公司" name="keywords"/>
+		<meta content="T4GAME-呈天游（北京信息技术有限公司）是一家具有全球化影响力的多平台网络游戏开发商及运营商。T4GAME：'It's time for Game!，精彩游戏不...'T4GAME致力于打造网游第一品牌。" name="description"/>
+		<link type="image/x-icon" href="http://t4game.com:80/view/front/images/favicon.ico" rel="shortcut icon"/>
+        <link type="image/x-icon" href="http://t4game.com:80/view/front/images/favicon.ico" rel="icon"/>
+		<link href="http://t4game.com:80/view/front/style/style.css" type="text/css" rel="stylesheet" />
+		<script type="text/javascript" language="javascript" src="http://t4game.com:80/scripts/public.js"></script>
+		<script type="text/javascript" language="javascript" src="http://t4game.com:80/view/front/js/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" language="javascript">
+				 //页面加载
+			window.onload = function() {
+				$("#a2").addClass("sel");
+				$("#left4").addClass("selL");
+			};
+		  $(document).ready(function(){
+			  $("#newCon1 ul li:last,#newCon2 ul li:last").css("border-bottom","none");
+		  });
+		</script>
+	</head>
+	<body>
+		<div class="w980">
+			
+
+<div class="c-head">
+    <ul class="menu-tit">
+        
+            <li id="unlogin" class="menuLb"><a href="http://t4game.com:80/loginpage" target="_blank">登陆</a>|
+                <a href="http://t4game.com:80/registerpage" target="_blank">注册</a></li>
+        
+        
+	<li class="menuRb"></li>
+	<!--
+        <li class="menuRb"><a href="http://t4game.com:80/service/ucenter/procharge" target="_blank">充值</a></li>
+    	-->
+    </ul>
+    <h1><a href="http://www.t4game.com" title="T4GAME呈天游"></a></h1>
+</div>
+<div class="nav">
+    <ul>
+        <li class="nav01"><a href="http://t4game.com:80/" id="a1">首页<span></span></a></li>
+        <li class="nav02"><a href="http://t4game.com:80/jianjie" id="a2">关于T4GAME呈天游<span></span></a></li>
+        <li class="nav03"><a href="http://t4game.com:80/culture" id="a3">企业文化<span></span></a></li>
+        <li class="nav04"><a href="http://t4game.com:80/product" id="a4">旗下产品<span></span></a></li>
+        <li class="nav05"><a href="http://t4game.com:80/service/newsinfo/zhaopinList" id="a5">加入T4GMAE<span></span></a></li>
+        <li class="nav06"><a href="http://t4game.com:80/hezuo" id="a6">商务合作<span></span></a></li>
+    </ul>
+</div>
+
+			  <h2 class="tit"><span onclick='window.external.AddFavorite("http://www.t4game.com/","【T4GAME呈天游】")'></span> <a href="http://t4game.com:80/jianjie">关于T4GAME呈天游</a> <a href="javascript:void(0);">新闻动态</a></h2>
+			<!--banner-->
+			<div class="banner">
+				<img src="http://t4game.com:80/view/front/images/banner.jpg" width="980"
+					height="213" alt="t4game" />
+			</div>
+		
+
+<link href="http://t4game.com:80/view/front/style/style.css" rel="stylesheet" type="text/css" />
+ <!--left-->
+   <div class="c-left">
+     <h3><a href="http://t4game.com:80/jianjie">关于T4GAME呈天游</a></h3>
+     <div class="c-left01">
+       <ul>
+         <li><a href="http://t4game.com:80/jianjie" id="left1" >公 司 简 介<i></i></a></li>
+         <li><a href="http://t4game.com:80/Course" id="left2">发 展 历 程<i></i></a></li>
+         <li><a href="http://t4game.com:80/Road" id="left3">荣 誉 之 路<i></i></a></li>
+         <li><a href="http://t4game.com:80/listgameInformation" id="left4">新 闻 动 态<i></i></a></li>
+       </ul>
+     </div>
+   </div>
+		<!--right-->
+		<div class="newlist">
+		<form name="pagedForm" action="http://t4game.com:80/service/newsinfo/newsList">
+			<p>
+				
+					<span class="selBtn" id="new1" onclick="buttonForm('http://t4game.com:80/listgameInformation');">游戏资讯</span>
+					<span id="new2" onclick="buttonForm('http://t4game.com:80/listnewsMedio');">媒体报道</span>
+				
+				
+			</p>
+			<div class="newlistC" id="newCon1">
+				<table cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<td>
+								<ul>
+									
+										<li>
+											<span>
+												2013-04-23
+											</span> 
+											<a href="http://t4game.com:80/24432.html">《醉江湖online》极品坐骑大曝光</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-04-18
+											</span> 
+											<a href="http://t4game.com:80/313.html">情人节，爱你一万年！</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-04-03
+											</span> 
+											<a href="http://t4game.com:80/457.html">《醉江湖online》清明时节豪礼放送</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-03-22
+											</span> 
+											<a href="http://t4game.com:80/421.html">《诛神online》薪水多多领不完</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-03-07
+											</span> 
+											<a href="http://t4game.com:80/300.html">《诛神传奇》之封神之路</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-02-27
+											</span> 
+											<a href="http://t4game.com:80/283.html">《诛神online》巅峰竞技谁与争锋</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-02-27
+											</span> 
+											<a href="http://t4game.com:80/282.html">《诛神online》VIP特权享受尊贵体</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-02-06
+											</span> 
+											<a href="http://t4game.com:80/252.html">《诛神传奇》情人节，爱你一万年！</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-02-06
+											</span> 
+											<a href="http://t4game.com:80/251.html">《诛神传奇》亮新颜，给力活动迎蛇年！</a>
+										</li>
+									
+										<li>
+											<span>
+												2013-02-06
+											</span> 
+											<a href="http://t4game.com:80/248.html">《诛神传奇》首次充值开启，迎新体验！</a>
+										</li>
+									
+								</ul>
+							</td>
+						</tr>
+				</table>
+				<input type="hidden" name="smallType" value="gameInformation" />
+				<input type="hidden" name="subSystem" value="1" />
+			</div>
+			<p class="page">
+				<a href='javascript:void(0);' class='pageBtn' onclick='previousPage();return false;'>首页</a><a href='javascript:void(0);' class='pageBtn' onclick='previousPage();return false;'>上一页</a><a href='#' onclick='search_pagedForm(1);return false;'>1</a><a href='#' onclick='search_pagedForm(2);return false;'>2</a><a href='#' class='pageBtn' onclick='search_pagedForm(2);return false;'>下一页</a><a href='#' class='pageBtn' onclick='search_pagedForm(2);return false;'>末页</a><INPUT type=hidden size=5 name=page value=1><INPUT type=hidden size=5 name=pageSize value=10><INPUT type=hidden size=5 name=totalPages value=2><INPUT type=hidden size=5 name=totalRows value=18><script type="text/javascript">
+function search_pagedForm(page) {
+document.pagedForm.page.value = page;
+document.pagedForm.target='_self';
+document.pagedForm.submit();
+}
+function nextPage(totalPages,currentPage) {
+if(totalPages==currentPage){alert('已经是最后一页');}
+}
+function previousPage() {
+alert('已经是首页');
+}
+</script>
+
+			</p>
+			</form>
+		</div>
+	</div>
+ <p class="cl"></p>
+   
+
+<script src="http://t4game.com:80/view/front/js/public.js"></script>
+<script src="http://t4game.com:80/view/front/js/JSON.js"></script>
+<div class="fot">
+   <div class="w980">
+     <ul>
+       <li><a href="http://t4game.com:80/" class="ml" target="_blank">首页</a>|</li>
+       <li><a href="http://t4game.com:80/shengming" target="_blank">法律声明</a>|</li>
+       <li><a href="http://t4game.com:80/link" target="_blank">合作伙伴</a>|</li>
+       <li><a href="http://t4game.com:80/zhpmr" target="_blank">加入T4GAME</a>|</li>
+       <li><a href="http://t4game.com:80/jzhjh" target="_blank">家长监护</a>|</li>
+       <li><a href="http://t4game.com:80/Contactus" target="_blank">联系我们</a>|</li>
+       <li><a href="http://t4game.com:80/jwwimg" target="_blank">京网文[2019]0032-003号</a>|</li>
+       <li><a href="http://t4game.com:80/jiufen" target="_blank">纠纷处理</a>|</li>
+       <li><a href="http://t4game.com:80/refund" target="_blank">退款服务</a>|</li>
+     </ul><br />
+     <p >
+      
+       
+       
+       健康游戏公告：抵制不良游戏，拒绝盗版游戏。 注意自我保护，谨防受骗上当。 适度游戏益脑，沉迷游戏伤身。 合理安排时间，享受健康生活。公司游戏产品适合18岁以上用户。
+       <br/>
+       北京呈天网络科技股份有限公司　Copyright© 2009t4game.com,All Rights Reserved　版权所有　联系电话：010-57892687
+       <br/>
+       <a href="https://beian.miit.gov.cn" target="_blank">京ICP证080671号 备08103297号-3</a>
+	 
+	 
+   </div>
+ </div>
+<!--二维码-->
+<div class="black_overlay"  id="fade"> </div>
+<div class="wx" id="MyDiv">
+  <a href="javascript:viod(0)" title="关闭"  onclick="CloseDiv('MyDiv','fade')"></a>
+  <h3></h3>
+  <dl>
+    <dt><img src="http://t4game.com:80/view/front/images/wx-icon.jpg" alt="" /><p>开起手机,<b>扫一扫</b><br />
+随时关注T4GAME呈天游</p></dt>
+    <dd>
+      <ul>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon1.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon2.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon3.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon4.jpg" alt="" /></li>
+        <li><img src="http://t4game.com:80/view/front/images/wx-icon5.jpg" alt="" /></li>
+      </ul>
+    </dd>
+  </dl>
+</div>
+
+<script type="text/javascript">
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F27f5321ed84b9a29a9cac37ce84fc0d0' type='text/javascript'%3E%3C/script%3E"));
+</script>
+	</body>
+</html>

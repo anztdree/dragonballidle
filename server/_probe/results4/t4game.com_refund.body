@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>T4GAME呈天游-退款服务</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="T4GAME呈天游 网游 手游 页游 诛神 醉江湖 游戏平台 信息 技术 研发商 运营商 精彩 游戏 娱乐 体验 互动 RPG 即时战斗 即时战略 射击 呈天 时空 OL 中国 古典 神话 全球化 It's time for Game! 第一 品牌 影响力 北京 信息 技术 有限 公司" name="keywords"/>
+    <meta content="T4GAME-呈天游（北京信息技术有限公司）是一家具有全球化影响力的多平台网络游戏开发商及运营商。T4GAME：'It's time for Game!，精彩游戏不...'T4GAME致力于打造网游第一品牌。" name="description"/>
+    <link type="image/x-icon" href="http://t4game.com:80/view/front/images/favicon.ico" rel="shortcut icon"/>
+    <link type="image/x-icon" href="http://t4game.com:80/view/front/images/favicon.ico" rel="icon"/>
+
+</head>
+
+<body>
+    <section>
+            <div class="container">
+                    <h3 class="text-center">退款服务</h3>
+                    <h4>一、本公司终止虚拟货币发行的处理方式</h4>
+                    <ol>
+                        <li><p class="small">公司游戏平台虚拟货币服务在遇到需要终止服务的情况时，公司所运营的游戏应当在变更、中断或终止之前60日事先通知用户。</p></li>
+                    </ol>
+                    <h4>二、已充值用户单方面终止服务的处理方式</h4>
+                    <ol>
+                        <li><p class="small">用户向客服邮箱<span style="color:red;">zuijianghukefu@t4game.com</span>发出游戏币余额的退款申请，内容必须包含：<span style="color:red;">与注册信息相符的身份证号码、联系方式和真实姓名。</span></p></li>
+                        <li><p class="small">公司工作人员将根据玩家提供的信息对用户申请进行审核，并对审核属实的申请发出退款。</p></li>
+                        <li><p class="small">退款将按照<span style="color:red;">1元人民币=1天币</span>的原兑换比例，于<span style="color:red;">15个工作日</span>打到用户支付宝账号或银行卡中，退还用户。</p></li>
+                    </ol>
+                </div>
+    </section>
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+   
+
+</body>
+<style>
+
+    h3{
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+    h4 {
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+    ol, ul {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    /* .tipstab {
+        float: left;
+        width: 200px;
+        margin-left: 35px;
+    }
+    .tipscontent {
+        float: right;
+        width: 700px;
+        margin-right: 35px;
+        font-size: 14px;
+        line-height: 25px;
+    } */
+</style>
+
+</html>

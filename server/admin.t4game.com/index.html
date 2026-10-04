@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>登陆-游戏联运平台(海外版)</title>
+<link type="text/css" href="/static/v3/css/login.css" rel="stylesheet" />
+<script src="/static/js/jquery.js?v=20160811"></script>
+<script src="/static/js/layer/layer.js?v=20160121"></script>
+<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+
+<script type="text/javascript" src="/static/tncode/tn_code.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/tncode/style.css" />
+</head>
+<style>
+.font12{font-size:12px; color:#999}
+</style>
+
+<body id="particles-js">
+
+
+<form action="/base/loginHandle" method="post" id="loginForm">
+<div class="centerArea">
+	<div class="logoArea">
+		<img src="/static/v3/images/loginbanner.png" />
+	</div>
+	<div class="mainArea">
+		<div class="loginMain">
+			<h3 class="logo-h3">北京呈天(海外)</h3>
+			<a class="qrlogin pcloginArea selectLoginType" type="qrloginArea" href="javascript:void(0)" style="display:none"></a>
+			<a class="pclogin qrloginArea selectLoginType" type="pcloginArea" style="display:none" href="javascript:void(0)"></a>
+			
+			<div class="loginContent pcloginArea">
+				<div class="input marginTop25" id="username">
+					<div class="showTips">账号  <span class="font12">Username</span></div>
+					<input type="text" name="username" class="username" maxlength="32" placeholder="请输入账号.." autocomplete="off" value="" />
+				</div>
+				<div class="input marginTop25" id="password">
+					<div class="showTips">密码 <span class="font12">Password</span></div>
+					<input type="password" class="password" name="password" />
+				</div>
+               
+			   	                <div class="input marginTop25" id="password">
+					<div class="showTips">验证码 <span class="font12">Verification Code</span></div>
+					<input type="text" class="password" name="checkCode" id="checkCode" style="float: left;width: 90px;" />
+					<div style="float:right; width: 135px;">
+				    	<img src="/base/scode" id="checkCodeImg" height="44" style="cursor:pointer" title="看不清？点击换一张！" onClick="$(this).attr('src','/base/scode'+'?rand='+new Date().getTime())" />
+				    </div>
+				</div>
+				
+				<div class="marginTop25">
+				<input type="button" value="Login" class="loginButton" />
+				</div>
+				
+								
+			</div>
+			
+			<!-- 
+			<div class="loginContent qrloginArea" style="display:none">
+			
+				<div class="qrbox">
+					<div class="left qrhelpshow">
+						<img src="/static/v3/images/qrtips.gif">
+					</div>
+					<div class="right">
+						<div class="qrtips">使用微信小程序扫码</div>
+			
+						<div class="qrimg-box">
+							<img src="/static/images/waitload.gif" alt="" id="qrimg">
+						</div>
+						<div class="qr-fail-box" style="display:none;">
+							<p class="qr-fail-p">二维码信息已失效</p>
+							<a href="javascript:;" class="qr-fail-link">点击刷新</a>
+						</div>
+						<div class="qr-success-box" style="display:none;">
+							<img id="loginSuccessGif" src="/static/images/success.gif">
+							<p class="qr-success-p">您已在小程序完成验证<br /><span style="color:#999; margin-top:10px; display:block">正在跳转..</span></p>
+						</div>
+						
+						<div class="qrhelp">找不到扫一扫入口？<a href="javascript:void(0)" class="showHelp" type="1">查看帮助</a></div>
+	
+					</div>
+				</div>
+					
+			</div>
+			 -->
+			
+		</div>
+	</div>
+</div>
+</form>
+
+
+
+
+<script src="/static/js/particles.js"></script>
+<script>
+$(document).ready(function(){
+	$("#username").focus();
+});
+
+
+$(document).on('click','.selectLoginType',function(){
+	var type = $(this).attr('type');
+	$(".selectLoginType").hide();
+	$(".loginContent").hide();
+	$("." + type).show();
+	
+	if(type ==  'qrloginArea'){
+		createQRCode();
+	}else{
+		if(scode_interval != null){
+			clearInterval(scode_interval);
+		}
+		$("#qrimg").attr('src','/static/images/waitload.gif')
+	}
+	localStorage.setItem('loginType',type);
+	
+})
+
+$(document).on('keyup','.password',function(e){
+	if(e.keyCode == 13){
+		putlogin();
+		return false;
+	}
+})
+
+$(document).on('keyup','.username',function(e){
+	if(e.keyCode == 13){
+		$(".password").focus();
+		return false;
+	}
+})
+
+var loginType = localStorage.getItem('loginType');
+if(loginType == 2){
+	$(".selectLoginType").hide();
+	$(".loginContent").show();
+	$(".qrloginArea").show();
+	createQRCode();
+}
+
+function ajaxRequestData(url,params,dataType,callback){
+	var rebackObj=new Object();
+	rebackObj.status=false;
+	rebackObj.data='';
+	rebackObj.message="";
+	if(url=='' || url==undefined){
+		rebackObj.msg="请求接口地址为空";
+		return callback(rebackObj);
+	}
+	if(dataType=="" || dataType==undefined){
+		dataType="json";
+	}
+
+	$.ajax({
+		type:"POST",
+		url:url,
+		data:params,
+		dataType:dataType,
+		success:function(respData){
+			if(dataType=="html" || dataType=="text"){
+				rebackObj.data = respData;
+				rebackObj.status = true;
+				return callback(rebackObj);
+			}
+			if(!respData.hasOwnProperty('status') || respData.status == false ){
+				if(rebackObj.message==undefined || respData.message=='' || !respData.hasOwnProperty('message')){
+					rebackObj.message = '请求接口失败';
+				}else{
+					rebackObj.message=respData.message;
+				}
+				return callback(rebackObj);
+			}
+			rebackObj.data = respData;
+			rebackObj.status = true;
+			return callback(rebackObj);
+		},
+		error:function(){
+			rebackObj.status=false;
+			rebackObj.message="接口请求失败";
+			return callback(rebackObj);
+		}
+		
+	});
+}
+
+var pageconfig={};
+pageconfig.referrer="";
+var redirect = '';
+var scode_interval = null;
+function createQRCode(){
+	try{clearInterval(scode_interval)}catch(e){}
+	var url="/marketconsole/qrUrlcreate";
+	var timestap = new Date().getTime();
+	var urlData={logintype:'platformlogin',t_s:timestap,referrer:pageconfig.referrer};
+	ajaxRequestData(url,urlData,"json",function(rebackData){
+
+		if(rebackData.status==false){
+			layer.msg(rebackData.message,{icon:2});
+		}else{
+			var qrurl = rebackData.data.data.qrurl;
+			var token = rebackData.data.data.token;
+			if(qrurl=="" || qrurl== undefined || token=="" || token == undefined){
+				layer.msg("获取登录二维码失败",{icon:2});
+				return false;
+			}else{
+				var imgUrl ='/marketconsole/qrImgCreate?data='+qrurl;
+				$(".qrbox .right").show();
+				$("#qrimg").attr("src",imgUrl);
+				$(".qr-fail-box").hide();
+				$(".qr-success-box").hide();
+				scode_interval = setInterval(function(){checkTokenLogin(token);},1000);
+			}
+		}
+	});
+}
+$(document).on("click",".qr-fail-link",function(){
+	createQRCode();
+});
+
+function checkTokenLogin(token){
+	var url="/marketconsole/ckTokenLogin?type=1";
+	var timestap = new Date().getTime();
+	var urlData={logintype:2,t_s:timestap,token:token,redirect:redirect};
+	ajaxRequestData(url,urlData,"json",function(rebackData){
+		if(rebackData.status==true){
+			if(rebackData.data.data.code==101){
+				$(".qr-fail-box .qr-fail-p").html(rebackData.data.data.message);
+				$(".qr-fail-box").show();
+				$(".qr-success-box").hide();
+				try{clearInterval(scode_interval)}catch(e){}
+			}else if(rebackData.data.data.code==200){
+				$(".qr-success-box .qr-success-user").html(rebackData.data.data.username);
+				$(".qr-fail-box").hide();
+				$(".qr-success-box").show();
+				$(".qrimg-box").hide();
+				try{clearInterval(scode_interval)}catch(e){}
+				var runTo = rebackData.data.data.runTo;
+				setTimeout(function(){
+					location.href = runTo;	
+				},2000)
+			}
+		}
+	});
+}
+
+
+$(document).on('click','.showHelp',function(){
+	var type = $(this).attr('type');
+	var newType = type == 1 ? 2 : 1;
+	$(this).attr('type',newType);
+	if(type == 1){
+		$(".qrhelpshow").addClass('show');
+	}else{
+		$(".qrhelpshow").removeClass('show');
+	}
+})
+
+$(document).keyup(function(event){
+	if(event.keyCode == 13){
+		$("#loginForm").submit();
+	}
+});
+$(document).on("click",".loginButton",function(){
+	//$("#loginForm").submit();
+	putlogin();
+})
+
+$TN.onsuccess(function(){
+	//验证通过
+	var date = new Date();
+ 	var m = 1;
+	date.setTime(date.getTime() + (m * 60 * 1000));
+	$.cookie('tncode_check_base','ok', { expires: date })
+	putlogin();
+});
+
+function putlogin(e){
+	var username = $('input[name="username"]').val();
+	var password = $('input[name="password"]').val();
+	var checkCode = $('#checkCode').val();
+	var referUrl=$("#referUrl").val();
+	if(username=="" || username==undefined){
+		layer.msg('请输入用户名', {tips:[2,'#FF9900'],time:2500});
+		return false;
+	}
+	if(password=="" || password==undefined){
+		layer.msg('请输入密码', {tips:[2,'#FF9900'],time:2500});
+		return false;
+	}
+	
+		if(checkCode=="" || checkCode==undefined){
+		layer.msg('请输入验证码', {tips:[2,'#FF9900'],time:2500});
+		return false;
+	}
+		
+	$.post('/base/loginHandle',{username:username,password:password,checkCode:checkCode,referUrl:referUrl},function(data){
+		
+		if(data.status == false){
+			$('#checkCodeImg').click();
+			layer.msg('<font style="font-size:14px">' + data.message +'</font>', {tips:[2,'#FF9900'],time:2500});
+		}else{
+			location.href = data.url;
+		}
+		
+	},'json');
+	return false;
+}
+
+</script>
+</body>
+</html>

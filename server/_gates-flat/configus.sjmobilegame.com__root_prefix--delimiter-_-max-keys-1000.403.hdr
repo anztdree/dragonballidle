@@ -1,0 +1,12 @@
+URL: https://configus.sjmobilegame.com/?prefix=&delimiter=/&max-keys=1000
+STATUS: 403
+DIAMBIL: 2026-10-04T02:16:49.307Z
+connection: keep-alive
+content-length: 453
+content-type: application/xml
+date: Sun, 04 Oct 2026 02:16:49 GMT
+server: tencent-cos
+x-cache-lookup: Cache Miss
+x-cos-request-id: NmFjMWI3MTFfY2Y3N2U2MDlfMTdiZThfMTJjYjIyMzk=
+x-cos-trace-id: OGVmYzZiMmQzYjA2OWNhODk0NTRkMTBiOWVmMDAxODc0OWRkZjk0ZDM1NmI1M2E2MTRlY2MzZDhmNmI5MWI1OTBjYzE2MjAxN2M1MzJiOTdkZjMxMDVlYTZjN2FiMmI0MDBjNjhkZWJjMjQwNmJiZTViMjhmM2QwOTUzMGFiMzY=
+x-nws-log-uuid: 9783421350322979035

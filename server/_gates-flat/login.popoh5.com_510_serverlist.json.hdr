@@ -1,0 +1,14 @@
+URL: https://login.popoh5.com:510/serverlist.json
+STATUS: 200
+DIAMBIL: 2026-10-04T02:16:49.998Z
+access-control-allow-headers: Content-Type,x-token
+access-control-allow-methods: PUT,POST,GET,DELETE,OPTIONS
+access-control-allow-origin: *
+connection: keep-alive
+content-length: 33
+content-type: application/json; charset=utf-8
+date: Sun, 04 Oct 2026 02:16:49 GMT
+etag: W/"21-xLbN5LJIy6rQsBgrVxYBCz3YMaE"
+server: nginx/1.16.0
+x-powered-by: Express
+set-cookie: connect.sid=s%3A0Bn6bb8y2R-de_6tQtyi0z-1VL6tVj6j.dTyiZzPXLmAJSj2gbBuSbpVIaoNbB7vvErfLWdQxCi8; Path=/; HttpOnly

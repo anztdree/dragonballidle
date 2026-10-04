@@ -1,0 +1,7 @@
+HTTP/1.1 302 
+Set-Cookie: JSESSIONID=86965F0013DDB1138C245302155D171A; Path=/; HttpOnly
+Location: http://t4game.com:80/loginpage;jsessionid=86965F0013DDB1138C245302155D171A
+Content-Language: en-US
+Content-Length: 0
+Date: Sun, 04 Oct 2026 01:34:08 GMT
+
