@@ -1,0 +1,23 @@
+# t4game.com portal perusahaan — file & halaman (HTTP murni, https gagal TLS)
+http://t4game.com/readme.md
+http://t4game.com/README.md
+http://t4game.com/readme.txt
+http://t4game.com/robots.txt
+http://t4game.com/sitemap.xml
+http://t4game.com/admin/
+http://t4game.com/manager/
+http://t4game.com/loginpage
+http://t4game.com/registerpage
+http://t4game.com/link
+http://t4game.com/product
+http://t4game.com/jianjie
+http://t4game.com/hezuo
+http://t4game.com/refund
+http://t4game.com/shengming
+http://t4game.com/zhpmr
+http://t4game.com/Contactus
+http://t4game.com/service/ucenter/procharge
+http://t4game.com/listgameInformation
+http://t4game.com/view/front/style/style.css
+http://www.t4game.com/
+http://www.t4game.com/readme.md

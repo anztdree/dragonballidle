@@ -1,0 +1,9 @@
+[2026-10-04T01:49:33.416Z] WS OPEN
+[2026-10-04T01:49:33.417Z] verify dijawab
+[2026-10-04T01:49:33.572Z] ACK 1 => ret=0 data=null
+[2026-10-04T01:49:33.817Z] EMIT ack=2: action=enterGame
+[2026-10-04T01:49:33.976Z] ACK 2 => ret=38 data=null
+[2026-10-04T01:49:41.977Z] EMIT ack=3: action=SaveHistory
+[2026-10-04T01:49:42.132Z] ACK 3 => ret=60 data=null
+[2026-10-04T01:49:42.133Z] SaveHistory selesai — loginToken baru: (tidak ada)
+[2026-10-04T01:49:43.633Z] SELESAI: tanpa loginToken baru — push=0

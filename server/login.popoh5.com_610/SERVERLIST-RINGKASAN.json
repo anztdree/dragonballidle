@@ -1,0 +1,50 @@
+{
+  "diambil": "2026-10-04 via GetServerList ret:0 (socket login.popoh5.com:610, akun visitor uid 28496135)",
+  "total_server": 2105,
+  "host_unik": 32,
+  "sample": [
+    {
+      "serverId": "2105",
+      "url": "https://s2105-bs.popoh5.com:8101",
+      "new": true,
+      "hot": false,
+      "name": "Server 2105",
+      "online": true,
+      "openDate": "2026-10-02T07:00:06.246Z",
+      "offlineReason": "",
+      "merge": false,
+      "mergeTo": "",
+      "urlInner": "http://127.0.0.1:8111",
+      "chatInner": ""
+    },
+    {
+      "serverId": "2104",
+      "url": "https://s2104-bs.popoh5.com:8121",
+      "new": false,
+      "hot": true,
+      "name": "Server 2104",
+      "online": true,
+      "openDate": "2026-09-25T07:00:06.883Z",
+      "offlineReason": "",
+      "merge": false,
+      "mergeTo": "",
+      "urlInner": "http://127.0.0.1:8131",
+      "chatInner": ""
+    },
+    {
+      "serverId": "2103",
+      "url": "https://s2103-bs.popoh5.com:8001",
+      "new": false,
+      "hot": true,
+      "name": "Server 2103",
+      "online": true,
+      "openDate": "2026-09-18T07:00:06.533Z",
+      "offlineReason": "",
+      "merge": false,
+      "mergeTo": "",
+      "urlInner": "http://127.0.0.1:8011",
+      "chatInner": ""
+    }
+  ],
+  "urlInner_contoh": "http://127.0.0.1:8111"
+}

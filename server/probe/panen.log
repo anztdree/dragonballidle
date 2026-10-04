@@ -1,0 +1,4 @@
+OPEN
+EMIT GetServerList
+SAVED serverList_LIVE.json, server = 2105 history = 0
+keys top-level: errorCode,serverList,history

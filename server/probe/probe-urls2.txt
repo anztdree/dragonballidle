@@ -1,0 +1,47 @@
+# Re-fetch dengan body disimpan (pelajaran batch 1: body 500/handshake terhapus)
+# === login.popoh5.com port 80 — halaman 500 ===
+http://login.popoh5.com/readme.md
+http://login.popoh5.com/
+http://login.popoh5.com/index.html
+http://login.popoh5.com/robots.txt
+http://login.popoh5.com/admin/
+# === handshake socket.io 610 (bukti hidup) ===
+https://login.popoh5.com:610/socket.io/?EIO=3&transport=polling&t=probe2
+# === qsdk halaman 500 (247 B — lihat isi/stack) ===
+https://qsdk.t4game.com/readme.md
+https://qsdk.t4game.com/index.html
+https://qsdk.t4game.com/admin
+# === qsdk — pola PHP ===
+https://qsdk.t4game.com/index.php
+https://qsdk.t4game.com/api.php
+https://qsdk.t4game.com/info.php
+https://qsdk.t4game.com/test.php
+https://qsdk.t4game.com/phpinfo.php
+# === subdomain umum popoh5.com ===
+https://gm.popoh5.com/readme.md
+https://api.popoh5.com/readme.md
+https://admin.popoh5.com/readme.md
+https://pay.popoh5.com/readme.md
+https://www.popoh5.com/readme.md
+https://res.popoh5.com/readme.md
+https://cdn.popoh5.com/readme.md
+https://game.popoh5.com/readme.md
+http://www.popoh5.com/
+https://www.popoh5.com/
+# === subdomain umum sjmobilegame.com ===
+https://www.sjmobilegame.com/readme.md
+https://api.sjmobilegame.com/readme.md
+https://admin.sjmobilegame.com/readme.md
+https://pay.sjmobilegame.com/readme.md
+# === subdomain umum t4game.com + root domain ===
+https://t4game.com/readme.md
+http://t4game.com/
+https://www.t4game.com/readme.md
+https://admin.t4game.com/readme.md
+https://api.t4game.com/readme.md
+https://pay.t4game.com/readme.md
+https://gm.t4game.com/readme.md
+# === sjflaregame.com (host log) ===
+https://sjflaregame.com/readme.md
+https://www.sjflaregame.com/readme.md
+http://log.sjflaregame.com:10000/error/battle/client

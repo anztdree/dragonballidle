@@ -1,0 +1,20 @@
+LOGIN OPEN
+LOGIN RECV[85]: 0{"sid":"smgq9GEHR4PQgWN_Z1TG","upgrades":[],"pingInterval":25000,"pingTimeout":5000}
+LOGIN RECV[2]: 40
+>> SaveHistory: 421["handler.process",{"type":"User","action":"SaveHistory","accountToken":"28496135","channelCode":"default","serverId":"2105","securityCode":"","subChannel":"","version":"1.0"}]
+LOGIN RECV[63]: 431[{"ret":0,"data":"{\"errorCode\":0,\"todayLoginCount\":1}"}]
+SaveHistory ack: 431[{"ret":0,"data":"{\"errorCode\":0,\"todayLoginCount\":1}"}]
+LOGIN RECV[53]: 432[{"ret":0,"data":"{\"data\":[],\"errorCode\":0}"}]
+LOGIN CLOSE 1000
+GAME2105 OPEN
+GAME2105 RECV[86]: 0{"sid":"4xG-3JoBQqFebYnyAAVw","upgrades":[],"pingInterval":25000,"pingTimeout":60000}
+GAME2105 RECV[2]: 40
+GAME2105 RECV[51]: 42["verify","1932a3f3-375f-4f37-98d3-2e1593a381e2"]
+GAME2105 >> verify answer (48 B)
+>> EMIT ack0: 420["verify","daSnJMWE9QBklJ9W0/ia5yN0rvzXh0++LTSTUIyYFBY8mHtW"]
+GAME2105 RECV[51]: 42["verify","504d9691-63b9-4b1b-b247-c540e6a137ee"]
+GAME2105 >> verify answer (48 B)
+>> EMIT ack1: 421["verify","ewwedG6MIyYKm6vqMLQiimxCyg03APhHqZtpXbYDzMzsEZ1l"]
+GAME2105 RECV[2]: 41
+GAME2105 CLOSE 1000
+>> enterGame terkirim, menunggu ack...

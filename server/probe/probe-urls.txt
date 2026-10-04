@@ -1,0 +1,96 @@
+# KONTROL (harus 200 - validitas koneksi)
+https://dragonh5cdn.popoh5.com/bs/resource.version
+https://configus.sjmobilegame.com/bs/db/android/setting_BS_Android.json
+# === CDN dragonh5cdn.popoh5.com — readme & dok ===
+https://dragonh5cdn.popoh5.com/bs/readme.md
+https://dragonh5cdn.popoh5.com/bs/README.md
+https://dragonh5cdn.popoh5.com/bs/readme.txt
+https://dragonh5cdn.popoh5.com/bs/README.txt
+https://dragonh5cdn.popoh5.com/bs/readme
+https://dragonh5cdn.popoh5.com/readme.md
+https://dragonh5cdn.popoh5.com/README.md
+https://dragonh5cdn.popoh5.com/bs/resource/properties/readme.md
+https://dragonh5cdn.popoh5.com/bs/js/readme.md
+https://dragonh5cdn.popoh5.com/bs/upgrade/readme.md
+# === CDN — git & backup & dokumen tersembunyi ===
+https://dragonh5cdn.popoh5.com/bs/.git/HEAD
+https://dragonh5cdn.popoh5.com/.git/HEAD
+https://dragonh5cdn.popoh5.com/bs/.DS_Store
+https://dragonh5cdn.popoh5.com/bs/backup.zip
+https://dragonh5cdn.popoh5.com/bs/www.zip
+https://dragonh5cdn.popoh5.com/bs/test.html
+https://dragonh5cdn.popoh5.com/bs/admin.html
+https://dragonh5cdn.popoh5.com/bs/debug.html
+https://dragonh5cdn.popoh5.com/bs/gm.html
+# === CDN — config lain yang mungkin berdampingan ===
+https://dragonh5cdn.popoh5.com/bs/server.json
+https://dragonh5cdn.popoh5.com/bs/servers.json
+https://dragonh5cdn.popoh5.com/bs/config.json
+https://dragonh5cdn.popoh5.com/bs/version.json
+https://dragonh5cdn.popoh5.com/bs/notice.json
+https://dragonh5cdn.popoh5.com/bs/notice.txt
+https://dragonh5cdn.popoh5.com/bs/setting_BS_Android.json
+https://dragonh5cdn.popoh5.com/bs/setting_BS_Android.bin
+https://dragonh5cdn.popoh5.com/robots.txt
+https://dragonh5cdn.popoh5.com/bs/crossdomain.xml
+https://dragonh5cdn.popoh5.com/crossdomain.xml
+# === OSS configus.sjmobilegame.com — readme & jalur tetangga ===
+https://configus.sjmobilegame.com/readme.md
+https://configus.sjmobilegame.com/README.md
+https://configus.sjmobilegame.com/bs/readme.md
+https://configus.sjmobilegame.com/bs/README.md
+https://configus.sjmobilegame.com/bs/db/readme.md
+https://configus.sjmobilegame.com/bs/db/README.md
+https://configus.sjmobilegame.com/bs/db/android/readme.md
+https://configus.sjmobilegame.com/bs/db/android/README.md
+https://configus.sjmobilegame.com/bs/db/android/readme.txt
+https://configus.sjmobilegame.com/bs/db/android/readme
+# === OSS — varian paket/platform lain (pola nama dari smali) ===
+https://configus.sjmobilegame.com/bs/db/android/.git/HEAD
+https://configus.sjmobilegame.com/bs/db/ios/setting_BS_Ios.bin
+https://configus.sjmobilegame.com/bs/db/ios/setting_BS_IOS.bin
+https://configus.sjmobilegame.com/bs/db/android/setting_BS_IOS.bin
+https://configus.sjmobilegame.com/bs/db/android/setting_com_db_local_Android.bin
+https://configus.sjmobilegame.com/bs/db/android/com_db_local.json
+https://configus.sjmobilegame.com/bs/db/android/com_db_local.bin.bak
+https://configus.sjmobilegame.com/robots.txt
+https://configus.sjmobilegame.com/crossdomain.xml
+# === SDK qsdk.t4game.com — readme & dok ===
+https://qsdk.t4game.com/readme.md
+https://qsdk.t4game.com/README.md
+https://qsdk.t4game.com/readme.txt
+https://qsdk.t4game.com/readme
+https://qsdk.t4game.com/api/readme.md
+https://qsdk.t4game.com/v1/readme.md
+https://qsdk.t4game.com/v1/system/readme.md
+# === SDK — dokumentasi & admin ===
+https://qsdk.t4game.com/docs/
+https://qsdk.t4game.com/docs/readme.md
+https://qsdk.t4game.com/api-docs
+https://qsdk.t4game.com/v2/api-docs
+https://qsdk.t4game.com/swagger
+https://qsdk.t4game.com/swagger-ui.html
+https://qsdk.t4game.com/swagger-ui/
+https://qsdk.t4game.com/.git/HEAD
+https://qsdk.t4game.com/.git/config
+https://qsdk.t4game.com/robots.txt
+https://qsdk.t4game.com/crossdomain.xml
+https://qsdk.t4game.com/admin
+https://qsdk.t4game.com/admin/login
+https://qsdk.t4game.com/index.html
+https://qsdk.t4game.com/health
+https://qsdk.t4game.com/status
+# === LOGIN server popoh5.com — socket.io + statis ===
+https://login.popoh5.com:610/socket.io/?EIO=3&transport=polling&t=probe1
+https://login.popoh5.com:610/readme.md
+https://login.popoh5.com:610/README.md
+https://login.popoh5.com:610/index.html
+https://login.popoh5.com/readme.md
+http://login.popoh5.com/readme.md
+# === Domain induk popoh5.com / sjflaregame.com ===
+http://popoh5.com/readme.md
+https://popoh5.com/readme.md
+http://www.popoh5.com/readme.md
+http://log.sjflaregame.com:10000/readme.md
+http://log.sjflaregame.com:10000/
+http://log.sjflaregame.com:10000/index.html

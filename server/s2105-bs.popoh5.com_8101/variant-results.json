@@ -1,0 +1,17 @@
+{
+  "authToken": {
+    "ret": 0
+  },
+  "userToken": {
+    "ret": 38
+  },
+  "userIdToken": {
+    "ret": 38
+  },
+  "emptyToken": {
+    "ret": 38
+  },
+  "username": {
+    "ret": 38
+  }
+}

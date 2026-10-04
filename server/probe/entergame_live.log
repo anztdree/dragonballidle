@@ -1,0 +1,12 @@
+OPEN
+RECV[86]: 0{"sid":"60YhSKldGwLSGAwrAAV4","upgrades":[],"pingInterval":25000,"pingTimeout":60000}
+RECV[2]: 40
+RECV[51]: 42["verify","578d68fc-4e54-4eb3-91b7-c6a482a5b74d"]
+RECV[1]: 3
+RECV[14]: 430[{"ret":0}]
+=== VERIFY OK — kirim enterGame (loginToken=raw token SDK) ===
+>> 4210["handler.process",{"type":"user","action":"enterGame","loginToken":"@103@176@211@156@213@168@149@210@125@162@110@209@124@185@125@173@121@156@103@181@136@223@160@132@103@106@104@140@207@102@105@136@123@202@191@119@204@122@208@215@105@143@111@206@175@198@16
+RECV[16]: 4310[{"ret":38}]
+=== coba-2: loginToken=uid ===
+>> 4211["handler.process",{"type":"user","action":"enterGame","loginToken":"28496135","userId":"28496135","serverId":2105,"version":"1.0","language":"en","gameVersion":"20260724_110536-EN"}]
+RECV[16]: 4311[{"ret":38}]
