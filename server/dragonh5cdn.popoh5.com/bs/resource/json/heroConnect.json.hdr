@@ -1,0 +1,18 @@
+URL: https://dragonh5cdn.popoh5.com/bs/resource/json/heroConnect.json?v=1198871822
+STATUS: 200
+DIAMBIL: 2026-10-04T02:47:19.479Z
+accept-ranges: bytes
+access-control-allow-headers: X-Requested-With
+access-control-allow-methods: GET,POST,OPTIONS
+access-control-allow-origin: *
+cache-control: max-age=2592000
+connection: keep-alive
+content-length: 254
+content-type: application/json
+date: Fri, 02 Oct 2026 09:52:54 GMT
+etag: "6abc6615-fe"
+expires: Sun, 01 Nov 2026 09:52:54 GMT
+last-modified: Wed, 30 Sep 2026 01:29:57 GMT
+server: nginx/1.16.0
+x-cache-lookup: Cache Hit
+x-nws-log-uuid: 3116375046770149611

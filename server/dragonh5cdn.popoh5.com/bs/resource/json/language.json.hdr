@@ -1,0 +1,18 @@
+URL: https://dragonh5cdn.popoh5.com/bs/resource/json/language.json?v=825257841
+STATUS: 200
+DIAMBIL: 2026-10-04T02:47:19.635Z
+accept-ranges: bytes
+access-control-allow-headers: X-Requested-With
+access-control-allow-methods: GET,POST,OPTIONS
+access-control-allow-origin: *
+cache-control: max-age=2592000
+connection: keep-alive
+content-length: 5027184
+content-type: application/json
+date: Sun, 26 Jul 2026 04:02:35 GMT
+etag: "6a62ecf9-4cb570"
+expires: Tue, 25 Aug 2026 04:02:35 GMT
+last-modified: Fri, 24 Jul 2026 04:41:29 GMT
+server: nginx/1.16.0
+x-cache-lookup: Cache Hit
+x-nws-log-uuid: 4431124521885610251

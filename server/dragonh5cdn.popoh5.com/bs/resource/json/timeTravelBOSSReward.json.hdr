@@ -1,0 +1,19 @@
+URL: https://dragonh5cdn.popoh5.com/bs/resource/json/timeTravelBOSSReward.json?v=585025734
+STATUS: 200
+DIAMBIL: 2026-10-04T02:47:19.496Z
+accept-ranges: bytes
+access-control-allow-headers: X-Requested-With
+access-control-allow-methods: GET,POST,OPTIONS
+access-control-allow-origin: *
+cache-control: max-age=2592000
+connection: keep-alive
+content-encoding: gzip
+content-length: 236
+content-type: application/json
+date: Tue, 08 Sep 2026 12:45:41 GMT
+etag: "6a62ecf8-7b4"
+expires: Thu, 08 Oct 2026 12:45:41 GMT
+last-modified: Fri, 24 Jul 2026 04:41:28 GMT
+server: nginx/1.16.0
+x-cache-lookup: Cache Hit
+x-nws-log-uuid: 12961628731590933977

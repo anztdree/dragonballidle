@@ -1,0 +1,19 @@
+URL: https://dragonh5cdn.popoh5.com/bs/resource/gameEui.json
+METHOD: GET
+STATUS: 200
+DIAMBIL: 2026-10-04T02:42:04.225Z
+accept-ranges: bytes
+access-control-allow-headers: X-Requested-With
+access-control-allow-methods: GET,POST,OPTIONS
+access-control-allow-origin: *
+cache-control: max-age=2592000
+connection: keep-alive
+content-length: 4250277
+content-type: application/json
+date: Sun, 27 Sep 2026 20:55:08 GMT
+etag: "6a62ecf9-40daa5"
+expires: Tue, 27 Oct 2026 20:55:08 GMT
+last-modified: Fri, 24 Jul 2026 04:41:29 GMT
+server: nginx/1.16.0
+x-cache-lookup: Cache Hit
+x-nws-log-uuid: 1016070008903618139

@@ -1,0 +1,1307 @@
+{
+ "waktu": "2026-10-04T02:42:14.629Z",
+ "battleIdTotal": 0,
+ "battleRecord200": [],
+ "files": [
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/index-native.html",
+   "method": "GET",
+   "status": 200,
+   "len": 10792,
+   "ctype": "text/html",
+   "lastmod": "Fri, 24 Jul 2026 04:41:28 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/index-native.html"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/default.thm.json",
+   "method": "GET",
+   "status": 200,
+   "len": 48270,
+   "ctype": "application/json",
+   "lastmod": "Fri, 24 Jul 2026 04:41:30 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/default.thm.json"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/default.res.json",
+   "method": "GET",
+   "status": 200,
+   "len": 2087152,
+   "ctype": "application/json",
+   "lastmod": "Fri, 24 Jul 2026 04:41:29 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/default.res.json"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/gameEui.json",
+   "method": "GET",
+   "status": 200,
+   "len": 4250277,
+   "ctype": "application/json",
+   "lastmod": "Fri, 24 Jul 2026 04:41:29 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/gameEui.json"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/language/language-cn.json",
+   "method": "GET",
+   "status": 200,
+   "len": 180048,
+   "ctype": "application/json",
+   "lastmod": "Wed, 30 Sep 2026 01:30:00 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/language/language-cn.json"
+  }
+ ],
+ "semua": [
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/index-native.html",
+   "method": "GET",
+   "status": 200,
+   "len": 10792,
+   "ctype": "text/html",
+   "lastmod": "Fri, 24 Jul 2026 04:41:28 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/index-native.html"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/default.thm.json",
+   "method": "GET",
+   "status": 200,
+   "len": 48270,
+   "ctype": "application/json",
+   "lastmod": "Fri, 24 Jul 2026 04:41:30 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/default.thm.json"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/default.res.json",
+   "method": "GET",
+   "status": 200,
+   "len": 2087152,
+   "ctype": "application/json",
+   "lastmod": "Fri, 24 Jul 2026 04:41:29 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/default.res.json"
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/gameEui.json",
+   "method": "GET",
+   "status": 200,
+   "len": 4250277,
+   "ctype": "application/json",
+   "lastmod": "Fri, 24 Jul 2026 04:41:29 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/gameEui.json"
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/default.res-in.json",
+   "method": "GET",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/activity_en/",
+   "method": "GET",
+   "status": 403,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": ""
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/activity_cn/index.json",
+   "method": "GET",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s2105-bs.popoh5.com:8111/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": ""
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/language/language-in.json",
+   "method": "GET",
+   "status": 404,
+   "len": 555,
+   "ctype": "text/html",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/",
+   "method": "GET",
+   "status": 404,
+   "len": 139,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 149,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 152,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 148,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 175,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 151,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 151,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 176,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 167,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 169,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s2105-bs.popoh5.com:8101/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 160,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/",
+   "method": "GET",
+   "status": 404,
+   "len": 139,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s49952-bs.popoh5.com:8031/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 173,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 152,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 148,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 149,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 175,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 176,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 169,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 167,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 173,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 160,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 151,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://dragonh5cdn.popoh5.com/bs/resource/language/language-cn.json",
+   "method": "GET",
+   "status": 200,
+   "len": 180048,
+   "ctype": "application/json",
+   "lastmod": "Wed, 30 Sep 2026 01:30:00 GMT",
+   "saved": "dragonh5cdn.popoh5.com/bs/resource/language/language-cn.json"
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 151,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1-bs.popoh5.com:8051/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1-bs.popoh5.com:8041/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s501-bs.popoh5.com:8011/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s501-bs.popoh5.com:8001/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s949-bs.popoh5.com:8191/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s949-bs.popoh5.com:8181/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s49952-bs.popoh5.com:8021/?type=teamDungeonTeam&action=queryTodayMap",
+   "method": "GET",
+   "status": 404,
+   "len": 139,
+   "ctype": "text/html; charset=utf-8",
+   "lastmod": ""
+  },
+  {
+   "url": "http://s1300-bs.popoh5.com:8111/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/manifest.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/game.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/index.html",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/resource/json/battleRecord_1505.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/resource/json/battleRecord_88411.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/resource/json/errorDefine.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/resource/default.res-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/resource/gameEui.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/resource/language/language-en.json",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/activity_in/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  },
+  {
+   "url": "https://s1300-bs.popoh5.com:8101/activity_cn/",
+   "method": "GET",
+   "status": 404,
+   "len": 0,
+   "ctype": "",
+   "lastmod": ""
+  }
+ ]
+}

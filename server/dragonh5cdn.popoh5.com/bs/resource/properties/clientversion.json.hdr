@@ -1,17 +1,18 @@
-HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Sat, 03 Oct 2026 22:24:18 GMT
-Content-Type: application/json
-ETag: "6abc6618-26"
-Expires: Mon, 02 Nov 2026 22:24:18 GMT
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Headers: X-Requested-With
-Access-Control-Allow-Methods: GET,POST,OPTIONS
-Last-Modified: Wed, 30 Sep 2026 01:30:00 GMT
-Cache-Control: max-age=2592000
-Content-Length: 38
-Accept-Ranges: bytes
-X-NWS-LOG-UUID: 15030861473338297060
-Connection: keep-alive
-X-Cache-Lookup: Cache Miss
-
+URL: https://dragonh5cdn.popoh5.com/bs/resource/properties/clientversion.json
+STATUS: 200
+DIAMBIL: 2026-10-04T02:47:19.622Z
+accept-ranges: bytes
+access-control-allow-headers: X-Requested-With
+access-control-allow-methods: GET,POST,OPTIONS
+access-control-allow-origin: *
+cache-control: max-age=2592000
+connection: keep-alive
+content-length: 38
+content-type: application/json
+date: Fri, 25 Sep 2026 14:55:13 GMT
+etag: "6a62ecfa-26"
+expires: Sun, 25 Oct 2026 14:55:13 GMT
+last-modified: Fri, 24 Jul 2026 04:41:30 GMT
+server: nginx/1.16.0
+x-cache-lookup: Cache Hit
+x-nws-log-uuid: 3403934487862848991

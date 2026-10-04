@@ -121,9 +121,26 @@ Kemarin hanya 500; sekarang halaman login asli keluar → semua path asset yang 
 | `login.popoh5.com:510` (12 path file) | JSON catch-all `没有开通` — API router, bukan file server | idem |
 | Panen path-file dari 15 JS game → fetch ke CDN/inner/OSS | hanya 3 path unik (sudah kita punya / github-link Egret) | `buru/_probe/hunt2-summary.json` |
 
+## FILE SERVER DITEMUKAN & DIPETAKAN (batch 5 — 4 Okt 2026): pohon `/bs/resource/` + INDEKS RESMI 13.347 FILE
+
+Koreksi arah user: jangan fokus SDK — target = **LOGINSERVER & MAINSERVER**. Dari bedah kode game + data live:
+
+| Temuan | Bukti |
+|---|---|
+| **`default.res.json` (2.086.103 B, LIVE) = INDEKS RESMI FILE SERVER: 13.347 file** (13.045 asset + 302 config) | fetch 200 langsung; peta lengkap pohon file layer MAINSERVER |
+| **PANEN LIVE 304/304 sukses — 33,47 MB, 0 gagal**: seluruh 302 config (`json/*.json`, `properties/*`, `language/*`) + `battleRecord_1505.json` + asset `bgm_battle.mp3` | semua **200** dgn Last-Modified **30 Sep 2026 01:29 GMT** (LEBIH BARU dari all.zip!) → `buru/dragonh5cdn.popoh5.com/bs/resource/` |
+| **battleRecord dilayani per-file LIVE** — pola kode: `RES.getResByUrl(host+"/resource/json/battleRecord_"+id+".json?v=")` | battleRecord_1505.json = 200, 116.709 B |
+| **Asset dilayani per-file** — 13.045 file asset tersedia satu per satu (tidak semuanya ada di all.zip!) | bgm_battle.mp3 = 200, 128.645 B |
+| **`/activity_en/` di ROOT CDN = 403 → FOLDER ADA** — gambar event dilayani dari root CDN di luar peta res.json (nama file dikirim data server saat runtime, kode: `host+"/activity_"+language+"/"`) | 403 EdgeOne tersimpan |
+| **MAINSERVER menerbitkan layanan HTTP terpisah: `teamServerHttpUrl: "https://s49952-bs.popoh5.com:8021"`** (dari enterGame ret:0 ASLI — host fisik ke-33, penomoran beda) — fitur team/dungeon; kode: `ts.httpReqHandler(url,{type:"teamDungeonTeam",action:...})` → amplop `{ret,data,compress}` sama dgn RPC socket | tersimpan di `attack8_ack2_decompressed.json` |
+| LOGINSERVER = socket 610 + API HTTP 510 (router JSON, tanpa indeks file publik) | batch 3–4 |
+
+**Kesimpulan file server game**: pohon file lengkap = `dragonh5cdn.popoh5.com/bs/resource/…` (13.347 file berindeks resmi) + folder `/activity_*` di root (dinamis) — **config 302 file sudah 100% di tangan dgn timestamp live**; asset layer terbukti terbuka per-file; team server = komponen HTTP MAINSERVER ke-33.
+
 ## PROVENANCE
 - Semua `.hdr` = header HTTP asli server.
 - Frame WebSocket tersimpan: `login.popoh5.com_610/ws-frames3.log`, `s2105-bs.../attack8-frames.log` + `attack7-frames.log`.
 - Skrip pembicara protokol: `probe/login-talk*.ts` (registerVisitor → loginchecknative → verify XXTEA → GetServerList → enterGame → Notify).
 - 32 host game server = dari serverList ASLI (bukan tebakan).
 - Skrip batch 4: `probe/fileserver-hunt.ts`, `probe/hunt2.ts`, `probe/hunt3.ts`, `probe/hunt4.ts` (fetch massal + auto-provenance).
+- Skrip batch 5: `probe/hunt6.ts` (MAINSERVER/team server), `probe/hunt7.ts` (beda res.json vs all.zip), `probe/hunt8.ts` (panen 302 config live).
